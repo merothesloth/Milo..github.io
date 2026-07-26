@@ -1,8 +1,12 @@
-
 /* =====================================
    PORTFOLIO EDITOR
-   PART 1
+   PART 1 FIX
 ===================================== */
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
 
 
 const editButton =
@@ -10,6 +14,16 @@ document.getElementById("editButton");
 
 
 let editMode = false;
+
+
+
+if(!editButton){
+
+    console.log("Edit button not found");
+
+    return;
+
+}
 
 
 
@@ -23,7 +37,8 @@ editButton.addEventListener(
 
 
     document.body.classList.toggle(
-        "editing"
+        "editing",
+        editMode
     );
 
 
@@ -42,6 +57,9 @@ editButton.addEventListener(
 
     }
 
+
+
+});
 
 
 });
