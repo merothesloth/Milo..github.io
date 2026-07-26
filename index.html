@@ -3,94 +3,237 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Portfolio</title>
+    <title>My Art Portfolio</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
 
-<div id="gallery">
 
-    <div class="piece">
+<!-- =========================
+     MAIN GALLERY PAGE
+========================= -->
 
-        <img src="images/art1.jpg">
+<main id="galleryPage">
 
-        <h2 contenteditable="true">
-            Title One
-        </h2>
 
-        <p contenteditable="true">
-            Description
-        </p>
+    <section id="gallery">
+
+
+        <!-- ARTWORK 1 -->
+
+        <article class="artPiece" data-id="1">
+
+            <img 
+            src="images/art1.jpg" 
+            alt="Artwork 1">
+
+            <h2>
+                Artwork One
+            </h2>
+
+            <p>
+                Description goes here.
+            </p>
+
+        </article>
+
+
+
+        <!-- ARTWORK 2 -->
+
+        <article class="artPiece" data-id="2">
+
+            <img 
+            src="images/art2.jpg" 
+            alt="Artwork 2">
+
+            <h2>
+                Artwork Two
+            </h2>
+
+            <p>
+                Description goes here.
+            </p>
+
+        </article>
+
+
+
+
+        <!-- ARTWORK 3 -->
+
+        <article class="artPiece" data-id="3">
+
+            <img 
+            src="images/art3.jpg" 
+            alt="Artwork 3">
+
+            <h2>
+                Artwork Three
+            </h2>
+
+            <p>
+                Description goes here.
+            </p>
+
+        </article>
+
+
+
+
+        <!-- ARTWORK 4 -->
+
+        <article class="artPiece" data-id="4">
+
+            <img 
+            src="images/art4.jpg" 
+            alt="Artwork 4">
+
+            <h2>
+                Artwork Four
+            </h2>
+
+            <p>
+                Description goes here.
+            </p>
+
+        </article>
+
+
+
+
+        <!-- ARTWORK 5 -->
+
+        <article class="artPiece" data-id="5">
+
+            <img 
+            src="images/art5.jpg" 
+            alt="Artwork 5">
+
+            <h2>
+                Artwork Five
+            </h2>
+
+            <p>
+                Description goes here.
+            </p>
+
+        </article>
+
+
+
+    </section>
+
+
+</main>
+
+
+
+
+
+<!-- =========================
+     ARTWORK DETAIL PAGE
+========================= -->
+
+<section id="detailPage">
+
+
+    <button id="backButton">
+
+        ← Back
+
+    </button>
+
+
+
+    <div id="detailLayout">
+
+
+        <!-- LEFT QUARTER -->
+
+        <div id="detailLeft">
+
+
+            <img 
+            id="detailImage"
+            src=""
+            alt="Selected artwork">
+
+
+
+            <h1 id="detailTitle">
+
+            </h1>
+
+
+
+            <p id="detailDescription">
+
+            </p>
+
+
+        </div>
+
+
+
+
+        <!-- RIGHT SIDE ARTBOARDS -->
+
+        <div id="detailRight">
+
+
+            <div class="artboard">
+
+                <h2>
+                    Artboard Title
+                </h2>
+
+
+                <p>
+                    Information goes here.
+                </p>
+
+            </div>
+
+
+
+            <div class="artboard">
+
+                <h2>
+                    Artboard Title
+                </h2>
+
+
+                <p>
+                    Information goes here.
+                </p>
+
+            </div>
+
+
+
+        </div>
+
+
 
     </div>
 
-    <div class="piece">
 
-        <img src="images/art2.jpg">
+</section>
 
-        <h2 contenteditable="true">
-            Title Two
-        </h2>
 
-        <p contenteditable="true">
-            Description
-        </p>
 
-    </div>
-
-    <div class="piece">
-
-        <img src="images/art3.jpg">
-
-        <h2 contenteditable="true">
-            Title Three
-        </h2>
-
-        <p contenteditable="true">
-            Description
-        </p>
-
-    </div>
-
-    <div class="piece">
-
-        <img src="images/art4.jpg">
-
-        <h2 contenteditable="true">
-            Title Four
-        </h2>
-
-        <p contenteditable="true">
-            Description
-        </p>
-
-    </div>
-
-    <div class="piece">
-
-        <img src="images/art5.jpg">
-
-        <h2 contenteditable="true">
-            Title Five
-        </h2>
-
-        <p contenteditable="true">
-            Description
-        </p>
-
-    </div>
-
-</div>
 
 <script src="script.js"></script>
+
 
 </body>
 
