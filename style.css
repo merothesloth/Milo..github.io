@@ -1,0 +1,230 @@
+/* ===================================
+   VARIABLES
+=================================== */
+
+:root{
+
+    --font: sans-serif;
+
+    --background: #000000;
+
+    --text: #ffffff;
+
+    --image-size: 320px;
+
+    --gap: 70px;
+
+    --edge-space: 45px;
+
+}
+
+
+
+/* ===================================
+RESET
+=================================== */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    width:100%;
+
+    height:100%;
+
+}
+
+body{
+
+    width:100%;
+
+    height:100%;
+
+    overflow-y:hidden;
+    overflow-x:auto;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    font-family:var(--font);
+
+}
+
+
+
+/* ===================================
+HORIZONTAL GALLERY
+=================================== */
+
+#gallery{
+
+    display:flex;
+
+    flex-direction:row;
+
+    align-items:flex-start;
+
+    gap:var(--gap);
+
+    padding-top:40px;
+
+    padding-left:var(--edge-space);
+
+    padding-right:var(--edge-space);
+
+    padding-bottom:40px;
+
+    width:max-content;
+
+    min-height:100vh;
+
+}
+
+
+
+/* ===================================
+ART PIECES
+=================================== */
+
+.piece{
+
+    width:var(--image-size);
+
+    flex-shrink:0;
+
+}
+
+
+
+/* ===================================
+IMAGES
+=================================== */
+
+.piece img{
+
+    width:100%;
+
+    aspect-ratio:1/1;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
+
+
+/* ===================================
+TITLE
+=================================== */
+
+.piece h2{
+
+    margin-top:18px;
+
+    font-size:22px;
+
+    font-weight:400;
+
+}
+
+
+
+/* ===================================
+DESCRIPTION
+=================================== */
+
+.piece p{
+
+    margin-top:10px;
+
+    font-size:15px;
+
+    line-height:1.5;
+
+}
+
+
+
+/* ===================================
+EDITABLE TEXT
+=================================== */
+
+[contenteditable]{
+
+    outline:none;
+
+}
+
+
+
+/* ===================================
+SCROLLBAR
+=================================== */
+
+::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:black;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#444;
+
+}
+
+
+
+/* ===================================
+PREP FOR ANIMATIONS
+=================================== */
+
+.piece{
+
+    transition:
+
+        transform 1s ease,
+
+        filter 1s ease,
+
+        opacity 1s ease;
+
+}
+
+.piece img{
+
+    transition:
+
+        transform 1s ease,
+
+        filter 1s ease;
+
+}
+
+.piece h2,
+
+.piece p{
+
+    transition:
+
+        transform 1s ease,
+
+        opacity 1s ease;
+
+}
