@@ -120,8 +120,13 @@ body {
 
 .artPiece {
 
+    width:320px;
 
-    width:var(--art-size);
+    min-width:320px;
+
+    flex:none;
+
+}
 
 
     flex-shrink:0;
@@ -685,8 +690,8 @@ body {
 }
 
 
-}/* =====================================
-   LOCKED GALLERY COMPOSITION
+/* =====================================
+   FIXED GALLERY COMPOSITION
 ===================================== */
 
 
@@ -712,64 +717,44 @@ body {
 
     bottom:0;
 
-    height:65vh;
+    height:55vh;
 
     display:flex;
 
     align-items:center;
 
+    gap:80px;
+
+    padding-left:45px;
+
+    padding-right:45px;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
 }
 
 
 
-/* Keep intro block fixed */
+#introTitle {
 
-#introTitle,
+    position:absolute;
+
+    top:90px;
+
+    left:80px;
+
+}
+
+
+
 #introDescription {
 
     position:absolute;
 
-    z-index:5;
+    top:155px;
 
-}
-
-
-
-/* Prevent artwork from changing size */
-
-.artPiece {
-
-    width:320px;
-
-    flex:none;
-
-}
-
-
-/* Detail page stays consistent */
-
-#detailLayout {
-
-    display:flex;
-
-    width:100vw;
-
-    height:calc(100vh - 90px);
-
-}
-
-
-#detailLeft {
-
-    width:25vw;
-
-    min-width:320px;
-
-}
-
-
-#detailRight {
-
-    width:75vw;
+    left:80px;
 
 }
