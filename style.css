@@ -757,4 +757,48 @@ body {
 
     left:80px;
 
+}/* =====================================
+   EDIT MODE BUTTON
+===================================== */
+
+
+#editButton {
+
+    position:fixed;
+
+    top:20px;
+
+    right:25px;
+
+    z-index:999;
+
+    background:none;
+
+    color:white;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+
+
+/* Hide editing tools normally */
+
+
+.editing .artPiece {
+
+    outline:1px dashed white;
+
+}
+
+
+
+.editing [contenteditable="true"] {
+
+    cursor:text;
+
 }
