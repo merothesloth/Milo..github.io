@@ -3,136 +3,212 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Art Portfolio</title>
+<title>My Art Portfolio</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 
 <body>
-<button id="editButton">
+
+
+<!-- =========================
+EDITOR TOOLBAR
+========================= -->
+
+
+<div id="toolbar">
+
+
+<button id="editToggle">
 EDIT
 </button>
 
+
+<button id="undoButton">
+UNDO
+</button>
+
+
+<button id="redoButton">
+REDO
+</button>
+
+
+<button id="saveButton">
+SAVE
+</button>
+
+
+
+<button id="addText">
+ADD TEXT
+</button>
+
+
+<button id="addImage">
+ADD IMAGE
+</button>
+
+
+<button id="addArtboard">
+ADD ARTBOARD
+</button>
+
+
+
+<div id="controls">
+
+
+<label>
+Font Size
+<input 
+id="fontSize"
+type="number"
+value="48">
+</label>
+
+
+
+<label>
+Color
+<input
+id="textColor"
+type="color"
+value="#ffffff">
+</label>
+
+
+<select id="fontSelector">
+
+<option>
+Default
+</option>
+
+<option>
+Serif
+</option>
+
+<option>
+Sans Serif
+</option>
+
+<option>
+Monospace
+</option>
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
 <!-- =========================
-     MAIN GALLERY PAGE
+MAIN CANVAS
 ========================= -->
 
-<main id="galleryPage">
 
-
-    <section id="gallery">
-
-
-        <!-- ARTWORK 1 -->
-
-        <article class="artPiece" data-id="1">
-
-            <img 
-            src="images/art1.jpg" 
-            alt="Artwork 1">
-
-            <h2>
-                Artwork One
-            </h2>
-
-            <p>
-                Description goes here.
-            </p>
-
-        </article>
+<main id="canvas">
 
 
 
-        <!-- ARTWORK 2 -->
+<!-- STARTING TITLE -->
 
-        <article class="artPiece" data-id="2">
+<div 
+class="object textObject"
+data-type="text">
 
-            <img 
-            src="images/art2.jpg" 
-            alt="Artwork 2">
 
-            <h2>
-                Artwork Two
-            </h2>
+<h1 contenteditable="true">
 
-            <p>
-                Description goes here.
-            </p>
+My Art Portfolio
 
-        </article>
+</h1>
+
+
+</div>
 
 
 
 
-        <!-- ARTWORK 3 -->
 
-        <article class="artPiece" data-id="3">
+<div 
+class="object textObject"
+data-type="text">
 
-            <img 
-            src="images/art3.jpg" 
-            alt="Artwork 3">
 
-            <h2>
-                Artwork Three
-            </h2>
+<p contenteditable="true">
 
-            <p>
-                Description goes here.
-            </p>
+A collection of my work
 
-        </article>
+</p>
+
+
+</div>
 
 
 
 
-        <!-- ARTWORK 4 -->
 
-        <article class="artPiece" data-id="4">
+<!-- STARTING ARTWORK -->
 
-            <img 
-            src="images/art4.jpg" 
-            alt="Artwork 4">
+<div 
+class="object imageObject"
+data-type="image">
 
-            <h2>
-                Artwork Four
-            </h2>
 
-            <p>
-                Description goes here.
-            </p>
+<img 
+src="images/art1.jpg"
+alt="Artwork">
 
-        </article>
+
+</div>
 
 
 
 
-        <!-- ARTWORK 5 -->
 
-        <article class="artPiece" data-id="5">
+<div 
+class="object imageObject"
+data-type="image">
 
-            <img 
-            src="images/art5.jpg" 
-            alt="Artwork 5">
 
-            <h2>
-                Artwork Five
-            </h2>
+<img 
+src="images/art2.jpg"
+alt="Artwork">
 
-            <p>
-                Description goes here.
-            </p>
 
-        </article>
+</div>
 
 
 
-    </section>
+
+
+<div 
+class="object imageObject"
+data-type="image">
+
+
+<img 
+src="images/art3.jpg"
+alt="Artwork">
+
+
+</div>
+
+
+
 
 
 </main>
@@ -142,99 +218,24 @@ EDIT
 
 
 <!-- =========================
-     ARTWORK DETAIL PAGE
+HIDDEN UPLOAD
 ========================= -->
 
-<section id="detailPage">
 
-
-    <button id="backButton">
-
-        ← Back
-
-    </button>
-
-
-
-    <div id="detailLayout">
-
-
-        <!-- LEFT QUARTER -->
-
-        <div id="detailLeft">
-
-
-            <img 
-            id="detailImage"
-            src=""
-            alt="Selected artwork">
-
-
-
-            <h1 id="detailTitle">
-
-            </h1>
-
-
-
-            <p id="detailDescription">
-
-            </p>
-
-
-        </div>
+<input 
+id="imageUpload"
+type="file"
+accept="image/*"
+hidden>
 
 
 
 
-        <!-- RIGHT SIDE ARTBOARDS -->
 
-        <div id="detailRight">
-
-
-            <div class="artboard">
-
-                <h2>
-                    Artboard Title
-                </h2>
-
-
-                <p>
-                    Information goes here.
-                </p>
-
-            </div>
-
-
-
-            <div class="artboard">
-
-                <h2>
-                    Artboard Title
-                </h2>
-
-
-                <p>
-                    Information goes here.
-                </p>
-
-            </div>
-
-
-
-        </div>
-
-
-
-    </div>
-
-
-</section>
-
-
-
-<script src="script.js"></script>
 <script src="editor.js"></script>
+
+
 </body>
+
 
 </html>
