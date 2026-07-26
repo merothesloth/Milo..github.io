@@ -849,4 +849,23 @@ body {
 
     cursor:text;
 
+}/* =====================================
+   VISUAL EDITOR
+===================================== */
+
+
+.editableObject {
+
+    outline:1px dashed white;
+
+    cursor:move;
+
+}
+
+
+
+.selectedObject {
+
+    outline:2px solid white;
+
 }
