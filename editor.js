@@ -1,6 +1,6 @@
 /* =====================================
    PORTFOLIO EDITOR
-   PART 2 - TEXT EDITING
+   PART 3 - DRAGGING
 ===================================== */
 
 
@@ -35,7 +35,7 @@ editButton.addEventListener(
     editMode ? "EXIT EDIT" : "EDIT";
 
 
-    toggleEditor();
+    activateEditor();
 
 
 
@@ -45,29 +45,31 @@ editButton.addEventListener(
 
 
 
-function toggleEditor(){
+function activateEditor(){
 
 
-    const allText =
+    const textElements =
     document.querySelectorAll(
         "h1, h2, h3, p"
     );
 
 
+    const moveElements =
+    document.querySelectorAll(
+        ".artPiece, img, .artboard"
+    );
 
-    allText.forEach(text=>{
+
+
+    textElements.forEach(element=>{
 
 
         if(editMode){
 
 
-            text.setAttribute(
-                "contenteditable",
-                "true"
-            );
+            element.contentEditable = true;
 
-
-            text.classList.add(
+            element.classList.add(
                 "editableText"
             );
 
@@ -77,12 +79,9 @@ function toggleEditor(){
         else{
 
 
-            text.removeAttribute(
-                "contenteditable"
-            );
+            element.contentEditable = false;
 
-
-            text.classList.remove(
+            element.classList.remove(
                 "editableText"
             );
 
@@ -91,6 +90,142 @@ function toggleEditor(){
 
 
     });
+
+
+
+
+    moveElements.forEach(element=>{
+
+
+        if(editMode){
+
+
+            element.classList.add(
+                "draggable"
+            );
+
+
+            element.addEventListener(
+                "mousedown",
+                dragStart
+            );
+
+
+        }
+
+
+        else{
+
+
+            element.classList.remove(
+                "draggable"
+            );
+
+
+        }
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+function dragStart(event){
+
+
+if(!editMode) return;
+
+
+const element =
+event.currentTarget;
+
+
+
+let startX =
+event.clientX;
+
+
+let startY =
+event.clientY;
+
+
+
+let originalX =
+element.offsetLeft;
+
+
+let originalY =
+element.offsetTop;
+
+
+
+function dragMove(e){
+
+
+element.style.position =
+"relative";
+
+
+
+element.style.left =
+originalX +
+(e.clientX - startX)
++
+"px";
+
+
+
+element.style.top =
+originalY +
+(e.clientY - startY)
++
+"px";
+
+
+
+}
+
+
+
+function dragEnd(){
+
+
+document.removeEventListener(
+"mousemove",
+dragMove
+);
+
+
+document.removeEventListener(
+"mouseup",
+dragEnd
+);
+
+
+
+}
+
+
+
+
+document.addEventListener(
+"mousemove",
+dragMove
+);
+
+
+
+document.addEventListener(
+"mouseup",
+dragEnd
+);
 
 
 
