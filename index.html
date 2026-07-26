@@ -1,262 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Portfolio</title>
 
-    <link rel="stylesheet" href="style.css">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>My Portfolio</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<!-- =========================
-SITE INTRO
-========================= -->
+<div id="gallery">
 
-<header id="intro">
+    <div class="piece">
 
-    <h1 id="siteTitle"></h1>
+        <img src="images/art1.jpg">
 
-    <p id="siteDescription"></p>
-
-</header>
-
-
-<!-- =========================
-MAIN GALLERY
-========================= -->
-
-<main id="galleryContainer">
-
-    <section id="gallery">
-
-
-        <!-- ===================
-        ARTWORK 1
-        ==================== -->
-
-        <article class="artwork" data-project="project1">
-
-            <img
-                src="images/art1.jpg"
-                alt="Artwork 1"
-                class="galleryImage">
-
-            <h2 contenteditable="true">
-                Title One
-            </h2>
-
-            <p contenteditable="true">
-                Short description goes here.
-            </p>
-
-        </article>
-
-
-        <!-- ===================
-        ARTWORK 2
-        ==================== -->
-
-        <article class="artwork" data-project="project2">
-
-            <img
-                src="images/art2.jpg"
-                alt="Artwork 2"
-                class="galleryImage">
-
-            <h2 contenteditable="true">
-                Title Two
-            </h2>
-
-            <p contenteditable="true">
-                Short description.
-            </p>
-
-        </article>
-
-
-
-        <!-- ===================
-        ARTWORK 3
-        ==================== -->
-
-        <article class="artwork" data-project="project3">
-
-            <img
-                src="images/art3.jpg"
-                alt="Artwork 3"
-                class="galleryImage">
-
-            <h2 contenteditable="true">
-                Title Three
-            </h2>
-
-            <p contenteditable="true">
-                Description.
-            </p>
-
-        </article>
-
-
-
-        <!-- ===================
-        ARTWORK 4
-        ==================== -->
-
-        <article class="artwork" data-project="project4">
-
-            <img
-                src="images/art4.jpg"
-                alt="Artwork 4"
-                class="galleryImage">
-
-            <h2 contenteditable="true">
-                Title Four
-            </h2>
-
-            <p contenteditable="true">
-                Description.
-            </p>
-
-        </article>
-
-
-
-        <!-- ===================
-        ARTWORK 5
-        ==================== -->
-
-        <article class="artwork" data-project="project5">
-
-            <img
-                src="images/art5.jpg"
-                alt="Artwork 5"
-                class="galleryImage">
-
-            <h2 contenteditable="true">
-                Title Five
-            </h2>
-
-            <p contenteditable="true">
-                Description.
-            </p>
-
-        </article>
-
-
-    </section>
-
-</main>
-
-
-
-
-
-<!-- ==================================
-DETAIL PAGE
-=================================== -->
-
-<section id="projectView" class="hidden">
-
-    <button id="backButton">
-
-        ← Back
-
-    </button>
-
-
-
-    <aside id="leftColumn">
-
-        <img
-            id="projectImage"
-            src=""
-            alt="">
-
-
-        <h2
-            id="projectTitle"
-            contenteditable="true">
+        <h2 contenteditable="true">
+            Title One
         </h2>
 
-
-        <p
-            id="projectDescription"
-            contenteditable="true">
+        <p contenteditable="true">
+            Description
         </p>
 
-    </aside>
+    </div>
 
+    <div class="piece">
 
+        <img src="images/art2.jpg">
 
-    <section id="rightColumn">
+        <h2 contenteditable="true">
+            Title Two
+        </h2>
 
-        <div id="artboards">
+        <p contenteditable="true">
+            Description
+        </p>
 
+    </div>
 
-            <!-- BOARD -->
+    <div class="piece">
 
-            <div class="board">
+        <img src="images/art3.jpg">
 
-                <h3 contenteditable="true">
-                    Board One
-                </h3>
+        <h2 contenteditable="true">
+            Title Three
+        </h2>
 
-                <p contenteditable="true">
-                    Information
-                </p>
+        <p contenteditable="true">
+            Description
+        </p>
 
-            </div>
+    </div>
 
+    <div class="piece">
 
+        <img src="images/art4.jpg">
 
-            <div class="board">
+        <h2 contenteditable="true">
+            Title Four
+        </h2>
 
-                <h3 contenteditable="true">
-                    Board Two
-                </h3>
+        <p contenteditable="true">
+            Description
+        </p>
 
-                <p contenteditable="true">
-                    Information
-                </p>
+    </div>
 
-            </div>
+    <div class="piece">
 
+        <img src="images/art5.jpg">
 
+        <h2 contenteditable="true">
+            Title Five
+        </h2>
 
-            <button id="addBoard">
+        <p contenteditable="true">
+            Description
+        </p>
 
-                + Add Board
+    </div>
 
-            </button>
-
-        </div>
-
-    </section>
-
-</section>
-
-
-
-
-
-
-<!-- =========================
-BUTTONS
-========================= -->
-
-<button id="addArtwork">
-
-    +
-
-</button>
-
-
-
-
+</div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
