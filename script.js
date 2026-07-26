@@ -1,199 +1,266 @@
-/* ============================================
-    ART PORTFOLIO
-    PART 3A
-============================================ */
+/* =====================================
+   ART PORTFOLIO
+   PART 3A - SCRIPT.JS
+===================================== */
 
-const gallery = document.getElementById("gallery");
 
-const pieces = document.querySelectorAll(".piece");
+/* =========================
+   SELECT ELEMENTS
+========================= */
 
-const body = document.body;
 
-/* ============================================
-    SETTINGS
-============================================ */
+const artworks = document.querySelectorAll(".artPiece");
 
-const SCALE_UP = 1.05;
+const galleryPage = document.getElementById("galleryPage");
 
-const SCALE_DOWN = 0.85;
+const detailPage = document.getElementById("detailPage");
 
-const BLUR = "4px";
+const backButton = document.getElementById("backButton");
 
-const DARKNESS = 0.85;
+const detailImage = document.getElementById("detailImage");
 
-/* ============================================
-    HOVER EFFECT
-============================================ */
+const detailTitle = document.getElementById("detailTitle");
 
-function clearPieces(){
+const detailDescription = document.getElementById("detailDescription");
 
-    pieces.forEach(piece=>{
 
-        piece.style.transform="scale(1)";
 
-        piece.style.filter="blur(0px) brightness(1)";
 
-        piece.style.opacity="1";
+/* =========================
+   HOVER SETTINGS
+========================= */
 
-        const image=piece.querySelector("img");
 
-        image.style.transform="scale(1)";
+const shrinkAmount = 0.85;
 
-        image.style.filter="blur(0px) brightness(1)";
+const growAmount = 1.05;
+
+const blurAmount = "5px";
+
+const darkAmount = "brightness(0.85)";
+
+
+
+
+
+/* =========================
+   RESET ALL ARTWORK
+========================= */
+
+
+function resetArtwork(){
+
+
+    artworks.forEach(piece=>{
+
+
+        piece.style.transform = "scale(1)";
+
+
+        piece.style.filter = "blur(0px) brightness(1)";
+
+
+        piece.style.opacity = "1";
+
+
+
+        const image = piece.querySelector("img");
+
+
+        image.style.transform = "scale(1)";
+
+
+        image.style.filter = "blur(0px) brightness(1)";
+
+
 
     });
+
+
 
 }
 
-/* ============================================
-    APPLY HOVER
-============================================ */
 
-pieces.forEach(piece=>{
 
-    piece.addEventListener("mouseenter",()=>{
 
-        pieces.forEach(other=>{
 
-            if(other!==piece){
 
-                other.style.transform=`scale(${SCALE_DOWN})`;
+/* =========================
+   HOVER EFFECT
+========================= */
 
-                other.style.filter=`blur(${BLUR}) brightness(${DARKNESS})`;
 
-                other.style.opacity="0.9";
+artworks.forEach(selected=>{
 
-                other.querySelector("img").style.filter=
-                    `blur(${BLUR}) brightness(${DARKNESS})`;
 
-            }
+    selected.addEventListener(
+        "mouseenter",
+        ()=>{
 
-        });
 
-        piece.style.transform=`scale(${SCALE_UP})`;
+            artworks.forEach(piece=>{
 
-        piece.style.filter="blur(0px) brightness(1)";
 
-        piece.querySelector("img").style.transform="scale(1.03)";
+                if(piece !== selected){
 
-    });
 
-});
+                    piece.style.transform =
+                    `scale(${shrinkAmount})`;
 
-/* ============================================
-    REMOVE HOVER
-============================================ */
 
-gallery.addEventListener("mouseleave",()=>{
+                    piece.style.filter =
+                    `blur(${blurAmount}) ${darkAmount}`;
 
-    clearPieces();
 
-});
+                    piece.style.opacity =
+                    "0.85";
 
-/* ============================================
-    DETAIL PAGE
-============================================ */
 
-const detail=document.createElement("div");
 
-detail.id="detailPage";
+                }
 
-detail.style.display="none";
 
-detail.style.position="fixed";
+            });
 
-detail.style.left="0";
 
-detail.style.top="0";
 
-detail.style.width="100vw";
+            selected.style.transform =
+            `scale(${growAmount})`;
 
-detail.style.height="100vh";
 
-detail.style.background="black";
 
-detail.style.zIndex="999";
+            selected.style.filter =
+            "blur(0px) brightness(1)";
 
-detail.style.padding="40px";
 
-detail.innerHTML=`
 
-<button id="backButton">
+            selected.style.opacity =
+            "1";
 
-← Back
 
-</button>
 
-<div id="detailLeft">
+        }
 
-<img id="detailImage">
+    );
 
-<h2 id="detailTitle"></h2>
-
-<p id="detailText"></p>
-
-</div>
-
-<div id="detailRight">
-
-</div>
-
-`;
-
-body.appendChild(detail);
-
-/* ============================================
-    DETAIL REFERENCES
-============================================ */
-
-const detailImage=document.getElementById("detailImage");
-
-const detailTitle=document.getElementById("detailTitle");
-
-const detailText=document.getElementById("detailText");
-
-const detailLeft=document.getElementById("detailLeft");
-
-const detailRight=document.getElementById("detailRight");
-
-const backButton=document.getElementById("backButton");
-
-/* ============================================
-    OPEN PAGE
-============================================ */
-
-pieces.forEach(piece=>{
-
-    piece.addEventListener("click",()=>{
-
-        detail.style.display="flex";
-
-        gallery.style.display="none";
-
-        const image=piece.querySelector("img");
-
-        const title=piece.querySelector("h2");
-
-        const text=piece.querySelector("p");
-
-        detailImage.src=image.src;
-
-        detailTitle.innerHTML=title.innerHTML;
-
-        detailText.innerHTML=text.innerHTML;
-
-    });
 
 });
 
-/* ============================================
-    BACK BUTTON
-============================================ */
 
-backButton.addEventListener("click",()=>{
 
-    detail.style.display="none";
 
-    gallery.style.display="flex";
+
+/* =========================
+   RETURN TO NORMAL
+========================= */
+
+
+galleryPage.addEventListener(
+    "mouseleave",
+    ()=>{
+
+
+        resetArtwork();
+
+
+    }
+
+);
+
+
+
+
+
+
+
+/* =========================
+   OPEN ARTWORK PAGE
+========================= */
+
+
+artworks.forEach(piece=>{
+
+
+    piece.addEventListener(
+        "click",
+        ()=>{
+
+
+            const image =
+            piece.querySelector("img");
+
+
+            const title =
+            piece.querySelector("h2");
+
+
+            const description =
+            piece.querySelector("p");
+
+
+
+            detailImage.src =
+            image.src;
+
+
+
+            detailTitle.textContent =
+            title.textContent;
+
+
+
+            detailDescription.textContent =
+            description.textContent;
+
+
+
+            galleryPage.style.display =
+            "none";
+
+
+
+            detailPage.style.display =
+            "block";
+
+
+
+        }
+
+    );
+
 
 });
+
+
+
+
+
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+
+backButton.addEventListener(
+    "click",
+    ()=>{
+
+
+        detailPage.style.display =
+        "none";
+
+
+
+        galleryPage.style.display =
+        "block";
+
+
+
+        resetArtwork();
+
+
+
+    }
+
+);
