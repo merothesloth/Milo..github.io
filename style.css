@@ -651,6 +651,38 @@ body {
 
 
     }
+   #introTitle {
+
+    position:absolute;
+
+    top:90px;
+
+    left:80px;
+
+    font-size:48px;
+
+    font-weight:400;
+
+    letter-spacing:1px;
+
+}
+
+
+#introDescription {
+
+    position:absolute;
+
+    top:155px;
+
+    left:80px;
+
+    font-size:20px;
+
+    max-width:350px;
+
+    line-height:1.5;
+
+}
 
 
 }
