@@ -263,4 +263,277 @@ backButton.addEventListener(
 
     }
 
+);/* =====================================
+   ART PORTFOLIO
+   PART 3B - SCRIPT.JS
+===================================== */
+
+
+/* =========================
+   TYPEWRITER INTRO
+   ONLY FIRST VISIT
+========================= */
+
+
+const introTitle = "My Art Portfolio";
+
+const introText = "A collection of my work.";
+
+
+function typeWriter(element, text, speed){
+
+    let index = 0;
+
+
+    element.textContent = "";
+
+
+    function write(){
+
+        if(index < text.length){
+
+            element.textContent += text.charAt(index);
+
+            index++;
+
+            setTimeout(write, speed);
+
+        }
+
+    }
+
+
+    write();
+
+}
+
+
+
+const titleElement = document.createElement("h1");
+
+const descriptionElement = document.createElement("p");
+
+
+titleElement.id = "introTitle";
+
+descriptionElement.id = "introDescription";
+
+
+
+galleryPage.prepend(descriptionElement);
+
+galleryPage.prepend(titleElement);
+
+
+
+
+
+if(!localStorage.getItem("visitedPortfolio")){
+
+
+    typeWriter(
+        titleElement,
+        introTitle,
+        80
+    );
+
+
+    setTimeout(()=>{
+
+
+        typeWriter(
+            descriptionElement,
+            introText,
+            50
+        );
+
+
+    }, introTitle.length * 80 + 300);
+
+
+
+    localStorage.setItem(
+        "visitedPortfolio",
+        "true"
+    );
+
+
+}
+
+else{
+
+
+    titleElement.textContent =
+    introTitle;
+
+
+    descriptionElement.textContent =
+    introText;
+
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+   ARTBOARD EXPANSION
+========================= */
+
+
+const artboards =
+document.querySelectorAll(".artboard");
+
+
+
+artboards.forEach(board=>{
+
+
+    board.addEventListener(
+        "click",
+        ()=>{
+
+
+            board.classList.toggle(
+                "expanded"
+            );
+
+
+        }
+
+    );
+
+
+});
+
+
+
+
+
+
+
+/* =========================
+   ESCAPE KEY
+   CLOSE DETAIL PAGE
+========================= */
+
+
+document.addEventListener(
+    "keydown",
+    (event)=>{
+
+
+        if(event.key === "Escape"){
+
+
+            if(detailPage.style.display === "block"){
+
+
+                detailPage.style.display =
+                "none";
+
+
+                galleryPage.style.display =
+                "block";
+
+
+                resetArtwork();
+
+
+            }
+
+
+        }
+
+
+    }
+
 );
+
+
+
+
+
+
+
+/* =========================
+   ADD ARTWORK SUPPORT
+   FUTURE USE
+========================= */
+
+
+function addArtwork(image,title,description){
+
+
+    const piece =
+    document.createElement("article");
+
+
+    piece.className =
+    "artPiece";
+
+
+
+    piece.innerHTML = `
+
+        <img src="${image}">
+
+        <h2>${title}</h2>
+
+        <p>${description}</p>
+
+    `;
+
+
+
+    document
+    .getElementById("gallery")
+    .appendChild(piece);
+
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+   ADD BOARD SUPPORT
+========================= */
+
+
+function addArtboard(title,text){
+
+
+    const board =
+    document.createElement("div");
+
+
+    board.className =
+    "artboard";
+
+
+    board.innerHTML = `
+
+        <h2>${title}</h2>
+
+        <p>${text}</p>
+
+    `;
+
+
+
+    document
+    .getElementById("detailRight")
+    .appendChild(board);
+
+
+
+}
