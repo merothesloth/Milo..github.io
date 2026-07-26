@@ -685,4 +685,91 @@ body {
 }
 
 
+}/* =====================================
+   LOCKED GALLERY COMPOSITION
+===================================== */
+
+
+#galleryPage {
+
+    position:relative;
+
+    width:100vw;
+
+    height:100vh;
+
+    overflow:hidden;
+
+}
+
+
+
+#gallery {
+
+    position:absolute;
+
+    left:0;
+
+    bottom:0;
+
+    height:65vh;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+
+
+/* Keep intro block fixed */
+
+#introTitle,
+#introDescription {
+
+    position:absolute;
+
+    z-index:5;
+
+}
+
+
+
+/* Prevent artwork from changing size */
+
+.artPiece {
+
+    width:320px;
+
+    flex:none;
+
+}
+
+
+/* Detail page stays consistent */
+
+#detailLayout {
+
+    display:flex;
+
+    width:100vw;
+
+    height:calc(100vh - 90px);
+
+}
+
+
+#detailLeft {
+
+    width:25vw;
+
+    min-width:320px;
+
+}
+
+
+#detailRight {
+
+    width:75vw;
+
 }
