@@ -801,4 +801,23 @@ body {
 
     cursor:text;
 
+}/* =====================================
+   DRAG EDITOR
+===================================== */
+
+
+.draggable {
+
+    outline:1px dashed white;
+
+    cursor:grab;
+
+}
+
+
+
+.draggable:active {
+
+    cursor:grabbing;
+
 }
