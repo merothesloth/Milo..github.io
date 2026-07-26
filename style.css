@@ -1,43 +1,11 @@
 /* =====================================
-   ART PORTFOLIO
-   COMPLETE STYLE.CSS
+   PORTFOLIO EDITOR FOUNDATION
+   STYLE SYSTEM
 ===================================== */
 
 
-/* =========================
-   VARIABLES
-========================= */
-
-:root {
-
-    --font: sans-serif;
-
-    --background: #000000;
-
-    --text: #ffffff;
-
-    --edge-space: 45px;
-
-    --art-size: 320px;
-
-    --gap: 80px;
-
-    --transition: 0.5s ease;
-
-}
-
-
-
-
-/* =========================
-   RESET
-========================= */
 
 * {
-
-    margin:0;
-
-    padding:0;
 
     box-sizing:border-box;
 
@@ -48,654 +16,109 @@
 html,
 body {
 
+    margin:0;
+
+    padding:0;
+
     width:100%;
 
     height:100%;
 
-    background:var(--background);
+    overflow:hidden;
 
-    color:var(--text);
-
-    font-family:var(--font);
-
-    overflow-x:auto;
-
-    overflow-y:hidden;
-
-}
-
-
-
-
-
-/* =========================
-   GALLERY PAGE
-========================= */
-
-
-#galleryPage {
-
-    width:100vw;
-
-    height:100vh;
-
-}
-
-
-
-#gallery {
-
-
-    min-height:100vh;
-
-    width:max-content;
-
-
-    display:flex;
-
-    flex-direction:row;
-
-
-    align-items:center;
-
-
-    gap:var(--gap);
-
-
-    padding-left:var(--edge-space);
-
-    padding-right:var(--edge-space);
-
-
-}
-
-
-
-
-
-/* =========================
-   ART PIECES
-========================= */
-
-
-.artPiece {
-
-    width:320px;
-
-    min-width:320px;
-
-    flex:none;
-
-}
-
-
-    flex-shrink:0;
-
-
-    cursor:pointer;
-
-
-    transition:
-
-        transform var(--transition),
-
-        filter var(--transition),
-
-        opacity var(--transition);
-
-
-}
-
-
-
-
-.artPiece img {
-
-
-    width:100%;
-
-
-    aspect-ratio:1 / 1;
-
-
-    object-fit:cover;
-
-
-    display:block;
-
-
-    transition:
-
-        transform var(--transition),
-
-        filter var(--transition);
-
-
-}
-
-
-
-
-
-.artPiece h2 {
-
-
-    margin-top:18px;
-
-
-    font-size:22px;
-
-
-    font-weight:400;
-
-
-}
-
-
-
-.artPiece p {
-
-
-    margin-top:10px;
-
-
-    font-size:15px;
-
-
-    line-height:1.5;
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-   DETAIL PAGE
-========================= */
-
-
-#detailPage {
-
-
-    display:none;
-
-
-    position:fixed;
-
-
-    inset:0;
-
-
-    width:100vw;
-
-
-    height:100vh;
-
-
-    background:#000;
-
-
-}
-
-
-
-
-
-
-/* =========================
-   BACK BUTTON ROW
-========================= */
-
-
-#backButton {
-
-
-    position:absolute;
-
-
-    top:0;
-
-
-    left:0;
-
-
-    width:100%;
-
-
-    height:90px;
-
-
-    padding-left:45px;
-
-
-    display:flex;
-
-
-    align-items:center;
-
-
-    background:none;
-
-
-    border:none;
-
+    background:black;
 
     color:white;
 
-
-    font-size:18px;
-
-
-    cursor:pointer;
-
-
 }
 
 
 
-
-
-
-
-/* =========================
-   DETAIL CONTENT
-========================= */
-
-
-#detailLayout {
-
-
-    width:100%;
-
-
-    height:calc(100% - 90px);
-
-
-    display:flex;
-
-
-    padding:
-
-        0 45px 45px 45px;
-
-
-    position:absolute;
-
-
-    bottom:0;
-
-
-}
-
-
-
-
-
-/* LEFT QUARTER */
-
-
-#detailLeft {
-
-
-    width:25vw;
-
-
-    min-width:280px;
-
-
-    margin-top:20px;
-
-
-    display:flex;
-
-
-    flex-direction:column;
-
-
-}
-
-
-
-
-#detailImage {
-
-
-    width:100%;
-
-
-    aspect-ratio:1 / 1;
-
-
-    object-fit:cover;
-
-
-}
-
-
-
-
-#detailTitle {
-
-
-    margin-top:20px;
-
-
-    font-size:28px;
-
-
-    font-weight:400;
-
-
-}
-
-
-
-
-#detailDescription {
-
-
-    margin-top:15px;
-
-
-    line-height:1.6;
-
-
-}
-
-
-
-
-
-/* RIGHT SIDE */
-
-
-#detailRight {
-
-
-    flex:1;
-
-
-    padding-left:80px;
-
-
-    display:flex;
-
-
-    flex-direction:column;
-
-
-    gap:60px;
-
-
-    margin-top:20px;
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-   ARTBOARDS
-========================= */
-
-
-.artboard {
-
-
-    cursor:pointer;
-
-
-    transition:
-
-        transform 0.8s ease,
-
-        opacity 0.8s ease;
-
-
-}
-
-
-
-.artboard:hover {
-
-
-    transform:scale(1.03);
-
-
-}
-
-
-
-
-.artboard h2 {
-
-
-    font-size:24px;
-
-
-    font-weight:400;
-
-
-}
-
-
-
-.artboard p {
-
-
-    margin-top:10px;
-
-
-    line-height:1.5;
-
-
-}
-
-
-
-
-
-/* EXPANDED ARTBOARD */
-
-
-.artboard.expanded {
-
-
-    position:fixed;
-
-
-    left:10%;
-
-
-    top:10%;
-
-
-    width:80vw;
-
-
-    height:80vh;
-
-
-    background:black;
-
-
-    z-index:50;
-
-
-    padding:50px;
-
-
-}
-
-
-
-
-
-.artboard.expanded h2 {
-
-
-    font-size:48px;
-
-
-}
-
-
-
-.artboard.expanded p {
-
-
-    font-size:20px;
-
-
-    max-width:700px;
-
-
-    margin-top:30px;
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-   EDITABLE TEXT
-========================= */
-
-
-[contenteditable] {
-
-    outline:none;
-
-}
-
-
-
-
-
-
-
-/* =========================
-   SCROLLBAR
-========================= */
-
-
-::-webkit-scrollbar {
-
-
-    height:8px;
-
-
-}
-
-
-
-::-webkit-scrollbar-track {
-
-
-    background:black;
-
-
-}
-
-
-
-::-webkit-scrollbar-thumb {
-
-
-    background:#444;
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-   SMALL WINDOWS
-========================= */
-
-
-@media(max-width:900px){
-
-
-    :root {
-
-
-        --art-size:260px;
-
-
-        --gap:60px;
-
-
-    }
-
-
-
-    #detailLeft {
-
-
-        width:30vw;
-
-
-        min-width:220px;
-
-
-    }
-   #introTitle {
-
-    position:absolute;
-
-    top:90px;
-
-    left:80px;
-
-    font-size:48px;
-
-    font-weight:400;
-
-    letter-spacing:1px;
-
-}
-
-
-#introDescription {
-
-    position:absolute;
-
-    top:155px;
-
-    left:80px;
-
-    font-size:20px;
-
-    max-width:350px;
-
-    line-height:1.5;
-
-}
 
 
 /* =====================================
-   FIXED GALLERY COMPOSITION
+   TOOLBAR
 ===================================== */
 
 
-#galleryPage {
+#toolbar {
+
+    position:fixed;
+
+    top:20px;
+
+    left:20px;
+
+    z-index:1000;
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:opacity .3s ease;
+
+}
+
+
+
+.editing #toolbar {
+
+    opacity:1;
+
+    pointer-events:auto;
+
+}
+
+
+
+button,
+select,
+input {
+
+    background:none;
+
+    border:1px solid rgba(255,255,255,.4);
+
+    color:white;
+
+    padding:8px 12px;
+
+    font-family:inherit;
+
+}
+
+
+
+button {
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover {
+
+    border-color:white;
+
+}
+
+
+
+
+
+/* =====================================
+   MAIN CANVAS
+===================================== */
+
+
+#canvas {
 
     position:relative;
 
@@ -709,163 +132,235 @@ body {
 
 
 
-#gallery {
-
-    position:absolute;
-
-    left:0;
-
-    bottom:0;
-
-    height:55vh;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:80px;
-
-    padding-left:45px;
-
-    padding-right:45px;
-
-    overflow-x:auto;
-
-    overflow-y:hidden;
-
-}
 
 
-
-#introTitle {
-
-    position:absolute;
-
-    top:90px;
-
-    left:80px;
-
-}
-
-
-
-#introDescription {
-
-    position:absolute;
-
-    top:155px;
-
-    left:80px;
-
-}/* =====================================
-   EDIT MODE BUTTON
+/* =====================================
+   OBJECT SYSTEM
 ===================================== */
 
 
-#editButton {
+.object {
 
-    position:fixed;
+    position:absolute;
 
-    top:20px;
-
-    right:25px;
-
-    z-index:999;
-
-    background:none;
-
-    color:white;
-
-    border:none;
-
-    cursor:pointer;
-
-    font-size:16px;
+    user-select:none;
 
 }
 
 
 
-/* Hide editing tools normally */
+.object img {
 
-
-.editing .artPiece {
-
-    outline:1px dashed white;
+    display:block;
 
 }
+
+
+
+
+
+/* =====================================
+   TEXT OBJECTS
+===================================== */
+
+
+.textObject {
+
+
+    cursor:default;
+
+
+}
+
+
+
+.textObject h1 {
+
+
+    margin:0;
+
+    font-size:64px;
+
+    font-weight:400;
+
+
+}
+
+
+
+.textObject p {
+
+
+    margin:0;
+
+    font-size:22px;
+
+
+}
+
+
+
+
+
+/* =====================================
+   IMAGE OBJECTS
+===================================== */
+
+
+.imageObject {
+
+
+    width:300px;
+
+    height:300px;
+
+
+}
+
+
+
+.imageObject img {
+
+
+    width:100%;
+
+    height:100%;
+
+
+    object-fit:cover;
+
+
+}
+
+
+
+
+
+
+/* =====================================
+   STARTING POSITIONS
+===================================== */
+
+
+.textObject:nth-child(1){
+
+    top:80px;
+
+    left:80px;
+
+}
+
+
+
+.textObject:nth-child(2){
+
+    top:170px;
+
+    left:80px;
+
+}
+
+
+
+
+
+.imageObject:nth-child(3){
+
+    left:80px;
+
+    bottom:80px;
+
+}
+
+
+
+.imageObject:nth-child(4){
+
+    left:430px;
+
+    bottom:80px;
+
+}
+
+
+
+.imageObject:nth-child(5){
+
+    left:780px;
+
+    bottom:80px;
+
+}
+
+
+
+
+
+
+
+/* =====================================
+   EDIT MODE
+===================================== */
+
+
+
+.editing .object {
+
+
+    cursor:move;
+
+
+}
+
+
+
+
+
+.selected {
+
+
+    outline:2px solid white;
+
+
+}
+
+
 
 
 
 .editing [contenteditable="true"] {
 
-    cursor:text;
 
-}/* =====================================
-   DRAG EDITOR
-===================================== */
+    outline:1px dashed rgba(255,255,255,.5);
 
-
-.draggable {
-
-    outline:1px dashed white;
-
-    cursor:grab;
-
-}
-
-
-
-.draggable:active {
-
-    cursor:grabbing;
-
-}/* =====================================
-   EDITOR DRAGGING
-===================================== */
-
-
-.draggable {
-
-    outline:1px dashed white;
-
-    cursor:grab;
-
-}
-
-
-
-.draggable:active {
-
-    cursor:grabbing;
-
-}
-
-
-
-.editableText {
-
-    outline:1px dashed white;
 
     cursor:text;
 
-}/* =====================================
-   VISUAL EDITOR
-===================================== */
-
-
-.editableObject {
-
-    outline:1px dashed white;
-
-    cursor:move;
 
 }
 
 
 
-.selectedObject {
 
-    outline:2px solid white;
+
+/* =====================================
+   MOBILE / SMALL WINDOWS
+===================================== */
+
+
+@media(max-width:900px){
+
+
+#canvas {
+
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+
+}
+
+
 
 }
