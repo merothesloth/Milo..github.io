@@ -1,20 +1,20 @@
 /* =====================================
    ART PORTFOLIO
-   PART 2 - STYLE.CSS
+   COMPLETE STYLE.CSS
 ===================================== */
 
 
 /* =========================
-   GLOBAL SETTINGS
+   VARIABLES
 ========================= */
 
 :root {
 
     --font: sans-serif;
 
-    --background: #000;
+    --background: #000000;
 
-    --text: #fff;
+    --text: #ffffff;
 
     --edge-space: 45px;
 
@@ -22,34 +22,7 @@
 
     --gap: 80px;
 
-}
-
-
-* {
-
-    margin: 0;
-
-    padding: 0;
-
-    box-sizing: border-box;
-
-}
-
-
-html,
-body {
-
-    width: 100%;
-
-    height: 100%;
-
-    background: var(--background);
-
-    color: var(--text);
-
-    font-family: var(--font);
-
-    overflow: hidden;
+    --transition: 0.5s ease;
 
 }
 
@@ -57,56 +30,86 @@ body {
 
 
 /* =========================
-   MAIN GALLERY
+   RESET
+========================= */
+
+* {
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+
+
+html,
+body {
+
+    width:100%;
+
+    height:100%;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    font-family:var(--font);
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+}
+
+
+
+
+
+/* =========================
+   GALLERY PAGE
 ========================= */
 
 
 #galleryPage {
 
-    width: 100vw;
+    width:100vw;
 
-    height: 100vh;
+    height:100vh;
 
 }
+
 
 
 #gallery {
 
 
-    height: 100vh;
+    min-height:100vh;
 
-    width: max-content;
-
-
-    display: flex;
-
-    flex-direction: row;
-
-    align-items: center;
+    width:max-content;
 
 
-    gap: var(--gap);
+    display:flex;
+
+    flex-direction:row;
 
 
-    padding-left: var(--edge-space);
-
-    padding-right: var(--edge-space);
+    align-items:center;
 
 
-    overflow-x: auto;
+    gap:var(--gap);
+
+
+    padding-left:var(--edge-space);
+
+    padding-right:var(--edge-space);
 
 
 }
 
 
-
-/* Hide vertical movement */
-
-body {
-
-    overflow-y: hidden;
-
-}
 
 
 
@@ -118,21 +121,22 @@ body {
 .artPiece {
 
 
-    width: var(--art-size);
-
-    flex-shrink: 0;
+    width:var(--art-size);
 
 
-    cursor: pointer;
+    flex-shrink:0;
+
+
+    cursor:pointer;
 
 
     transition:
 
-        transform 1s ease,
+        transform var(--transition),
 
-        filter 1s ease,
+        filter var(--transition),
 
-        opacity 1s ease;
+        opacity var(--transition);
 
 
 }
@@ -143,42 +147,41 @@ body {
 .artPiece img {
 
 
-    width: 100%;
+    width:100%;
 
 
-    aspect-ratio: 1 / 1;
+    aspect-ratio:1 / 1;
 
 
-    object-fit: cover;
+    object-fit:cover;
 
 
-    display: block;
+    display:block;
 
 
     transition:
 
-        transform 1s ease,
+        transform var(--transition),
 
-        filter 1s ease;
+        filter var(--transition);
 
 
 }
 
 
 
+
+
 .artPiece h2 {
 
 
-    margin-top: 18px;
+    margin-top:18px;
 
 
-    font-size: 22px;
+    font-size:22px;
 
 
-    font-weight: 400;
-
-
-    line-height: 1.2;
+    font-weight:400;
 
 
 }
@@ -188,19 +191,19 @@ body {
 .artPiece p {
 
 
-    margin-top: 10px;
+    margin-top:10px;
 
 
-    font-size: 15px;
+    font-size:15px;
 
 
-    line-height: 1.5;
-
-
-    max-width: 100%;
+    line-height:1.5;
 
 
 }
+
+
+
 
 
 
@@ -213,178 +216,222 @@ body {
 #detailPage {
 
 
-    display: none;
+    display:none;
 
 
-    position: fixed;
+    position:fixed;
 
 
-    inset: 0;
+    inset:0;
 
 
-    background: #000;
+    width:100vw;
 
 
-    width: 100vw;
-
-    height: 100vh;
+    height:100vh;
 
 
-}
-
-
-
-
-/* Back button */
-
-
-#backButton {
-
-
-    position: absolute;
-
-
-    top: 35px;
-
-
-    left: 45px;
-
-
-    background: none;
-
-
-    color: white;
-
-
-    border: none;
-
-
-    font-size: 18px;
-
-
-    cursor: pointer;
+    background:#000;
 
 
 }
+
+
 
 
 
 
 /* =========================
-   DETAIL LAYOUT
+   BACK BUTTON ROW
+========================= */
+
+
+#backButton {
+
+
+    position:absolute;
+
+
+    top:0;
+
+
+    left:0;
+
+
+    width:100%;
+
+
+    height:90px;
+
+
+    padding-left:45px;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    background:none;
+
+
+    border:none;
+
+
+    color:white;
+
+
+    font-size:18px;
+
+
+    cursor:pointer;
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+   DETAIL CONTENT
 ========================= */
 
 
 #detailLayout {
 
 
-    width: 100%;
+    width:100%;
 
 
-    height: 100%;
+    height:calc(100% - 90px);
 
 
-    display: flex;
+    display:flex;
 
 
     padding:
 
-        45px;
+        0 45px 45px 45px;
+
+
+    position:absolute;
+
+
+    bottom:0;
 
 
 }
+
 
 
 
 
 /* LEFT QUARTER */
 
+
 #detailLeft {
 
 
-    width: 25%;
+    width:25vw;
 
 
-    min-width: 280px;
+    min-width:280px;
 
 
-    display: flex;
+    margin-top:20px;
 
 
-    flex-direction: column;
+    display:flex;
+
+
+    flex-direction:column;
 
 
 }
+
 
 
 
 #detailImage {
 
 
-    width: 100%;
+    width:100%;
 
 
-    aspect-ratio: 1 / 1;
+    aspect-ratio:1 / 1;
 
 
-    object-fit: cover;
+    object-fit:cover;
 
 
 }
+
 
 
 
 #detailTitle {
 
 
-    margin-top: 20px;
+    margin-top:20px;
 
 
-    font-size: 28px;
+    font-size:28px;
 
 
-    font-weight: 400;
+    font-weight:400;
 
 
 }
+
 
 
 
 #detailDescription {
 
 
-    margin-top: 15px;
+    margin-top:15px;
 
 
-    line-height: 1.6;
+    line-height:1.6;
 
 
 }
+
 
 
 
 
 /* RIGHT SIDE */
 
+
 #detailRight {
 
 
-    flex: 1;
+    flex:1;
 
 
-    padding-left: 80px;
+    padding-left:80px;
 
 
-    display: flex;
+    display:flex;
 
 
-    flex-direction: column;
+    flex-direction:column;
 
 
-    gap: 60px;
+    gap:60px;
+
+
+    margin-top:20px;
 
 
 }
+
+
 
 
 
@@ -398,12 +445,14 @@ body {
 .artboard {
 
 
-    cursor: pointer;
+    cursor:pointer;
 
 
     transition:
 
-        transform .8s ease;
+        transform 0.8s ease,
+
+        opacity 0.8s ease;
 
 
 }
@@ -413,20 +462,21 @@ body {
 .artboard:hover {
 
 
-    transform: scale(1.03);
+    transform:scale(1.03);
 
 
 }
 
 
 
+
 .artboard h2 {
 
 
-    font-size: 24px;
+    font-size:24px;
 
 
-    font-weight: 400;
+    font-weight:400;
 
 
 }
@@ -436,13 +486,96 @@ body {
 .artboard p {
 
 
-    margin-top: 10px;
+    margin-top:10px;
 
 
-    line-height: 1.5;
+    line-height:1.5;
 
 
 }
+
+
+
+
+
+/* EXPANDED ARTBOARD */
+
+
+.artboard.expanded {
+
+
+    position:fixed;
+
+
+    left:10%;
+
+
+    top:10%;
+
+
+    width:80vw;
+
+
+    height:80vh;
+
+
+    background:black;
+
+
+    z-index:50;
+
+
+    padding:50px;
+
+
+}
+
+
+
+
+
+.artboard.expanded h2 {
+
+
+    font-size:48px;
+
+
+}
+
+
+
+.artboard.expanded p {
+
+
+    font-size:20px;
+
+
+    max-width:700px;
+
+
+    margin-top:30px;
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+   EDITABLE TEXT
+========================= */
+
+
+[contenteditable] {
+
+    outline:none;
+
+}
+
+
 
 
 
@@ -456,7 +589,7 @@ body {
 ::-webkit-scrollbar {
 
 
-    height: 8px;
+    height:8px;
 
 
 }
@@ -466,7 +599,7 @@ body {
 ::-webkit-scrollbar-track {
 
 
-    background: black;
+    background:black;
 
 
 }
@@ -476,7 +609,7 @@ body {
 ::-webkit-scrollbar-thumb {
 
 
-    background: #444;
+    background:#444;
 
 
 }
@@ -486,28 +619,36 @@ body {
 
 
 
+
 /* =========================
-   SMALLER WINDOWS
+   SMALL WINDOWS
 ========================= */
 
 
-@media (max-width: 900px) {
+@media(max-width:900px){
 
 
     :root {
 
-        --art-size: 260px;
 
-        --gap: 60px;
+        --art-size:260px;
+
+
+        --gap:60px;
+
 
     }
 
 
+
     #detailLeft {
 
-        width: 30%;
 
-        min-width: 220px;
+        width:30vw;
+
+
+        min-width:220px;
+
 
     }
 
