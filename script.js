@@ -536,4 +536,167 @@ function addArtboard(title,text){
 
 
 
+}/* =====================================
+   ART PORTFOLIO
+   PART 4 - EXPANDING ARTBOARDS
+===================================== */
+
+
+
+/* =========================
+   ARTBOARD EXPANSION
+========================= */
+
+
+function setupArtboards(){
+
+
+    const boards =
+    document.querySelectorAll(".artboard");
+
+
+
+    boards.forEach(board=>{
+
+
+        board.addEventListener(
+            "click",
+            ()=>{
+
+
+                const alreadyOpen =
+                board.classList.contains("expanded");
+
+
+
+                boards.forEach(other=>{
+
+                    other.classList.remove(
+                        "expanded"
+                    );
+
+                });
+
+
+
+                if(!alreadyOpen){
+
+
+                    board.classList.add(
+                        "expanded"
+                    );
+
+
+                }
+
+
+            }
+
+        );
+
+
+    });
+
+
+}
+
+
+
+
+
+setupArtboards();
+
+
+
+
+
+
+
+/* =========================
+   CLOSE EXPANDED BOARD
+   WITH ESCAPE
+========================= */
+
+
+document.addEventListener(
+    "keydown",
+    (event)=>{
+
+
+        if(event.key === "Escape"){
+
+
+            document
+            .querySelectorAll(".artboard")
+            .forEach(board=>{
+
+
+                board.classList.remove(
+                    "expanded"
+                );
+
+
+            });
+
+
+        }
+
+
+    }
+
+);
+
+
+
+
+
+
+
+/* =========================
+   ADD NEW BOARD FUNCTION
+========================= */
+
+
+function createBoard(title, text){
+
+
+    const board =
+    document.createElement("div");
+
+
+    board.className =
+    "artboard";
+
+
+    board.innerHTML = `
+
+        <h2>${title}</h2>
+
+        <p>${text}</p>
+
+    `;
+
+
+
+    document
+    .getElementById("detailRight")
+    .appendChild(board);
+
+
+
+    board.addEventListener(
+        "click",
+        ()=>{
+
+
+            board.classList.toggle(
+                "expanded"
+            );
+
+
+        }
+
+    );
+
+
 }
