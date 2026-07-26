@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Art Portfolio</title>
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --panel: rgba(255, 255, 255, 0.05);
+      --panel-strong: rgba(255, 255, 255, 0.08);
+      --text: #f5f5f7;
+      --muted: rgba(245, 245, 247, 0.62);
+      --line: rgba(255, 255, 255, 0.10);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.05), transparent 22%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    img { display: block; width: 100%; }
+    button, input, textarea { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      padding: 22px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 18px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      position: sticky;
+      top: 14px;
+      z-index: 50;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      margin-bottom: 6px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 64ch;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 11px 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: var(--panel-strong);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .btn.primary {
+      background: #fff;
+      color: #111;
+      border-color: #fff;
+    }
+
+    .btn.primary:hover { background: rgba(255,255,255,0.90); }
+
+    .page-blur {
+      filter: blur(0.7px);
+      transition: filter 0.28s ease;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .card.dimmed {
+      opacity: 0.64;
+      filter: blur(1.2px);
+    }
+
+    .card-inner {
+      padding: 14px;
+    }
+
+    .image-shell {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .image-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .card:hover .image-shell img {
+      transform: scale(1.06);
+      filter: saturate(1.02) contrast(1.02);
+    }
+
+    .text-space {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .text-space input,
+    .text-space textarea,
+    .detail-input,
+    .detail-textarea,
+    .board-input,
+    .board-textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.045);
+      color: var(--text);
+      padding: 12px 13px;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .text-space input:focus,
+    .text-space textarea:focus,
+    .detail-input:focus,
+    .detail-textarea:focus,
+    .board-input:focus,
+    .board-textarea:focus {
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .text-space textarea,
+    .detail-textarea,
+    .board-textarea {
+      resize: none;
+      min-height: 90px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hidden { display: none !important; }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .panel-pad { padding: 16px; }
+
+    .detail-image {
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .boards {
+      display: grid;
+      gap: 12px;
+    }
+
+    .board {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.18);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      transform-origin: center;
+    }
+
+    .board.open {
+      transform: scale(1.01);
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .board-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 16px;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .board-header .label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 0.72rem;
+      margin-bottom: 6px;
+    }
+
+    .board-header h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .board-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      padding: 0 16px;
+    }
+
+    .board.open .board-body {
+      max-height: 420px;
+      padding-bottom: 16px;
+    }
+
+    .board-body .board-input,
+    .board-body .board-textarea {
+      margin-top: 10px;
+    }
+
+    .grid-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 980px) {
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .detail-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .controls {
+        justify-content: flex-start;
+      }
+
+      .gallery { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="appShell">
+    <header class="topbar">
+      <div class="brand">
+        <small>Art portfolio</small>
+        <h1 id="siteTitle">Your Name / Work</h1>
+        <p id="siteSubtitle">A clean gallery with hover focus, editable captions, and clickable artboards.</p>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="galleryBtn" type="button">Gallery</button>
+        <button class="btn" id="backBtn" type="button">Back</button>
+        <button class="btn primary" id="addCardBtn" type="button">+ Add card</button>
+      </div>
+    </header>
+
+    <main id="galleryView">
+      <div class="grid-meta">
+        <span>Edit the text directly on the page.</span>
+        <span id="cardCount"></span>
+      </div>
+      <section class="gallery" id="gallery"></section>
+      <p class="footer-note">This is built for GitHub Pages: save it as <strong>index.html</strong> and publish the repo.</p>
+    </main>
+
+    <main id="detailView" class="hidden">
+      <div class="detail-layout">
+        <section class="panel panel-pad">
+          <div class="section-title">
+            <div>
+              <h2>Artwork</h2>
+              <p>Left side image, right side text.</p>
+            </div>
+            <button class="btn" id="detailBackBtn" type="button">← Back</button>
+          </div>
+
+          <div class="detail-image">
+            <img id="detailImage" src="" alt="Selected artwork" />
+          </div>
+
+          <div class="detail-grid" style="margin-top:14px;">
+            <input class="detail-input" id="detailTitle" type="text" />
+            <textarea class="detail-textarea" id="detailDescription"></textarea>
+          </div>
+        </section>
+
+        <section class="panel panel-pad">
+          <div class="section-title">
+            <div>
+              <h2>Artboards</h2>
+              <p>Small info pockets that expand when opened.</p>
+            </div>
+            <button class="btn primary" id="addBoardBtn" type="button">+ Add pocket</button>
+          </div>
+          <div class="boards" id="boards"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const seedArtworks = [
+      {
+        id: 1,
+        title: "Piece One",
+        description: "Short text about this work. Medium, date, concept, or any note you want.",
+        image: "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=1400&q=80",
+        boards: [
+          { title: "Process Note", body: "Use this space for sketches, influences, experiments, or a longer explanation." },
+          { title: "Materials", body: "List materials, dimensions, location, series name, or a collector note." },
+          { title: "Related Work", body: "Link similar pieces, references, or another artwork from the same project." }
+        ]
+      },
+      {
+        id: 2,
+        title: "Piece Two",
+        description: "Another short caption area for the piece.",
+        image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1400&q=80",
+        boards: [
+          { title: "Concept", body: "A small info pocket that expands when highlighted." },
+          { title: "Archive", body: "You can keep process images, notes, or exhibition details here." },
+          { title: "Status", body: "Finished, in progress, for sale, exhibited, or private." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Piece Three",
+        description: "Caption text below the square image.",
+        image: "https://images.unsplash.com/photo-1494337480532-372d2d3c7a26?auto=format&fit=crop&w=1400&q=80",
+        boards: [
+          { title: "Statement", body: "A quick artist statement or a longer narrative." },
+          { title: "Details", body: "Add dimensions, year, medium, and any extra info." },
+          { title: "Links", body: "Put links to prints, socials, or additional pages." }
+        ]
+      },
+      {
+        id: 4,
+        title: "Piece Four",
+        description: "Use this for a small note, like medium or series name.",
+        image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=1400&q=80",
+        boards: [
+          { title: "Inspiration", body: "What inspired the work? What was the point of the piece?" },
+          { title: "Notes", body: "Any technical notes, development notes, or hidden layers." },
+          { title: "Extra", body: "This can be anything you want to feature or archive." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Piece Five",
+        description: "A fifth square card with space for text under it.",
+        image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1400&q=80",
+        boards: [
+          { title: "Pocket 1", body: "Expandable information pocket." },
+          { title: "Pocket 2", body: "Use it like a mini archive or gallery section." },
+          { title: "Pocket 3", body: "Works well for series, exhibitions, or commissions." }
+        ]
+      }
+    ];
+
+    let artworks = JSON.parse(JSON.stringify(seedArtworks));
+    let hoveredId = null;
+    let selectedId = artworks[0].id;
+    let activeBoard = 0;
+    let currentView = "gallery";
+
+    const galleryView = document.getElementById("galleryView");
+    const detailView = document.getElementById("detailView");
+    const gallery = document.getElementById("gallery");
+    const boards = document.getElementById("boards");
+    const cardCount = document.getElementById("cardCount");
+    const detailImage = document.getElementById("detailImage");
+    const detailTitle = document.getElementById("detailTitle");
+    const detailDescription = document.getElementById("detailDescription");
+
+    const galleryBtn = document.getElementById("galleryBtn");
+    const backBtn = document.getElementById("backBtn");
+    const detailBackBtn = document.getElementById("detailBackBtn");
+    const addCardBtn = document.getElementById("addCardBtn");
+    const addBoardBtn = document.getElementById("addBoardBtn");
+
+    function cloneSeed(id) {
+      return {
+        id,
+        title: `New Piece ${id}`,
+        description: "Add your own caption here.",
+        image: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=1400&q=80",
+        boards: [
+          { title: "Title", body: "Edit this pocket with your own information." },
+          { title: "Description", body: "This can hold notes, process, or archival details." },
+          { title: "Extra", body: "Any additional work, links, or references go here." }
+        ]
+      };
+    }
+
+    function renderGallery() {
+      cardCount.textContent = `${artworks.length} cards`;
+      gallery.innerHTML = artworks.map((art) => {
+        const dimmed = hoveredId && hoveredId !== art.id ? "dimmed" : "";
+        return `
+          <article class="card ${dimmed}" data-id="${art.id}">
+            <div class="card-inner">
+              <div class="image-shell">
+                <img src="${art.image}" alt="${escapeHtml(art.title)}" />
+              </div>
+              <div class="text-space">
+                <input type="text" value="${escapeAttr(art.title)}" data-field="title" data-id="${art.id}" />
+                <textarea data-field="description" data-id="${art.id}">${escapeHtml(art.description)}</textarea>
+              </div>
+              <div class="card-footer">
+                <span>Click to open</span>
+                <button class="icon-btn" type="button" data-delete="${art.id}" aria-label="Delete card">×</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      document.body.classList.toggle("page-blur", !!hoveredId);
+      bindGalleryEvents();
+    }
+
+    function renderDetail() {
+      const art = artworks.find((a) => a.id === selectedId) || artworks[0];
+      if (!art) return;
+
+      detailImage.src = art.image;
+      detailTitle.value = art.title;
+      detailDescription.value = art.description;
+
+      boards.innerHTML = art.boards.map((board, index) => {
+        const open = index === activeBoard ? "open" : "";
+        return `
+          <div class="board ${open}" data-board-index="${index}">
+            <button class="board-header" type="button" data-toggle-board="${index}">
+              <div>
+                <div class="label">Artboard ${index + 1}</div>
+                <h3>${escapeHtml(board.title)}</h3>
+              </div>
+              <div>${index === activeBoard ? "−" : "+"}</div>
+            </button>
+            <div class="board-body">
+              <input class="board-input" type="text" value="${escapeAttr(board.title)}" data-board-title="${index}" />
+              <textarea class="board-textarea" data-board-body="${index}">${escapeHtml(board.body)}</textarea>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      bindDetailEvents();
+    }
+
+    function showGallery() {
+      currentView = "gallery";
+      galleryView.classList.remove("hidden");
+      detailView.classList.add("hidden");
+      renderGallery();
+    }
+
+    function showDetail(id) {
+      selectedId = id;
+      activeBoard = 0;
+      currentView = "detail";
+      galleryView.classList.add("hidden");
+      detailView.classList.remove("hidden");
+      renderDetail();
+    }
+
+    function updateArtwork(id, patch) {
+      artworks = artworks.map((art) => art.id === id ? { ...art, ...patch } : art);
+      if (currentView === "gallery") renderGallery();
+      if (currentView === "detail") renderDetail();
+    }
+
+    function removeArtwork(id) {
+      artworks = artworks.filter((art) => art.id !== id);
+      if (!artworks.length) artworks = [cloneSeed(1)];
+      if (selectedId === id) selectedId = artworks[0].id;
+      if (currentView === "gallery") renderGallery();
+      if (currentView === "detail") renderDetail();
+    }
+
+    function addArtwork() {
+      const nextId = artworks.length ? Math.max(...artworks.map((a) => a.id)) + 1 : 1;
+      artworks.push(cloneSeed(nextId));
+      selectedId = nextId;
+      if (currentView === "gallery") renderGallery();
+      if (currentView === "detail") renderDetail();
+    }
+
+    function addBoard() {
+      const art = artworks.find((a) => a.id === selectedId);
+      if (!art) return;
+      art.boards.push({ title: `Pocket ${art.boards.length + 1}`, body: "Add more work, notes, or links here." });
+      renderDetail();
+    }
+
+    function bindGalleryEvents() {
+      document.querySelectorAll("[data-id]").forEach((el) => {
+        const id = Number(el.getAttribute("data-id"));
+
+        if (el.classList.contains("card")) {
+          el.addEventListener("mouseenter", () => {
+            hoveredId = id;
+            renderGallery();
+          });
+          el.addEventListener("mouseleave", () => {
+            hoveredId = null;
+            renderGallery();
+          });
+          el.addEventListener("click", (e) => {
+            if (e.target.matches("input, textarea, button")) return;
+            showDetail(id);
+          });
+        }
+      });
+
+      document.querySelectorAll('[data-field="title"]').forEach((input) => {
+        input.addEventListener("input", (e) => {
+          const id = Number(e.target.getAttribute("data-id"));
+          updateArtwork(id, { title: e.target.value });
+        });
+      });
+
+      document.querySelectorAll('[data-field="description"]').forEach((textarea) => {
+        textarea.addEventListener("input", (e) => {
+          const id = Number(e.target.getAttribute("data-id"));
+          updateArtwork(id, { description: e.target.value });
+        });
+      });
+
+      document.querySelectorAll("[data-delete]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const id = Number(btn.getAttribute("data-delete"));
+          removeArtwork(id);
+        });
+      });
+    }
+
+    function bindDetailEvents() {
+      detailTitle.oninput = () => updateArtwork(selectedId, { title: detailTitle.value });
+      detailDescription.oninput = () => updateArtwork(selectedId, { description: detailDescription.value });
+
+      document.querySelectorAll("[data-toggle-board]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = Number(btn.getAttribute("data-toggle-board"));
+          activeBoard = activeBoard === idx ? -1 : idx;
+          renderDetail();
+        });
+      });
+
+      document.querySelectorAll("[data-board-title]").forEach((input) => {
+        input.addEventListener("input", (e) => {
+          const idx = Number(e.target.getAttribute("data-board-title"));
+          const art = artworks.find((a) => a.id === selectedId);
+          if (!art) return;
+          art.boards[idx].title = e.target.value;
+          renderDetail();
+        });
+      });
+
+      document.querySelectorAll("[data-board-body]").forEach((textarea) => {
+        textarea.addEventListener("input", (e) => {
+          const idx = Number(e.target.getAttribute("data-board-body"));
+          const art = artworks.find((a) => a.id === selectedId);
+          if (!art) return;
+          art.boards[idx].body = e.target.value;
+          renderDetail();
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function escapeAttr(str) {
+      return escapeHtml(str).replaceAll("\n", " ");
+    }
+
+    galleryBtn.addEventListener("click", showGallery);
+    backBtn.addEventListener("click", showGallery);
+    detailBackBtn.addEventListener("click", showGallery);
+    addCardBtn.addEventListener("click", addArtwork);
+    addBoardBtn.addEventListener("click", addBoard);
+
+    renderGallery();
+  </script>
+</body>
+</html>
