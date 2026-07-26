@@ -1,147 +1,36 @@
 /* =====================================
-   ART PORTFOLIO
-   PART 3A - SCRIPT.JS
+   PORTFOLIO EDITOR
+   PART 4 - SAVING
 ===================================== */
 
 
-/* =========================
-   SELECT ELEMENTS
-========================= */
+let editMode = false;
 
 
-const artworks = document.querySelectorAll(".artPiece");
+const editButton =
+document.getElementById("editButton");
 
-const galleryPage = document.getElementById("galleryPage");
 
-const detailPage = document.getElementById("detailPage");
 
-const backButton = document.getElementById("backButton");
+editButton.addEventListener(
+"click",
+()=>{
 
-const detailImage = document.getElementById("detailImage");
 
-const detailTitle = document.getElementById("detailTitle");
+    editMode = !editMode;
 
-const detailDescription = document.getElementById("detailDescription");
 
-
-
-
-/* =========================
-   HOVER SETTINGS
-========================= */
-
-
-const shrinkAmount = 0.85;
-
-const growAmount = 1.05;
-
-const blurAmount = "5px";
-
-const darkAmount = "brightness(0.85)";
-
-
-
-
-
-/* =========================
-   RESET ALL ARTWORK
-========================= */
-
-
-function resetArtwork(){
-
-
-    artworks.forEach(piece=>{
-
-
-        piece.style.transform = "scale(1)";
-
-
-        piece.style.filter = "blur(0px) brightness(1)";
-
-
-        piece.style.opacity = "1";
-
-
-
-        const image = piece.querySelector("img");
-
-
-        image.style.transform = "scale(1)";
-
-
-        image.style.filter = "blur(0px) brightness(1)";
-
-
-
-    });
-
-
-
-}
-
-
-
-
-
-
-/* =========================
-   HOVER EFFECT
-========================= */
-
-
-artworks.forEach(selected=>{
-
-
-    selected.addEventListener(
-        "mouseenter",
-        ()=>{
-
-
-            artworks.forEach(piece=>{
-
-
-                if(piece !== selected){
-
-
-                    piece.style.transform =
-                    `scale(${shrinkAmount})`;
-
-
-                    piece.style.filter =
-                    `blur(${blurAmount}) ${darkAmount}`;
-
-
-                    piece.style.opacity =
-                    "0.85";
-
-
-
-                }
-
-
-            });
-
-
-
-            selected.style.transform =
-            `scale(${growAmount})`;
-
-
-
-            selected.style.filter =
-            "blur(0px) brightness(1)";
-
-
-
-            selected.style.opacity =
-            "1";
-
-
-
-        }
-
+    document.body.classList.toggle(
+        "editing",
+        editMode
     );
+
+
+    editButton.textContent =
+    editMode ? "EXIT EDIT" : "EDIT";
+
+
+    activateEditor();
 
 
 });
@@ -150,452 +39,92 @@ artworks.forEach(selected=>{
 
 
 
-/* =========================
-   RETURN TO NORMAL
-========================= */
 
 
-galleryPage.addEventListener(
-    "mouseleave",
-    ()=>{
+function activateEditor(){
 
 
-        resetArtwork();
+const textElements =
+document.querySelectorAll(
+"h1, h2, h3, p"
+);
 
 
-    }
 
+const movableElements =
+document.querySelectorAll(
+".artPiece, .artPiece img, .artboard"
 );
 
 
 
 
 
+textElements.forEach((element,index)=>{
 
 
-/* =========================
-   OPEN ARTWORK PAGE
-========================= */
+    if(editMode){
 
 
-artworks.forEach(piece=>{
+        element.contentEditable = true;
 
 
-    piece.addEventListener(
-        "click",
-        ()=>{
-
-
-            const image =
-            piece.querySelector("img");
-
-
-            const title =
-            piece.querySelector("h2");
-
-
-            const description =
-            piece.querySelector("p");
-
-
-
-            detailImage.src =
-            image.src;
-
-
-
-            detailTitle.textContent =
-            title.textContent;
-
-
-
-            detailDescription.textContent =
-            description.textContent;
-
-
-
-            galleryPage.style.display =
-            "none";
-
-
-
-            detailPage.style.display =
-            "block";
-
-
-
-        }
-
-    );
-
-
-});
-
-
-
-
-
-
-
-/* =========================
-   BACK BUTTON
-========================= */
-
-
-backButton.addEventListener(
-    "click",
-    ()=>{
-
-
-        detailPage.style.display =
-        "none";
-
-
-
-        galleryPage.style.display =
-        "block";
-
-
-
-        resetArtwork();
-
-
-
-    }
-
-);/* =====================================
-   ART PORTFOLIO
-   PART 3B - SCRIPT.JS
-===================================== */
-
-
-/* =========================
-   TYPEWRITER INTRO
-   ONLY FIRST VISIT
-========================= */
-
-
-const introTitle = "My Art Portfolio";
-
-const introText = "A collection of my work.";
-
-
-function typeWriter(element, text, speed){
-
-    let index = 0;
-
-
-    element.textContent = "";
-
-
-    function write(){
-
-        if(index < text.length){
-
-            element.textContent += text.charAt(index);
-
-            index++;
-
-            setTimeout(write, speed);
-
-        }
-
-    }
-
-
-    write();
-
-}
-
-
-
-const titleElement = document.createElement("h1");
-
-const descriptionElement = document.createElement("p");
-
-
-titleElement.id = "introTitle";
-
-descriptionElement.id = "introDescription";
-
-
-
-galleryPage.prepend(descriptionElement);
-
-galleryPage.prepend(titleElement);
-
-
-
-
-
-if(!localStorage.getItem("visitedPortfolio")){
-
-
-    typeWriter(
-        titleElement,
-        introTitle,
-        80
-    );
-
-
-    setTimeout(()=>{
-
-
-        typeWriter(
-            descriptionElement,
-            introText,
-            50
+        element.classList.add(
+            "editableText"
         );
 
 
-    }, introTitle.length * 80 + 300);
 
-
-
-    localStorage.setItem(
-        "visitedPortfolio",
-        "true"
-    );
-
-
-}
-
-else{
-
-
-    titleElement.textContent =
-    introTitle;
-
-
-    descriptionElement.textContent =
-    introText;
-
-
-}
-
-
-
-
-
-
-
-
-/* =========================
-   ARTBOARD EXPANSION
-========================= */
-
-
-const artboards =
-document.querySelectorAll(".artboard");
-
-
-
-artboards.forEach(board=>{
-
-
-    board.addEventListener(
-        "click",
-        ()=>{
-
-
-            board.classList.toggle(
-                "expanded"
-            );
-
-
-        }
-
-    );
-
-
-});
-
-
-
-
-
-
-
-/* =========================
-   ESCAPE KEY
-   CLOSE DETAIL PAGE
-========================= */
-
-
-document.addEventListener(
-    "keydown",
-    (event)=>{
-
-
-        if(event.key === "Escape"){
-
-
-            if(detailPage.style.display === "block"){
-
-
-                detailPage.style.display =
-                "none";
-
-
-                galleryPage.style.display =
-                "block";
-
-
-                resetArtwork();
-
-
-            }
-
-
-        }
-
-
-    }
-
-);
-
-
-
-
-
-
-
-/* =========================
-   ADD ARTWORK SUPPORT
-   FUTURE USE
-========================= */
-
-
-function addArtwork(image,title,description){
-
-
-    const piece =
-    document.createElement("article");
-
-
-    piece.className =
-    "artPiece";
-
-
-
-    piece.innerHTML = `
-
-        <img src="${image}">
-
-        <h2>${title}</h2>
-
-        <p>${description}</p>
-
-    `;
-
-
-
-    document
-    .getElementById("gallery")
-    .appendChild(piece);
-
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-   ADD BOARD SUPPORT
-========================= */
-
-
-function addArtboard(title,text){
-
-
-    const board =
-    document.createElement("div");
-
-
-    board.className =
-    "artboard";
-
-
-    board.innerHTML = `
-
-        <h2>${title}</h2>
-
-        <p>${text}</p>
-
-    `;
-
-
-
-    document
-    .getElementById("detailRight")
-    .appendChild(board);
-
-
-
-}/* =====================================
-   ART PORTFOLIO
-   PART 4 - EXPANDING ARTBOARDS
-===================================== */
-
-
-
-/* =========================
-   ARTBOARD EXPANSION
-========================= */
-
-
-function setupArtboards(){
-
-
-    const boards =
-    document.querySelectorAll(".artboard");
-
-
-
-    boards.forEach(board=>{
-
-
-        board.addEventListener(
-            "click",
+        element.addEventListener(
+            "input",
             ()=>{
 
 
-                const alreadyOpen =
-                board.classList.contains("expanded");
-
-
-
-                boards.forEach(other=>{
-
-                    other.classList.remove(
-                        "expanded"
-                    );
-
-                });
-
-
-
-                if(!alreadyOpen){
-
-
-                    board.classList.add(
-                        "expanded"
-                    );
-
-
-                }
+                saveText(
+                    index,
+                    element.innerText
+                );
 
 
             }
-
         );
 
 
-    });
+    }
+
+
+});
+
+
+
+
+
+movableElements.forEach((element,index)=>{
+
+
+    if(editMode){
+
+
+        element.classList.add(
+            "draggable"
+        );
+
+
+        element.addEventListener(
+            "mousedown",
+            startDragging
+        );
+
+
+    }
+
+
+});
+
+
+
+loadSavedChanges();
+
 
 
 }
@@ -604,99 +133,282 @@ function setupArtboards(){
 
 
 
-setupArtboards();
+
+
+function startDragging(event){
+
+
+if(!editMode)return;
+
+
+event.preventDefault();
+
+
+const element =
+event.currentTarget;
+
+
+
+let startX =
+event.clientX;
+
+
+let startY =
+event.clientY;
+
+
+
+let rect =
+element.getBoundingClientRect();
+
+
+
+let startLeft =
+rect.left;
+
+
+let startTop =
+rect.top;
 
 
 
 
 
+function move(e){
 
 
-/* =========================
-   CLOSE EXPANDED BOARD
-   WITH ESCAPE
-========================= */
+element.style.position =
+"fixed";
 
 
-document.addEventListener(
-    "keydown",
-    (event)=>{
+element.style.left =
+startLeft +
+(e.clientX-startX)
++
+"px";
 
 
-        if(event.key === "Escape"){
+element.style.top =
+startTop +
+(e.clientY-startY)
++
+"px";
 
 
-            document
-            .querySelectorAll(".artboard")
-            .forEach(board=>{
 
-
-                board.classList.remove(
-                    "expanded"
-                );
-
-
-            });
-
-
-        }
-
-
-    }
-
+savePosition(
+element,
+element.offsetLeft,
+element.offsetTop
 );
 
 
 
+}
 
 
 
 
-/* =========================
-   ADD NEW BOARD FUNCTION
-========================= */
+
+function stop(){
 
 
-function createBoard(title, text){
+document.removeEventListener(
+"mousemove",
+move
+);
 
 
-    const board =
-    document.createElement("div");
+document.removeEventListener(
+"mouseup",
+stop
+);
 
 
-    board.className =
-    "artboard";
-
-
-    board.innerHTML = `
-
-        <h2>${title}</h2>
-
-        <p>${text}</p>
-
-    `;
+}
 
 
 
-    document
-    .getElementById("detailRight")
-    .appendChild(board);
+document.addEventListener(
+"mousemove",
+move
+);
 
 
 
-    board.addEventListener(
-        "click",
-        ()=>{
+document.addEventListener(
+"mouseup",
+stop
+);
 
 
-            board.classList.toggle(
-                "expanded"
-            );
+
+}
 
 
-        }
 
-    );
+
+
+
+
+function savePosition(element,x,y){
+
+
+let data =
+JSON.parse(
+localStorage.getItem("positions")
+)
+||
+{};
+
+
+
+let id =
+element.dataset.editorId;
+
+
+
+if(!id){
+
+id =
+Math.random()
+.toString(36)
+.substring(2);
+
+
+element.dataset.editorId=id;
+
+}
+
+
+
+data[id]={
+x:x,
+y:y
+};
+
+
+
+localStorage.setItem(
+"positions",
+JSON.stringify(data)
+);
+
+
+
+}
+
+
+
+
+
+
+
+function saveText(id,text){
+
+
+let data =
+JSON.parse(
+localStorage.getItem("texts")
+)
+||
+{};
+
+
+
+data[id]=text;
+
+
+
+localStorage.setItem(
+"texts",
+JSON.stringify(data)
+);
+
+
+
+}
+
+
+
+
+
+
+
+function loadSavedChanges(){
+
+
+let positions =
+JSON.parse(
+localStorage.getItem("positions")
+)
+||
+{};
+
+
+
+document
+.querySelectorAll(
+".draggable"
+)
+.forEach(element=>{
+
+
+let id =
+element.dataset.editorId;
+
+
+
+if(positions[id]){
+
+
+element.style.position="fixed";
+
+
+element.style.left =
+positions[id].x+"px";
+
+
+element.style.top =
+positions[id].y+"px";
+
+
+}
+
+
+
+});
+
+
+
+let texts =
+JSON.parse(
+localStorage.getItem("texts")
+)
+||
+{};
+
+
+
+document
+.querySelectorAll(
+"h1,h2,h3,p"
+)
+.forEach((element,index)=>{
+
+
+if(texts[index]){
+
+
+element.innerText =
+texts[index];
+
+
+}
+
+
+});
+
 
 
 }
