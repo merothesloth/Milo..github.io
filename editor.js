@@ -1,10 +1,13 @@
 /* =====================================
-   PORTFOLIO EDITOR
-   PART 3 FIX - WORKING DRAGGING
+   PORTFOLIO VISUAL EDITOR
+   VERSION 1
 ===================================== */
 
 
 let editMode = false;
+let selectedObject = null;
+let history = [];
+
 
 
 const editButton =
@@ -15,7 +18,6 @@ document.getElementById("editButton");
 editButton.addEventListener(
 "click",
 ()=>{
-
 
     editMode = !editMode;
 
@@ -30,7 +32,7 @@ editButton.addEventListener(
     editMode ? "EXIT EDIT" : "EDIT";
 
 
-    activateEditor();
+    setupEditor();
 
 
 });
@@ -39,71 +41,57 @@ editButton.addEventListener(
 
 
 
+function setupEditor(){
 
-function activateEditor(){
 
-
-const textElements =
+const objects =
 document.querySelectorAll(
-"h1, h2, h3, p"
+".artPiece, .artPiece img, .artboard, h1, h2, h3, p"
 );
 
 
 
-const movableElements =
-document.querySelectorAll(
-".artPiece, .artPiece img, .artboard"
-);
-
-
-
-
-
-textElements.forEach(element=>{
+objects.forEach(object=>{
 
 
     if(editMode){
 
-        element.contentEditable = true;
 
-        element.classList.add(
-            "editableText"
+        object.classList.add(
+            "editableObject"
         );
 
+
+        object.addEventListener(
+            "mousedown",
+            selectObject
+        );
+
+
+        if(
+        object.tagName === "H1" ||
+        object.tagName === "H2" ||
+        object.tagName === "H3" ||
+        object.tagName === "P"
+        ){
+
+            object.contentEditable = true;
+
+        }
+
+
     }
+
 
     else{
 
-        element.contentEditable = false;
 
-        element.classList.remove(
-            "editableText"
-        );
-
-    }
-
-
-});
-
-
-
-
-
-movableElements.forEach(element=>{
-
-
-    if(editMode){
-
-
-        element.classList.add(
-            "draggable"
+        object.classList.remove(
+            "editableObject"
         );
 
 
-        element.addEventListener(
-            "mousedown",
-            startDragging
-        );
+        object.contentEditable = false;
 
 
     }
@@ -122,45 +110,94 @@ movableElements.forEach(element=>{
 
 
 
-function startDragging(event){
+function selectObject(e){
 
 
-if(!editMode) return;
+if(!editMode)return;
 
 
-event.preventDefault();
+e.preventDefault();
 
 
-
-const element =
-event.currentTarget;
-
-
-
-let startX =
-event.clientX;
-
-
-let startY =
-event.clientY;
+selectedObject =
+e.currentTarget;
 
 
 
-let rect =
+document
+.querySelectorAll(
+".selectedObject"
+)
+.forEach(item=>{
+
+item.classList.remove(
+"selectedObject"
+);
+
+});
+
+
+
+selectedObject.classList.add(
+"selectedObject"
+);
+
+
+
+makeDraggable(
+selectedObject
+);
+
+
+
+}
+
+
+
+
+
+
+
+function makeDraggable(element){
+
+
+let startX;
+let startY;
+
+
+let startLeft;
+let startTop;
+
+
+
+element.onmousedown =
+function(e){
+
+
+startX =
+e.clientX;
+
+
+startY =
+e.clientY;
+
+
+
+const rect =
 element.getBoundingClientRect();
 
 
 
-let startLeft =
+startLeft =
 rect.left;
 
 
-let startTop =
+startTop =
 rect.top;
 
 
 
-function move(e){
+function move(event){
 
 
 element.style.position =
@@ -170,7 +207,7 @@ element.style.position =
 
 element.style.left =
 startLeft +
-(e.clientX-startX)
+(event.clientX-startX)
 +
 "px";
 
@@ -178,7 +215,7 @@ startLeft +
 
 element.style.top =
 startTop +
-(e.clientY-startY)
+(event.clientY-startY)
 +
 "px";
 
@@ -205,7 +242,6 @@ stop
 );
 
 
-
 }
 
 
@@ -216,12 +252,46 @@ move
 );
 
 
-
 document.addEventListener(
 "mouseup",
 stop
 );
 
 
+
+};
+
+
+}
+
+
+
+
+
+
+/* TEXT CONTROLS */
+
+
+function changeTextSize(size){
+
+if(selectedObject){
+
+selectedObject.style.fontSize =
+size + "px";
+
+}
+
+}
+
+
+
+function changeTextColor(color){
+
+if(selectedObject){
+
+selectedObject.style.color =
+color;
+
+}
 
 }
