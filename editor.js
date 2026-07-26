@@ -1,19 +1,14 @@
 /* =====================================
    PORTFOLIO EDITOR
-   PART 3 - DRAGGING
+   PART 3 FIX - WORKING DRAGGING
 ===================================== */
 
 
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
+let editMode = false;
 
 
 const editButton =
 document.getElementById("editButton");
-
-
-let editMode = false;
 
 
 
@@ -38,8 +33,8 @@ editButton.addEventListener(
     activateEditor();
 
 
-
 });
+
 
 
 
@@ -48,84 +43,74 @@ editButton.addEventListener(
 function activateEditor(){
 
 
-    const textElements =
-    document.querySelectorAll(
-        "h1, h2, h3, p"
-    );
-
-
-    const moveElements =
-    document.querySelectorAll(
-        ".artPiece, img, .artboard"
-    );
+const textElements =
+document.querySelectorAll(
+"h1, h2, h3, p"
+);
 
 
 
-    textElements.forEach(element=>{
-
-
-        if(editMode){
-
-
-            element.contentEditable = true;
-
-            element.classList.add(
-                "editableText"
-            );
-
-
-        }
-
-        else{
-
-
-            element.contentEditable = false;
-
-            element.classList.remove(
-                "editableText"
-            );
-
-
-        }
-
-
-    });
+const movableElements =
+document.querySelectorAll(
+".artPiece, .artPiece img, .artboard"
+);
 
 
 
 
-    moveElements.forEach(element=>{
+
+textElements.forEach(element=>{
 
 
-        if(editMode){
+    if(editMode){
+
+        element.contentEditable = true;
+
+        element.classList.add(
+            "editableText"
+        );
+
+    }
+
+    else{
+
+        element.contentEditable = false;
+
+        element.classList.remove(
+            "editableText"
+        );
+
+    }
 
 
-            element.classList.add(
-                "draggable"
-            );
+});
 
 
-            element.addEventListener(
-                "mousedown",
-                dragStart
-            );
 
 
-        }
+
+movableElements.forEach(element=>{
 
 
-        else{
+    if(editMode){
 
 
-            element.classList.remove(
-                "draggable"
-            );
+        element.classList.add(
+            "draggable"
+        );
 
 
-        }
+        element.addEventListener(
+            "mousedown",
+            startDragging
+        );
 
 
-    });
+    }
+
+
+
+});
 
 
 
@@ -137,10 +122,14 @@ function activateEditor(){
 
 
 
-function dragStart(event){
+function startDragging(event){
 
 
 if(!editMode) return;
+
+
+event.preventDefault();
+
 
 
 const element =
@@ -157,34 +146,39 @@ event.clientY;
 
 
 
-let originalX =
-element.offsetLeft;
-
-
-let originalY =
-element.offsetTop;
+let rect =
+element.getBoundingClientRect();
 
 
 
-function dragMove(e){
+let startLeft =
+rect.left;
+
+
+let startTop =
+rect.top;
+
+
+
+function move(e){
 
 
 element.style.position =
-"relative";
+"fixed";
 
 
 
 element.style.left =
-originalX +
-(e.clientX - startX)
+startLeft +
+(e.clientX-startX)
 +
 "px";
 
 
 
 element.style.top =
-originalY +
-(e.clientY - startY)
+startTop +
+(e.clientY-startY)
 +
 "px";
 
@@ -194,18 +188,20 @@ originalY +
 
 
 
-function dragEnd(){
+
+
+function stop(){
 
 
 document.removeEventListener(
 "mousemove",
-dragMove
+move
 );
 
 
 document.removeEventListener(
 "mouseup",
-dragEnd
+stop
 );
 
 
@@ -214,23 +210,18 @@ dragEnd
 
 
 
-
 document.addEventListener(
 "mousemove",
-dragMove
+move
 );
 
 
 
 document.addEventListener(
 "mouseup",
-dragEnd
+stop
 );
 
 
 
 }
-
-
-
-});
