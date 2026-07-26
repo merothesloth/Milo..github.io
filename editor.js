@@ -1,105 +1,97 @@
 /* =====================================
    PORTFOLIO VISUAL EDITOR
-   VERSION 1
+   PART 3
 ===================================== */
 
 
-let editMode = false;
-let selectedObject = null;
+let editing = false;
+
+let selected = null;
+
 let history = [];
 
-
-
-const editButton =
-document.getElementById("editButton");
+let future = [];
 
 
 
-editButton.addEventListener(
-"click",
-()=>{
 
-    editMode = !editMode;
+
+const editToggle =
+document.getElementById("editToggle");
+
+
+const canvas =
+document.getElementById("canvas");
+
+
+
+
+
+/* =========================
+   EDIT MODE
+========================= */
+
+
+editToggle.onclick = () => {
+
+
+    editing = !editing;
 
 
     document.body.classList.toggle(
         "editing",
-        editMode
+        editing
     );
 
 
-    editButton.textContent =
-    editMode ? "EXIT EDIT" : "EDIT";
-
-
-    setupEditor();
-
-
-});
+    editToggle.innerText =
+    editing ? "EXIT" : "EDIT";
 
 
 
+    activateObjects();
 
 
-function setupEditor(){
+};
+
+
+
+
+
+
+
+/* =========================
+   SELECT OBJECTS
+========================= */
+
+
+function activateObjects(){
 
 
 const objects =
-document.querySelectorAll(
-".artPiece, .artPiece img, .artboard, h1, h2, h3, p"
-);
+document.querySelectorAll(".object");
 
 
 
 objects.forEach(object=>{
 
 
-    if(editMode){
+    object.onclick = (e)=>{
 
 
-        object.classList.add(
-            "editableObject"
-        );
+        if(!editing) return;
 
 
-        object.addEventListener(
-            "mousedown",
-            selectObject
-        );
+        e.stopPropagation();
 
 
-        if(
-        object.tagName === "H1" ||
-        object.tagName === "H2" ||
-        object.tagName === "H3" ||
-        object.tagName === "P"
-        ){
-
-            object.contentEditable = true;
-
-        }
+        selectObject(object);
 
 
-    }
-
-
-    else{
-
-
-        object.classList.remove(
-            "editableObject"
-        );
-
-
-        object.contentEditable = false;
-
-
-    }
-
+    };
 
 
 });
-
 
 
 }
@@ -110,43 +102,33 @@ objects.forEach(object=>{
 
 
 
-function selectObject(e){
-
-
-if(!editMode)return;
-
-
-e.preventDefault();
-
-
-selectedObject =
-e.currentTarget;
-
+function selectObject(object){
 
 
 document
-.querySelectorAll(
-".selectedObject"
-)
+.querySelectorAll(".selected")
 .forEach(item=>{
 
-item.classList.remove(
-"selectedObject"
-);
+
+    item.classList.remove(
+        "selected"
+    );
+
 
 });
 
 
 
-selectedObject.classList.add(
-"selectedObject"
+selected = object;
+
+
+selected.classList.add(
+"selected"
 );
 
 
 
-makeDraggable(
-selectedObject
-);
+makeDraggable(selected);
 
 
 
@@ -156,53 +138,55 @@ selectedObject
 
 
 
+
+
+/* =========================
+   DRAGGING
+========================= */
 
 
 function makeDraggable(element){
 
 
-let startX;
-let startY;
+
+element.onmousedown = function(e){
 
 
-let startLeft;
-let startTop;
+if(!editing) return;
 
 
 
-element.onmousedown =
-function(e){
+saveState();
 
 
-startX =
+
+let startX =
 e.clientX;
 
 
-startY =
+let startY =
 e.clientY;
 
 
 
-const rect =
+let rect =
 element.getBoundingClientRect();
 
 
 
-startLeft =
+let startLeft =
 rect.left;
 
 
-startTop =
+
+let startTop =
 rect.top;
 
 
 
+
+
 function move(event){
-
-
-element.style.position =
-"fixed";
-
 
 
 element.style.left =
@@ -236,13 +220,20 @@ move
 );
 
 
+
 document.removeEventListener(
 "mouseup",
 stop
 );
 
 
+
+saveLayout();
+
+
 }
+
+
 
 
 
@@ -250,6 +241,7 @@ document.addEventListener(
 "mousemove",
 move
 );
+
 
 
 document.addEventListener(
@@ -262,36 +254,435 @@ stop
 };
 
 
+
+}
+
+
+
+
+
+
+
+/* =========================
+   TEXT CONTROLS
+========================= */
+
+
+document
+.getElementById("fontSize")
+.onclick =
+(e)=>{
+
+
+if(selected){
+
+
+selected.style.fontSize =
+e.target.value+"px";
+
+
+}
+
+
+};
+
+
+
+
+document
+.getElementById("fontSize")
+.onchange =
+(e)=>{
+
+
+if(selected){
+
+
+saveState();
+
+
+selected.style.fontSize =
+e.target.value+"px";
+
+
+}
+
+
+};
+
+
+
+
+
+
+
+document
+.getElementById("textColor")
+.onchange =
+(e)=>{
+
+
+if(selected){
+
+
+saveState();
+
+
+selected.style.color =
+e.target.value;
+
+
+}
+
+
+};
+
+
+
+
+
+
+
+
+document
+.getElementById("fontSelector")
+.onchange =
+(e)=>{
+
+
+if(selected){
+
+
+saveState();
+
+
+selected.style.fontFamily =
+e.target.value;
+
+
+}
+
+
+};
+
+
+
+
+
+
+
+/* =========================
+   ADD TEXT
+========================= */
+
+
+document
+.getElementById("addText")
+.onclick =
+()=>{
+
+
+let box =
+document.createElement(
+"div"
+);
+
+
+
+box.className =
+"object textObject";
+
+
+
+box.style.left =
+"100px";
+
+
+box.style.top =
+"100px";
+
+
+
+box.innerHTML =
+`
+<p contenteditable="true">
+New Text
+</p>
+`;
+
+
+
+canvas.appendChild(box);
+
+
+
+activateObjects();
+
+
+
+};
+
+
+
+
+
+
+
+/* =========================
+   ADD IMAGE
+========================= */
+
+
+const upload =
+document.getElementById(
+"imageUpload"
+);
+
+
+
+document
+.getElementById("addImage")
+.onclick =
+()=>{
+
+
+upload.click();
+
+
+};
+
+
+
+
+
+upload.onchange =
+()=>{
+
+
+let file =
+upload.files[0];
+
+
+
+if(!file) return;
+
+
+
+let reader =
+new FileReader();
+
+
+
+reader.onload =
+function(e){
+
+
+let box =
+document.createElement(
+"div"
+);
+
+
+
+box.className =
+"object imageObject";
+
+
+
+box.style.left =
+"100px";
+
+
+box.style.top =
+"100px";
+
+
+
+box.innerHTML =
+`
+<img src="${e.target.result}">
+`;
+
+
+
+canvas.appendChild(box);
+
+
+
+activateObjects();
+
+
+
+};
+
+
+
+reader.readAsDataURL(file);
+
+
+
+};
+
+
+
+
+
+
+
+
+/* =========================
+   UNDO / REDO
+========================= */
+
+
+function saveState(){
+
+
+history.push(
+canvas.innerHTML
+);
+
+
+
+future=[];
+
+
 }
 
 
 
 
 
+document
+.getElementById("undoButton")
+.onclick =
+()=>{
 
-/* TEXT CONTROLS */
+
+if(history.length===0)
+return;
 
 
-function changeTextSize(size){
 
-if(selectedObject){
+future.push(
+canvas.innerHTML
+);
 
-selectedObject.style.fontSize =
-size + "px";
+
+
+canvas.innerHTML =
+history.pop();
+
+
+
+activateObjects();
+
+
+
+};
+
+
+
+
+
+
+document
+.getElementById("redoButton")
+.onclick =
+()=>{
+
+
+if(future.length===0)
+return;
+
+
+
+history.push(
+canvas.innerHTML
+);
+
+
+
+canvas.innerHTML =
+future.pop();
+
+
+
+activateObjects();
+
+
+
+};
+
+
+
+
+
+
+
+
+/* =========================
+   SAVE
+========================= */
+
+
+document
+.getElementById("saveButton")
+.onclick =
+()=>{
+
+
+localStorage.setItem(
+"portfolio",
+canvas.innerHTML
+);
+
+
+
+alert(
+"Saved"
+);
+
+
+
+};
+
+
+
+
+
+
+
+function loadLayout(){
+
+
+let saved =
+localStorage.getItem(
+"portfolio"
+);
+
+
+
+if(saved){
+
+
+canvas.innerHTML =
+saved;
+
 
 }
 
+
+
+activateObjects();
+
+
 }
 
 
 
-function changeTextColor(color){
 
-if(selectedObject){
 
-selectedObject.style.color =
-color;
+loadLayout();
 
-}
-
-}
+activateObjects();
