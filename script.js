@@ -1,147 +1,311 @@
-const galleryPage = document.getElementById("galleryPage");
-const gallery = document.getElementById("gallery");
-const artPieces = Array.from(document.querySelectorAll(".artPiece"));
+/* ======================================================
+   PORTFOLIO V3
+   SCRIPT.JS
+   PART 3A
+====================================================== */
 
+const galleryPage = document.getElementById("galleryPage");
 const detailPage = document.getElementById("detailPage");
+
+const gallery = document.getElementById("gallery");
+
+const artPieces = document.querySelectorAll(".artPiece");
+
 const backButton = document.getElementById("backButton");
+
 const detailImage = document.getElementById("detailImage");
 const detailTitle = document.getElementById("detailTitle");
-const detailDescription = document.getElementById("detailDescription");
+const detailText = document.getElementById("detailText");
 
-let hoveredPiece = null;
 let detailOpen = false;
+
+
+
+/* =====================================
+   HOVER EFFECT
+===================================== */
+
+artPieces.forEach((piece) => {
+
+    piece.addEventListener("mouseenter", () => {
+
+        if (detailOpen) return;
+
+        artPieces.forEach((other) => {
+
+            if (other === piece) {
+
+                other.classList.add("hovered");
+                other.classList.remove("dimmed");
+
+            } else {
+
+                other.classList.remove("hovered");
+                other.classList.add("dimmed");
+
+            }
+
+        });
+
+    });
+
+    piece.addEventListener("mouseleave", () => {
+
+        if (detailOpen) return;
+
+        artPieces.forEach((other) => {
+
+            other.classList.remove("hovered");
+            other.classList.remove("dimmed");
+
+        });
+
+    });
+
+});
+
+
+
+/* =====================================
+   OPEN DETAIL PAGE
+===================================== */
+
+artPieces.forEach((piece) => {
+
+    piece.addEventListener("click", () => {
+
+        const img = piece.querySelector("img");
+        const title = piece.querySelector("h2");
+        const text = piece.querySelector("p");
+
+        detailImage.src = img.src;
+        detailTitle.textContent = title.textContent;
+        detailText.textContent = text.textContent;
+
+        galleryPage.classList.add("hidden");
+
+        setTimeout(() => {
+
+            galleryPage.style.display = "none";
+
+            detailPage.style.display = "block";
+
+            requestAnimationFrame(() => {
+                detailPage.classList.add("active");
+            });
+
+            detailOpen = true;
+
+        }, 450);
+
+    });
+
+});
+
+
+
+/* =====================================
+   CLOSE DETAIL PAGE
+===================================== */
+
+backButton.addEventListener("click", () => {
+
+    detailPage.classList.remove("active");
+
+    setTimeout(() => {
+
+        detailPage.style.display = "none";
+
+        galleryPage.style.display = "block";
+
+        requestAnimationFrame(() => {
+            galleryPage.classList.remove("hidden");
+        });
+
+        detailOpen = false;
+
+    }, 450);
+
+});
+
+
+
+/* =====================================
+   ESC KEY
+===================================== */
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape" && detailOpen) {
+
+        backButton.click();
+
+    }
+
+});
+
+
+
+/* =====================================
+   HORIZONTAL SCROLL
+===================================== */
+
+gallery.addEventListener("wheel", (event) => {
+
+    event.preventDefault();
+
+    gallery.scrollLeft += event.deltaY;
+
+}, { passive: false });/* ======================================================
+   PORTFOLIO V3
+   SCRIPT.JS
+   PART 3B
+   DRAG SCROLL + POLISH
+====================================================== */
 
 let isDragging = false;
 let dragStartX = 0;
-let dragStartScrollLeft = 0;
-let didDrag = false;
-let activePointerId = null;
+let dragStartScroll = 0;
+let moved = false;
 
-artPieces.forEach((imgPiece) => {
-  const img = imgPiece.querySelector("img");
-  if (img) img.draggable = false;
+/* Disable image dragging */
+
+document.querySelectorAll(".artPiece img").forEach((img) => {
+
+    img.draggable = false;
+
 });
 
-function clearHover() {
-  if (detailOpen) return;
-  hoveredPiece = null;
-  artPieces.forEach((piece) => {
-    piece.classList.remove("hovered", "dimmed");
-  });
-}
+/* Mouse Down */
 
-function setHover(piece) {
-  if (detailOpen || isDragging) return;
-  hoveredPiece = piece;
+gallery.addEventListener("mousedown", (event) => {
 
-  artPieces.forEach((other) => {
-    const isHovered = other === piece;
-    other.classList.toggle("hovered", isHovered);
-    other.classList.toggle("dimmed", !isHovered);
-  });
-}
-
-function openDetail(piece) {
-  const img = piece.querySelector("img");
-  const title = piece.querySelector("h2");
-  const desc = piece.querySelector("p");
-
-  detailImage.src = img.src;
-  detailImage.alt = img.alt || title.textContent || "Artwork";
-  detailTitle.textContent = title.textContent;
-  detailDescription.textContent = desc.textContent;
-
-  detailOpen = true;
-  galleryPage.style.display = "none";
-  detailPage.style.display = "block";
-  detailPage.setAttribute("aria-hidden", "false");
-  clearHover();
-}
-
-function closeDetail() {
-  detailOpen = false;
-  detailPage.style.display = "none";
-  detailPage.setAttribute("aria-hidden", "true");
-  galleryPage.style.display = "block";
-  clearHover();
-}
-
-artPieces.forEach((piece) => {
-  piece.addEventListener("mouseenter", () => setHover(piece));
-  piece.addEventListener("mouseleave", () => {
-    if (hoveredPiece === piece) clearHover();
-  });
-
-  piece.addEventListener("click", () => {
-    if (didDrag) return;
-    openDetail(piece);
-  });
-});
-
-gallery.addEventListener("mouseleave", clearHover);
-backButton.addEventListener("click", closeDetail);
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && detailOpen) {
-    closeDetail();
-  }
-});
-
-/* Horizontal mouse-wheel scrolling */
-gallery.addEventListener(
-  "wheel",
-  (e) => {
     if (detailOpen) return;
 
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      gallery.scrollLeft += e.deltaY;
+    isDragging = true;
+
+    moved = false;
+
+    dragStartX = event.pageX;
+
+    dragStartScroll = gallery.scrollLeft;
+
+    gallery.style.cursor = "grabbing";
+
+});
+
+/* Mouse Move */
+
+window.addEventListener("mousemove", (event) => {
+
+    if (!isDragging) return;
+
+    const distance = event.pageX - dragStartX;
+
+    if (Math.abs(distance) > 4) {
+
+        moved = true;
+
     }
-  },
-  { passive: false }
-);
 
-/* Drag to scroll horizontally */
-gallery.addEventListener("pointerdown", (e) => {
-  if (detailOpen) return;
+    gallery.scrollLeft = dragStartScroll - distance;
 
-  isDragging = true;
-  didDrag = false;
-  activePointerId = e.pointerId;
-  dragStartX = e.clientX;
-  dragStartScrollLeft = gallery.scrollLeft;
-  gallery.classList.add("dragging");
-
-  try {
-    gallery.setPointerCapture(activePointerId);
-  } catch (err) {}
 });
 
-gallery.addEventListener("pointermove", (e) => {
-  if (!isDragging) return;
+/* Mouse Up */
 
-  const dx = e.clientX - dragStartX;
+window.addEventListener("mouseup", () => {
 
-  if (Math.abs(dx) > 5) {
-    didDrag = true;
-  }
+    isDragging = false;
 
-  gallery.scrollLeft = dragStartScrollLeft - dx;
-  e.preventDefault();
+    gallery.style.cursor = "grab";
+
 });
 
-function endDrag() {
-  if (!isDragging) return;
+/* Prevent clicks after dragging */
 
-  isDragging = false;
-  activePointerId = null;
-  gallery.classList.remove("dragging");
+artPieces.forEach((piece) => {
 
-  setTimeout(() => {
-    didDrag = false;
-  }, 0);
-}
+    piece.addEventListener("click", (event) => {
 
-gallery.addEventListener("pointerup", endDrag);
-gallery.addEventListener("pointercancel", endDrag);
-gallery.addEventListener("lostpointercapture", endDrag);
+        if (moved) {
+
+            event.stopImmediatePropagation();
+
+            event.preventDefault();
+
+            moved = false;
+
+        }
+
+    }, true);
+
+});
+
+/* Keyboard Navigation */
+
+document.addEventListener("keydown", (event) => {
+
+    if (detailOpen) return;
+
+    if (event.key === "ArrowRight") {
+
+        gallery.scrollBy({
+
+            left: 450,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+    if (event.key === "ArrowLeft") {
+
+        gallery.scrollBy({
+
+            left: -450,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+});
+
+/* Keep cursor correct */
+
+gallery.addEventListener("mouseleave", () => {
+
+    isDragging = false;
+
+    gallery.style.cursor = "grab";
+
+});
+
+/* Prevent selecting text while dragging */
+
+gallery.addEventListener("dragstart", (event) => {
+
+    event.preventDefault();
+
+});
+
+/* Give gallery focus */
+
+gallery.tabIndex = 0;
+
+/* Smooth initial position */
+
+window.addEventListener("load", () => {
+
+    gallery.scrollTo({
+
+        left: 0,
+
+        behavior: "instant"
+
+    });
+
+});
