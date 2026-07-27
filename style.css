@@ -23,7 +23,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 button,
@@ -48,6 +49,7 @@ textarea {
   top: 90px;
   left: 80px;
   z-index: 2;
+  max-width: 520px;
 }
 
 #introTitle {
@@ -55,6 +57,7 @@ textarea {
   font-size: 48px;
   font-weight: 400;
   letter-spacing: 0.02em;
+  line-height: 1.05;
 }
 
 #introDescription {
@@ -70,17 +73,22 @@ textarea {
   left: 0;
   bottom: 0;
   width: max-content;
+  min-width: 100vw;
   min-height: 55vh;
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: var(--gap);
   padding: 0 var(--edge) 45px;
   overflow-x: auto;
   overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
 }
 
 .artPiece {
   width: var(--piece);
+  min-width: var(--piece);
   flex: 0 0 auto;
   cursor: pointer;
   transition:
@@ -116,6 +124,10 @@ textarea {
 .artPiece.hovered {
   transform: scale(var(--hover-scale));
   z-index: 5;
+}
+
+.artPiece.hovered img {
+  filter: brightness(1.08);
 }
 
 .artPiece.dimmed {
@@ -231,7 +243,7 @@ textarea {
 
 @media (max-width: 900px) {
   :root {
-    --piece: 260px;
+    --piece: 320px;
     --gap: 60px;
   }
 
