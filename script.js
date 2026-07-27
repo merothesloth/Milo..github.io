@@ -60,12 +60,10 @@ artPieces.forEach((piece) => {
   piece.addEventListener("mouseleave", () => {
     if (hoveredPiece === piece) clearHover();
   });
-
   piece.addEventListener("click", () => openDetail(piece));
 });
 
 gallery.addEventListener("mouseleave", clearHover);
-
 backButton.addEventListener("click", closeDetail);
 
 document.addEventListener("keydown", (e) => {
@@ -74,11 +72,12 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* Make mouse wheel scroll left/right across the gallery */
+/* Horizontal scrolling */
 gallery.addEventListener(
   "wheel",
   (e) => {
     if (detailOpen) return;
+
     if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
       e.preventDefault();
       gallery.scrollLeft += e.deltaY;
@@ -86,3 +85,34 @@ gallery.addEventListener(
   },
   { passive: false }
 );
+
+/* Click-and-drag scrolling */
+let isDragging = false;
+let startX = 0;
+let scrollLeft = 0;
+
+gallery.addEventListener("mousedown", (e) => {
+  if (detailOpen) return;
+  isDragging = true;
+  gallery.classList.add("dragging");
+  startX = e.pageX - gallery.offsetLeft;
+  scrollLeft = gallery.scrollLeft;
+});
+
+gallery.addEventListener("mouseleave", () => {
+  isDragging = false;
+  gallery.classList.remove("dragging");
+});
+
+gallery.addEventListener("mouseup", () => {
+  isDragging = false;
+  gallery.classList.remove("dragging");
+});
+
+gallery.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - gallery.offsetLeft;
+  const walk = x - startX;
+  gallery.scrollLeft = scrollLeft - walk;
+});
