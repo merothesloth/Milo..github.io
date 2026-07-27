@@ -1,52 +1,40 @@
 /* ======================================================
    PORTFOLIO V3
    COMPLETE STYLE.CSS
-   WITH PASTEL RAINBOW TYPEWRITER CURSOR
 ====================================================== */
 
 
 :root{
 
     --bg:#000;
-
     --text:#fff;
-
     --muted:rgba(255,255,255,.65);
 
     --gap:90px;
-
     --size:340px;
 
 }
 
 
 
-/* ======================================================
-   RESET
-====================================================== */
-
+/* RESET */
 
 *{
 
     margin:0;
-
     padding:0;
-
     box-sizing:border-box;
 
 }
-
 
 
 html,
 body{
 
     width:100%;
-
     height:100%;
 
     background:#000;
-
     color:white;
 
     overflow:hidden;
@@ -121,8 +109,6 @@ body{
 
     color:var(--muted);
 
-    font-weight:300;
-
 }
 
 
@@ -130,7 +116,7 @@ body{
 
 
 /* ======================================================
-   PASTEL RAINBOW TYPEWRITER CURSOR
+   TYPEWRITER CURSOR
 ====================================================== */
 
 
@@ -141,17 +127,41 @@ body{
     white-space:nowrap;
 
 
-    border-right:3px solid transparent;
-
-
-    filter:
-
-    drop-shadow(0 0 6px currentColor);
+    border-right:3px solid var(--cursor-color);
 
 
     animation:
 
-    rainbowCursor 1.2s infinite;
+    cursorBlink .7s infinite;
+
+
+}
+
+
+
+
+@keyframes cursorBlink{
+
+
+    0%{
+
+        border-right-color:var(--cursor-color);
+
+    }
+
+
+    50%{
+
+        border-right-color:transparent;
+
+    }
+
+
+    100%{
+
+        border-right-color:var(--cursor-color);
+
+    }
 
 }
 
@@ -159,44 +169,33 @@ body{
 
 
 
-@keyframes rainbowCursor{
+.typewriter.finished{
 
 
-    0%{
+    animation:
 
-        border-right-color:#ffb3ba;
-
-    }
+    cursorFade 1s forwards;
 
 
-
-    25%{
-
-        border-right-color:#baffc9;
-
-    }
+}
 
 
 
-    50%{
 
-        border-right-color:#bae1ff;
+
+@keyframes cursorFade{
+
+
+    from{
+
+        border-right-color:var(--cursor-color);
 
     }
 
 
+    to{
 
-    75%{
-
-        border-right-color:#d5baff;
-
-    }
-
-
-
-    100%{
-
-        border-right-color:#ffb3ba;
+        border-right-color:transparent;
 
     }
 
@@ -218,11 +217,9 @@ body{
 
     position:absolute;
 
-
     left:0;
 
     right:0;
-
 
     bottom:50px;
 
@@ -232,7 +229,6 @@ body{
 
 
     display:flex;
-
 
     gap:var(--gap);
 
@@ -261,12 +257,7 @@ body{
 
 
 
-    scrollbar-width:thin;
-
-
-
     cursor:grab;
-
 
 }
 
@@ -274,11 +265,11 @@ body{
 
 #gallery.dragging{
 
-
     cursor:grabbing;
 
-
 }
+
+
 
 
 
@@ -292,12 +283,9 @@ body{
 
 #gallery::-webkit-scrollbar-thumb{
 
-
     background:#444;
 
-
     border-radius:20px;
-
 
 }
 
@@ -314,9 +302,7 @@ body{
 
 .artPiece{
 
-
     flex:0 0 auto;
-
 
     width:var(--size);
 
@@ -326,15 +312,12 @@ body{
 
     transition:
 
-
     transform .5s ease,
-
 
     opacity .5s ease;
 
 
 }
-
 
 
 
@@ -350,9 +333,7 @@ body{
     object-fit:cover;
 
 
-
     display:block;
-
 
 
     user-select:none;
@@ -365,40 +346,25 @@ body{
 
 
 
-
-
 .artPiece h2{
-
 
     margin-top:18px;
 
-
     font-size:22px;
 
-
     font-weight:400;
-
 
 }
 
 
 
-
-
 .artPiece p{
-
 
     margin-top:10px;
 
-
     font-size:15px;
 
-
     color:var(--muted);
-
-
-    line-height:1.6;
-
 
 }
 
@@ -409,29 +375,23 @@ body{
 
 
 /* ======================================================
-   HOVER EFFECTS
+   HOVER
 ====================================================== */
 
 
 .artPiece.hovered{
 
-
     transform:scale(1.05);
 
-
     z-index:2;
-
 
 }
 
 
 
-
 .artPiece.dimmed{
 
-
     opacity:.45;
-
 
 }
 
@@ -448,9 +408,7 @@ body{
 
 #detailPage{
 
-
     position:fixed;
-
 
     inset:0;
 
@@ -461,17 +419,13 @@ body{
     z-index:100;
 
 
-
     display:none;
-
 
 
     opacity:0;
 
 
-
     transition:
-
 
     opacity .4s ease;
 
@@ -480,15 +434,11 @@ body{
 
 
 
-
 #detailPage.active{
-
 
     display:block;
 
-
     opacity:1;
-
 
 }
 
@@ -498,42 +448,29 @@ body{
 
 #topBar{
 
-
     height:90px;
-
 
     display:flex;
 
-
     align-items:center;
 
-
     padding-left:50px;
-
 
 }
 
 
 
-
-
 #backButton{
-
 
     background:none;
 
-
     border:none;
-
 
     color:white;
 
-
     font-size:18px;
 
-
     cursor:pointer;
-
 
 }
 
@@ -543,87 +480,57 @@ body{
 
 #detailLayout{
 
-
     display:flex;
-
 
     gap:80px;
 
-
     padding:0 50px 50px;
-
 
     height:calc(100vh - 90px);
 
-
 }
-
-
 
 
 
 #leftColumn{
 
-
     width:30%;
-
 
     min-width:300px;
 
-
 }
-
-
 
 
 
 #detailImage{
 
-
     width:100%;
-
 
     aspect-ratio:1;
 
-
     object-fit:cover;
 
-
 }
-
-
 
 
 
 #detailTitle{
 
-
     margin-top:20px;
 
-
     font-size:34px;
-
-
-    font-weight:400;
-
 
 }
 
 
 
-
-
 #detailText{
-
 
     margin-top:15px;
 
-
     color:var(--muted);
 
-
     line-height:1.6;
-
 
 }
 
@@ -633,69 +540,33 @@ body{
 
 #rightColumn{
 
-
     flex:1;
-
 
     overflow-y:auto;
 
-
 }
-
-
 
 
 
 .artboard{
 
-
     margin-bottom:80px;
 
-
-    transition:transform .4s ease;
-
-
 }
-
-
-
-
-
-.artboard:hover{
-
-
-    transform:translateX(10px);
-
-
-}
-
-
 
 
 
 .artboard h2{
 
-
     font-size:28px;
 
-
-    margin-bottom:15px;
-
-
 }
-
-
 
 
 
 .artboard p{
 
-
     color:var(--muted);
-
-
-    line-height:1.7;
-
 
 }
 
@@ -703,11 +574,6 @@ body{
 
 
 
-
-
-/* ======================================================
-   RESPONSIVE
-====================================================== */
 
 
 @media(max-width:900px){
@@ -736,7 +602,6 @@ body{
     font-size:40px;
 
 }
-
 
 
 }
