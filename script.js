@@ -9,6 +9,11 @@ document.addEventListener(
 ()=>{
 
 
+/* ======================================================
+   ELEMENTS
+====================================================== */
+
+
 const gallery =
 document.querySelector("#gallery");
 
@@ -46,169 +51,215 @@ document.querySelector("#heroSubtitle");
 
 
 
-let opened=false;
+let opened = false;
+
+
 
 
 
 
 
 /* ======================================================
-   TYPEWRITER
+   TYPEWRITER SYSTEM
 ====================================================== */
 
 
-function typeWriter(element,speed){
+const cursorColors = [
 
-
-if(!element)return;
-
-
-const text =
-element.textContent;
-
-
-element.textContent="";
-
-
-element.classList.add(
-"typewriter"
-);
-
-
-
-const colors=[
-
-"#ff1744",
-"#ff6d00",
-"#ffd600",
-"#00e676",
-"#00b0ff",
-"#651fff",
-"#d500f9",
-"#ff4081"
+    "#ff1744",
+    "#ff6d00",
+    "#ffd600",
+    "#00e676",
+    "#00b0ff",
+    "#651fff",
+    "#d500f9",
+    "#ff4081"
 
 ];
 
 
 
-let color =
-colors[
-Math.floor(
-Math.random()*colors.length
-)
-];
+function randomCursorColor(){
+
+    return cursorColors[
+        Math.floor(
+            Math.random() *
+            cursorColors.length
+        )
+    ];
+
+}
 
 
 
-element.style.setProperty(
-"--cursor-color",
-color
+
+
+function typeWriter(element, speed, keepCursor){
+
+
+    if(!element) return;
+
+
+
+    const text =
+    element.textContent;
+
+
+
+    element.textContent="";
+
+
+
+    element.classList.add(
+        "typewriter"
+    );
+
+
+
+    element.style.setProperty(
+        "--cursor-color",
+        randomCursorColor()
+    );
+
+
+
+    let index = 0;
+
+
+
+    const timer =
+    setInterval(()=>{
+
+
+        element.textContent +=
+        text[index];
+
+
+
+        index++;
+
+
+
+
+        if(index >= text.length){
+
+
+
+            clearInterval(timer);
+
+
+
+            if(!keepCursor){
+
+
+                element.classList.remove(
+                    "typewriter"
+                );
+
+
+                return;
+
+
+            }
+
+
+
+
+            /*
+              Subtitle cursor:
+              stays 4 seconds,
+              changes every blink
+            */
+
+
+
+            let changes = 0;
+
+
+
+            const colorTimer =
+            setInterval(()=>{
+
+
+
+                element.style.setProperty(
+
+                    "--cursor-color",
+
+                    randomCursorColor()
+
+                );
+
+
+
+                changes++;
+
+
+
+                if(changes >= 6){
+
+
+
+                    clearInterval(
+                        colorTimer
+                    );
+
+
+
+                    element.classList.add(
+                        "finished"
+                    );
+
+
+
+                }
+
+
+
+            },700);
+
+
+
+        }
+
+
+
+    },speed);
+
+
+}
+
+
+
+
+
+
+
+/* ======================================================
+   START INTRO
+====================================================== */
+
+
+typeWriter(
+    heroTitle,
+    90,
+    false
 );
-
-
-
-let index=0;
-
-
-
-const timer=setInterval(()=>{
-
-
-element.textContent +=
-text[index];
-
-
-index++;
-
-
-
-if(index>=text.length){
-
-
-clearInterval(timer);
 
 
 
 setTimeout(()=>{
 
 
-let changeCount=0;
-
-
-
-const colorTimer=setInterval(()=>{
-
-
-color =
-colors[
-Math.floor(
-Math.random()*colors.length
-)
-];
-
-
-
-element.style.setProperty(
-"--cursor-color",
-color
-);
-
-
-
-changeCount++;
-
-
-
-if(changeCount>=6){
-
-
-clearInterval(colorTimer);
-
-
-element.classList.add(
-"finished"
-);
-
-
-}
-
-
-
-},700);
-
-
-
-},4000);
-
-
-
-}
-
-
-},speed);
-
-
-}
-
-
-
-typeWriter(
-heroTitle,
-90
-);
-
-
-
-setTimeout(()=>{
-
-
-typeWriter(
-heroSubtitle,
-50
-);
+    typeWriter(
+        heroSubtitle,
+        50,
+        true
+    );
 
 
 },1800);
+
 
 
 
@@ -224,71 +275,91 @@ heroSubtitle,
 function openArtwork(piece){
 
 
-opened=true;
-
-
-const img =
-piece.querySelector("img");
-
-
-const title =
-piece.querySelector("h2");
-
-
-const text =
-piece.querySelector("p");
+    opened = true;
 
 
 
-detailImage.src =
-img.src;
-
-
-detailTitle.textContent =
-title.textContent;
-
-
-detailText.textContent =
-text.textContent;
+    const img =
+    piece.querySelector("img");
 
 
 
-detailPage.style.display="block";
+    const title =
+    piece.querySelector("h2");
 
 
-setTimeout(()=>{
 
-detailPage.classList.add(
-"active"
-);
+    const description =
+    piece.querySelector("p");
 
-},20);
+
+
+    detailImage.src =
+    img.src;
+
+
+
+    detailTitle.textContent =
+    title.textContent;
+
+
+
+    detailText.textContent =
+    description.textContent;
+
+
+
+    detailPage.style.display =
+    "block";
+
+
+
+    setTimeout(()=>{
+
+
+        detailPage.classList.add(
+            "active"
+        );
+
+
+    },20);
 
 
 }
 
 
 
+
+
+
+
+/* ======================================================
+   CLOSE ARTWORK
+====================================================== */
 
 
 function closeArtwork(){
 
 
-opened=false;
+    opened=false;
 
 
-detailPage.classList.remove(
-"active"
-);
+
+    detailPage.classList.remove(
+        "active"
+    );
 
 
-setTimeout(()=>{
+
+    setTimeout(()=>{
 
 
-detailPage.style.display="none";
+        detailPage.style.display =
+        "none";
 
 
-},400);
+
+    },400);
 
 
 }
@@ -299,137 +370,168 @@ detailPage.style.display="none";
 
 
 
-/* CLICK */
+/* ======================================================
+   ARTWORK CLICK
+====================================================== */
+
 
 artworks.forEach(
 (piece)=>{
 
 
-piece.addEventListener(
+    piece.addEventListener(
+        "click",
+        ()=>{
+
+
+            openArtwork(piece);
+
+
+        }
+    );
+
+
+});
+
+
+
+
+
+
+
+/* ======================================================
+   BACK BUTTON
+====================================================== */
+
+
+backButton.addEventListener(
 "click",
 ()=>{
 
 
-openArtwork(piece);
+    closeArtwork();
 
 
 });
 
 
-});
 
 
 
 
 
-
-/* BACK */
-
-backButton.addEventListener(
-"click",
-closeArtwork
-);
-
-
-
-
-
-
-/* ESCAPE + ARROWS */
+/* ======================================================
+   KEYBOARD
+====================================================== */
 
 
 document.addEventListener(
 "keydown",
-(e)=>{
+(event)=>{
 
 
-if(
-e.key==="Escape" &&
-opened
-){
-
-closeArtwork();
-
-return;
-
-}
+    if(
+        event.key === "Escape" &&
+        opened
+    ){
 
 
-
-if(opened)return;
-
+        closeArtwork();
 
 
-if(e.key==="ArrowRight"){
+        return;
 
 
-gallery.scrollBy({
+    }
 
-left:400,
 
-behavior:"smooth"
+
+    if(opened)
+    return;
+
+
+
+
+    if(event.key === "ArrowRight"){
+
+
+        gallery.scrollBy({
+
+            left:400,
+
+            behavior:"smooth"
+
+        });
+
+
+    }
+
+
+
+
+    if(event.key === "ArrowLeft"){
+
+
+        gallery.scrollBy({
+
+            left:-400,
+
+            behavior:"smooth"
+
+        });
+
+
+    }
+
+
 
 });
 
 
-}
-
-
-
-if(e.key==="ArrowLeft"){
-
-
-gallery.scrollBy({
-
-left:-400,
-
-behavior:"smooth"
-
-});
-
-
-}
-
-
-});
 
 
 
 
 
 
+/* ======================================================
+   TRACKPAD + MOUSE WHEEL
+====================================================== */
 
-/* TRACKPAD */
 
 gallery.addEventListener(
 "wheel",
-(e)=>{
+(event)=>{
 
 
-if(opened)return;
-
-
-
-if(
-Math.abs(e.deltaX) >
-Math.abs(e.deltaY)
-){
-
-return;
-
-}
+    if(opened)
+    return;
 
 
 
-e.preventDefault();
+    if(
+        Math.abs(event.deltaX) >
+        Math.abs(event.deltaY)
+    ){
+
+        return;
+
+    }
 
 
-gallery.scrollLeft += e.deltaY;
+
+    event.preventDefault();
+
+
+
+    gallery.scrollLeft +=
+    event.deltaY;
+
 
 
 },
 {
-passive:false
+    passive:false
 }
 
 );
@@ -440,51 +542,76 @@ passive:false
 
 
 
-/* DRAG */
 
-let down=false;
+/* ======================================================
+   DRAG SCROLL
+====================================================== */
 
-let start=0;
 
-let scroll=0;
+let dragging=false;
+
+let startX=0;
+
+let startScroll=0;
+
 
 
 
 gallery.addEventListener(
 "mousedown",
-(e)=>{
+(event)=>{
 
 
-down=true;
-
-start=e.pageX;
-
-scroll=gallery.scrollLeft;
+    dragging=true;
 
 
-gallery.classList.add(
-"dragging"
-);
+
+    startX =
+    event.pageX;
+
+
+
+    startScroll =
+    gallery.scrollLeft;
+
+
+
+    gallery.classList.add(
+        "dragging"
+    );
 
 
 });
+
+
+
+
 
 
 
 window.addEventListener(
 "mousemove",
-(e)=>{
+(event)=>{
 
 
-if(!down)return;
+    if(!dragging)
+    return;
 
 
-gallery.scrollLeft =
-scroll -
-(e.pageX-start);
+
+    gallery.scrollLeft =
+
+    startScroll -
+
+    (event.pageX - startX);
+
 
 
 });
+
+
+
+
 
 
 
@@ -493,12 +620,13 @@ window.addEventListener(
 ()=>{
 
 
-down=false;
+    dragging=false;
 
 
-gallery.classList.remove(
-"dragging"
-);
+
+    gallery.classList.remove(
+        "dragging"
+    );
 
 
 });
@@ -509,75 +637,91 @@ gallery.classList.remove(
 
 
 
-/* HOVER */
+
+/* ======================================================
+   HOVER EFFECT
+====================================================== */
 
 
 artworks.forEach(
 (piece)=>{
 
 
-piece.addEventListener(
-"mouseenter",
-()=>{
+    piece.addEventListener(
+    "mouseenter",
+    ()=>{
 
 
-artworks.forEach(
-(other)=>{
+        artworks.forEach(
+        (other)=>{
 
 
-if(other!==piece)
+            if(other !== piece){
 
-other.classList.add(
-"dimmed"
-);
+
+                other.classList.add(
+                    "dimmed"
+                );
+
+
+            }
+
+
+        });
+
+
+
+        piece.classList.add(
+            "hovered"
+        );
+
+
+    });
+
+
+
+
+
+
+    piece.addEventListener(
+    "mouseleave",
+    ()=>{
+
+
+        artworks.forEach(
+        (other)=>{
+
+
+            other.classList.remove(
+                "dimmed"
+            );
+
+
+        });
+
+
+
+        piece.classList.remove(
+            "hovered"
+        );
+
+
+    });
+
 
 
 });
 
 
-piece.classList.add(
-"hovered"
-);
-
-
-});
-
-
-
-piece.addEventListener(
-"mouseleave",
-()=>{
-
-
-artworks.forEach(
-(other)=>{
-
-
-other.classList.remove(
-"dimmed"
-);
-
-
-});
-
-
-piece.classList.remove(
-"hovered"
-);
-
-
-});
-
-
-});
 
 
 
 
 
 console.log(
-"Portfolio loaded"
+"Portfolio loaded successfully"
 );
+
 
 
 });
