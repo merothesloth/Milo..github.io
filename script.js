@@ -366,46 +366,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    /* =====================================================
-       MOUSE WHEEL HORIZONTAL SCROLL
-    ====================================================== */
+  /* =====================================================
+   TRACKPAD / NATIVE HORIZONTAL SCROLL
+===================================================== */
 
-    if (gallery) {
+if (gallery) {
 
-
-        gallery.addEventListener(
-            "wheel",
-            (event) => {
-
-
-                if (galleryLocked) return;
+    gallery.addEventListener(
+        "wheel",
+        (event) => {
 
 
-                if (
-                    Math.abs(event.deltaY) >
-                    Math.abs(event.deltaX)
-                ) {
+            if (galleryLocked) return;
 
 
-                    event.preventDefault();
+            /*
+              Allow Mac trackpad gestures
+              to naturally scroll horizontally.
+            */
 
+            if (
+                Math.abs(event.deltaX) >
+                Math.abs(event.deltaY)
+            ) {
 
-                    gallery.scrollLeft +=
-                        event.deltaY;
+                return;
 
-
-                }
-
-
-            },
-            {
-                passive: false
             }
-        );
 
 
-    }
+            /*
+              Convert vertical two-finger
+              trackpad movement into
+              horizontal gallery movement.
+            */
 
+            event.preventDefault();
+
+
+            gallery.scrollLeft +=
+                event.deltaY;
+
+
+        },
+        {
+            passive:false
+        }
+    );
+
+}
 
 
     /* =====================================================
