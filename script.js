@@ -1,311 +1,726 @@
-/* ======================================================
-   PORTFOLIO V3
-   SCRIPT.JS
-   PART 3A
-====================================================== */
+/* =========================================================
+   ART GALLERY SCRIPT
+   Complete rebuild
+   Part 3A — Core setup, hover effects, artwork opening,
+   detail page state, back button
+========================================================= */
 
-const galleryPage = document.getElementById("galleryPage");
-const detailPage = document.getElementById("detailPage");
+document.addEventListener("DOMContentLoaded", () => {
 
-const gallery = document.getElementById("gallery");
-
-const artPieces = document.querySelectorAll(".artPiece");
-
-const backButton = document.getElementById("backButton");
-
-const detailImage = document.getElementById("detailImage");
-const detailTitle = document.getElementById("detailTitle");
-const detailText = document.getElementById("detailText");
-
-let detailOpen = false;
+    console.log("Gallery script loaded");
 
 
+    /* =====================================================
+       ELEMENT REFERENCES
+    ====================================================== */
 
-/* =====================================
-   HOVER EFFECT
-===================================== */
+    const gallery = document.querySelector(".gallery");
+    const artworks = document.querySelectorAll(".artwork");
 
-artPieces.forEach((piece) => {
+    const detailPage = document.querySelector(".detail-page");
+    const detailImage = document.querySelector(".detail-image");
+    const detailTitle = document.querySelector(".detail-title");
+    const detailArtist = document.querySelector(".detail-artist");
+    const detailDescription = document.querySelector(".detail-description");
 
-    piece.addEventListener("mouseenter", () => {
+    const backButton = document.querySelector(".back-button");
 
-        if (detailOpen) return;
 
-        artPieces.forEach((other) => {
+    /*
+       Safety check:
+       Prevents the script from crashing if an element
+       is missing during development.
+    */
 
-            if (other === piece) {
+    if (!gallery) {
+        console.warn("Gallery element not found");
+    }
 
-                other.classList.add("hovered");
-                other.classList.remove("dimmed");
 
-            } else {
+    /* =====================================================
+       GALLERY STATE
+    ====================================================== */
 
-                other.classList.remove("hovered");
-                other.classList.add("dimmed");
+    let currentArtwork = null;
+
+    let galleryLocked = false;
+
+
+    /* =====================================================
+       HOVER ANIMATION
+    ====================================================== */
+
+    artworks.forEach((artwork) => {
+
+        artwork.addEventListener("mouseenter", () => {
+
+            if (galleryLocked) return;
+
+            artwork.classList.add("hover-active");
+
+        });
+
+
+        artwork.addEventListener("mouseleave", () => {
+
+            artwork.classList.remove("hover-active");
+
+        });
+
+    });
+
+
+
+    /* =====================================================
+       OPEN ARTWORK DETAIL PAGE
+    ====================================================== */
+
+    artworks.forEach((artwork) => {
+
+
+        artwork.addEventListener("click", () => {
+
+
+            if (galleryLocked) return;
+
+
+            currentArtwork = artwork;
+
+
+            const image =
+                artwork.querySelector("img");
+
+
+            const title =
+                artwork.dataset.title ||
+                "Untitled";
+
+
+            const artist =
+                artwork.dataset.artist ||
+                "Unknown Artist";
+
+
+            const description =
+                artwork.dataset.description ||
+                "No description available.";
+
+
+
+            if (detailImage && image) {
+
+                detailImage.src = image.src;
+                detailImage.alt = title;
 
             }
 
+
+            if (detailTitle) {
+
+                detailTitle.textContent = title;
+
+            }
+
+
+            if (detailArtist) {
+
+                detailArtist.textContent = artist;
+
+            }
+
+
+            if (detailDescription) {
+
+                detailDescription.textContent =
+                    description;
+
+            }
+
+
+
+            openDetailPage();
+
+
         });
+
 
     });
 
-    piece.addEventListener("mouseleave", () => {
 
-        if (detailOpen) return;
 
-        artPieces.forEach((other) => {
+    /* =====================================================
+       OPEN DETAIL FUNCTION
+    ====================================================== */
 
-            other.classList.remove("hovered");
-            other.classList.remove("dimmed");
+    function openDetailPage() {
 
-        });
 
-    });
+        galleryLocked = true;
 
-});
 
+        if (detailPage) {
 
-
-/* =====================================
-   OPEN DETAIL PAGE
-===================================== */
-
-artPieces.forEach((piece) => {
-
-    piece.addEventListener("click", () => {
-
-        const img = piece.querySelector("img");
-        const title = piece.querySelector("h2");
-        const text = piece.querySelector("p");
-
-        detailImage.src = img.src;
-        detailTitle.textContent = title.textContent;
-        detailText.textContent = text.textContent;
-
-        galleryPage.classList.add("hidden");
-
-        setTimeout(() => {
-
-            galleryPage.style.display = "none";
-
-            detailPage.style.display = "block";
-
-            requestAnimationFrame(() => {
-                detailPage.classList.add("active");
-            });
-
-            detailOpen = true;
-
-        }, 450);
-
-    });
-
-});
-
-
-
-/* =====================================
-   CLOSE DETAIL PAGE
-===================================== */
-
-backButton.addEventListener("click", () => {
-
-    detailPage.classList.remove("active");
-
-    setTimeout(() => {
-
-        detailPage.style.display = "none";
-
-        galleryPage.style.display = "block";
-
-        requestAnimationFrame(() => {
-            galleryPage.classList.remove("hidden");
-        });
-
-        detailOpen = false;
-
-    }, 450);
-
-});
-
-
-
-/* =====================================
-   ESC KEY
-===================================== */
-
-document.addEventListener("keydown", (event) => {
-
-    if (event.key === "Escape" && detailOpen) {
-
-        backButton.click();
-
-    }
-
-});
-
-
-
-/* =====================================
-   HORIZONTAL SCROLL
-===================================== */
-
-gallery.addEventListener("wheel", (event) => {
-
-    event.preventDefault();
-
-    gallery.scrollLeft += event.deltaY;
-
-}, { passive: false });/* ======================================================
-   PORTFOLIO V3
-   SCRIPT.JS
-   PART 3B
-   DRAG SCROLL + POLISH
-====================================================== */
-
-let isDragging = false;
-let dragStartX = 0;
-let dragStartScroll = 0;
-let moved = false;
-
-/* Disable image dragging */
-
-document.querySelectorAll(".artPiece img").forEach((img) => {
-
-    img.draggable = false;
-
-});
-
-/* Mouse Down */
-
-gallery.addEventListener("mousedown", (event) => {
-
-    if (detailOpen) return;
-
-    isDragging = true;
-
-    moved = false;
-
-    dragStartX = event.pageX;
-
-    dragStartScroll = gallery.scrollLeft;
-
-    gallery.style.cursor = "grabbing";
-
-});
-
-/* Mouse Move */
-
-window.addEventListener("mousemove", (event) => {
-
-    if (!isDragging) return;
-
-    const distance = event.pageX - dragStartX;
-
-    if (Math.abs(distance) > 4) {
-
-        moved = true;
-
-    }
-
-    gallery.scrollLeft = dragStartScroll - distance;
-
-});
-
-/* Mouse Up */
-
-window.addEventListener("mouseup", () => {
-
-    isDragging = false;
-
-    gallery.style.cursor = "grab";
-
-});
-
-/* Prevent clicks after dragging */
-
-artPieces.forEach((piece) => {
-
-    piece.addEventListener("click", (event) => {
-
-        if (moved) {
-
-            event.stopImmediatePropagation();
-
-            event.preventDefault();
-
-            moved = false;
+            detailPage.classList.add("active");
 
         }
 
-    }, true);
 
-});
+        document.body.classList.add(
+            "detail-open"
+        );
 
-/* Keyboard Navigation */
-
-document.addEventListener("keydown", (event) => {
-
-    if (detailOpen) return;
-
-    if (event.key === "ArrowRight") {
-
-        gallery.scrollBy({
-
-            left: 450,
-
-            behavior: "smooth"
-
-        });
 
     }
 
-    if (event.key === "ArrowLeft") {
 
-        gallery.scrollBy({
 
-            left: -450,
+    /* =====================================================
+       CLOSE DETAIL FUNCTION
+    ====================================================== */
 
-            behavior: "smooth"
+    function closeDetailPage() {
 
-        });
+
+        galleryLocked = false;
+
+
+        if (detailPage) {
+
+            detailPage.classList.remove("active");
+
+        }
+
+
+        document.body.classList.remove(
+            "detail-open"
+        );
+
+
+        currentArtwork = null;
+
 
     }
 
-});
 
-/* Keep cursor correct */
 
-gallery.addEventListener("mouseleave", () => {
+    /* =====================================================
+       BACK BUTTON
+    ====================================================== */
 
-    isDragging = false;
+    if (backButton) {
 
-    gallery.style.cursor = "grab";
 
-});
+        backButton.addEventListener(
+            "click",
+            (event) => {
 
-/* Prevent selecting text while dragging */
 
-gallery.addEventListener("dragstart", (event) => {
+                event.preventDefault();
 
-    event.preventDefault();
 
-});
+                closeDetailPage();
 
-/* Give gallery focus */
 
-gallery.tabIndex = 0;
+            }
+        );
 
-/* Smooth initial position */
 
-window.addEventListener("load", () => {
+    }
 
-    gallery.scrollTo({
 
-        left: 0,
 
-        behavior: "instant"
+    /* =====================================================
+       ESCAPE KEY CLOSE
+       (keyboard handling continues in Part 3B)
+    ====================================================== */
 
-    });
+
+});/* =========================================================
+   ART GALLERY SCRIPT
+   Part 3B — Drag scrolling, mouse wheel scrolling,
+   arrow keys, escape key, gallery movement
+========================================================= */
+
+
+
+    /* =====================================================
+       GALLERY SCROLL STATE
+    ====================================================== */
+
+    let isDragging = false;
+
+    let startX = 0;
+
+    let scrollStart = 0;
+
+    let velocity = 0;
+
+    let lastX = 0;
+
+
+
+    /* =====================================================
+       MOUSE DRAG SCROLLING
+    ====================================================== */
+
+    if (gallery) {
+
+
+        gallery.addEventListener(
+            "mousedown",
+            (event) => {
+
+
+                if (galleryLocked) return;
+
+
+                isDragging = true;
+
+
+                gallery.classList.add(
+                    "dragging"
+                );
+
+
+                startX = event.pageX;
+
+
+                scrollStart =
+                    gallery.scrollLeft;
+
+
+                lastX = event.pageX;
+
+
+            }
+        );
+
+
+
+        gallery.addEventListener(
+            "mousemove",
+            (event) => {
+
+
+                if (!isDragging) return;
+
+
+                event.preventDefault();
+
+
+                const distance =
+                    event.pageX - startX;
+
+
+                gallery.scrollLeft =
+                    scrollStart - distance;
+
+
+                velocity =
+                    event.pageX - lastX;
+
+
+                lastX = event.pageX;
+
+
+            }
+        );
+
+
+
+        gallery.addEventListener(
+            "mouseup",
+            () => {
+
+
+                isDragging = false;
+
+
+                gallery.classList.remove(
+                    "dragging"
+                );
+
+
+            }
+        );
+
+
+
+        gallery.addEventListener(
+            "mouseleave",
+            () => {
+
+
+                isDragging = false;
+
+
+                gallery.classList.remove(
+                    "dragging"
+                );
+
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       MOUSE WHEEL HORIZONTAL SCROLL
+    ====================================================== */
+
+    if (gallery) {
+
+
+        gallery.addEventListener(
+            "wheel",
+            (event) => {
+
+
+                if (galleryLocked) return;
+
+
+                if (
+                    Math.abs(event.deltaY) >
+                    Math.abs(event.deltaX)
+                ) {
+
+
+                    event.preventDefault();
+
+
+                    gallery.scrollLeft +=
+                        event.deltaY;
+
+
+                }
+
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+    }
+
+
+
+    /* =====================================================
+       ARROW KEY NAVIGATION
+    ====================================================== */
+
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+
+            /*
+              Escape closes detail page
+            */
+
+            if (
+                event.key === "Escape" &&
+                galleryLocked
+            ) {
+
+
+                closeDetailPage();
+
+
+                return;
+
+
+            }
+
+
+
+            /*
+              Prevent gallery movement
+              while detail page is open
+            */
+
+            if (galleryLocked) return;
+
+
+
+            if (!gallery) return;
+
+
+
+            const amount = 300;
+
+
+
+            if (
+                event.key === "ArrowRight"
+            ) {
+
+
+                gallery.scrollBy({
+                    left: amount,
+                    behavior: "smooth"
+                });
+
+
+            }
+
+
+
+            if (
+                event.key === "ArrowLeft"
+            ) {
+
+
+                gallery.scrollBy({
+                    left: -amount,
+                    behavior: "smooth"
+                });
+
+
+            }
+
+
+
+        }
+    );
+
+
+
+    /* =====================================================
+       DRAG RELEASE SAFETY
+       Prevents stuck dragging if mouse leaves browser
+    ====================================================== */
+
+
+    window.addEventListener(
+        "mouseup",
+        () => {
+
+
+            isDragging = false;
+
+
+            if (gallery) {
+
+                gallery.classList.remove(
+                    "dragging"
+                );
+
+            }
+
+
+        }
+    );
+
+
+
+    /* =====================================================
+       PREVENT IMAGE DRAGGING
+       Keeps gallery drag smooth
+    ====================================================== */
+
+
+    artworks.forEach(
+        (artwork) => {
+
+
+            const img =
+                artwork.querySelector("img");
+
+
+            if (img) {
+
+
+                img.addEventListener(
+                    "dragstart",
+                    (event) => {
+
+                        event.preventDefault();
+
+                    }
+                );
+
+
+            }
+
+
+        }
+    );/* =========================================================
+   ART GALLERY SCRIPT
+   Part 3C — Final cleanup, click protection,
+   animation helpers, event conflict prevention
+========================================================= */
+
+
+
+    /* =====================================================
+       CLICK PROTECTION
+       Prevents drag-release from triggering artwork open
+    ====================================================== */
+
+    let clickStartX = 0;
+    let clickStartY = 0;
+
+
+
+    if (gallery) {
+
+
+        gallery.addEventListener(
+            "mousedown",
+            (event) => {
+
+
+                clickStartX = event.clientX;
+
+                clickStartY = event.clientY;
+
+
+            }
+        );
+
+
+
+        gallery.addEventListener(
+            "click",
+            (event) => {
+
+
+                const movedX =
+                    Math.abs(
+                        event.clientX -
+                        clickStartX
+                    );
+
+
+                const movedY =
+                    Math.abs(
+                        event.clientY -
+                        clickStartY
+                    );
+
+
+
+                /*
+                  If the user dragged,
+                  cancel the click.
+                */
+
+                if (
+                    movedX > 10 ||
+                    movedY > 10
+                ) {
+
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                }
+
+
+            },
+            true
+        );
+
+
+    }
+
+
+
+
+    /* =====================================================
+       DETAIL PAGE TRANSITION FALLBACK
+    ====================================================== */
+
+
+    if (detailPage) {
+
+
+        detailPage.addEventListener(
+            "transitionend",
+            () => {
+
+
+                if (
+                    !detailPage.classList.contains(
+                        "active"
+                    )
+                ) {
+
+
+                    document.body.classList.remove(
+                        "detail-open"
+                    );
+
+
+                }
+
+
+            }
+        );
+
+
+    }
+
+
+
+
+    /* =====================================================
+       TOUCH SUPPORT
+       Allows mobile swipe scrolling
+    ====================================================== */
+
+
+    if (gallery) {
+
+
+        gallery.style.touchAction =
+            "pan-y";
+
+
+
+    }
+
+
+
+    /* =====================================================
+       RESET WHEN WINDOW RESIZES
+    ====================================================== */
+
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+
+            if (!galleryLocked) return;
+
+
+            /*
+              Keeps detail page stable
+              during resizing.
+            */
+
+
+        }
+    );
+
+
+
+    /* =====================================================
+       FINAL INITIALIZATION
+    ====================================================== */
+
+
+    console.log(
+        "Gallery controls initialized successfully"
+    );
+
 
 });
