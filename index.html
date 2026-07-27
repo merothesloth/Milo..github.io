@@ -1,241 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>My Art Portfolio</title>
-
-<link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Art Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
-
 <body>
-
-
-<!-- =========================
-EDITOR TOOLBAR
-========================= -->
-
-
-<div id="toolbar">
-
-
-<button id="editToggle">
-EDIT
-</button>
-
-
-<button id="undoButton">
-UNDO
-</button>
-
-
-<button id="redoButton">
-REDO
-</button>
-
-
-<button id="saveButton">
-SAVE
-</button>
-
-
-
-<button id="addText">
-ADD TEXT
-</button>
-
-
-<button id="addImage">
-ADD IMAGE
-</button>
-
-
-<button id="addArtboard">
-ADD ARTBOARD
-</button>
-
-
-
-<div id="controls">
-
-
-<label>
-Font Size
-<input 
-id="fontSize"
-type="number"
-value="48">
-</label>
-
-
-
-<label>
-Color
-<input
-id="textColor"
-type="color"
-value="#ffffff">
-</label>
-
-
-<select id="fontSelector">
-
-<option>
-Default
-</option>
-
-<option>
-Serif
-</option>
-
-<option>
-Sans Serif
-</option>
-
-<option>
-Monospace
-</option>
-
-</select>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- =========================
-MAIN CANVAS
-========================= -->
-
-
-<main id="canvas">
-
-
-
-<!-- STARTING TITLE -->
-
-<div 
-class="object textObject"
-data-type="text">
-
-
-<h1 contenteditable="true">
-
-My Art Portfolio
-
-</h1>
-
-
-</div>
-
-
-
-
-
-<div 
-class="object textObject"
-data-type="text">
-
-
-<p contenteditable="true">
-
-A collection of my work
-
-</p>
-
-
-</div>
-
-
-
-
-
-<!-- STARTING ARTWORK -->
-
-<div 
-class="object imageObject"
-data-type="image">
-
-
-<img 
-src="images/art1.jpg"
-alt="Artwork">
-
-
-</div>
-
-
-
-
-
-<div 
-class="object imageObject"
-data-type="image">
-
-
-<img 
-src="images/art2.jpg"
-alt="Artwork">
-
-
-</div>
-
-
-
-
-
-<div 
-class="object imageObject"
-data-type="image">
-
-
-<img 
-src="images/art3.jpg"
-alt="Artwork">
-
-
-</div>
-
-
-
-
-
-</main>
-
-
-
-
-
-<!-- =========================
-HIDDEN UPLOAD
-========================= -->
-
-
-<input 
-id="imageUpload"
-type="file"
-accept="image/*"
-hidden>
-
-
-
-
-
-<script src="editor.js"></script>
-
-
+  <main id="galleryPage">
+    <header id="intro">
+      <h1 id="introTitle">My Art Portfolio</h1>
+      <p id="introDescription">A collection of my work</p>
+    </header>
+
+    <section id="gallery" aria-label="Artwork gallery">
+      <article class="artPiece" data-id="1">
+        <img src="images/art1.jpg" alt="Artwork 1" />
+        <h2 contenteditable="true">Artwork One</h2>
+        <p contenteditable="true">Description goes here.</p>
+      </article>
+
+      <article class="artPiece" data-id="2">
+        <img src="images/art2.jpg" alt="Artwork 2" />
+        <h2 contenteditable="true">Artwork Two</h2>
+        <p contenteditable="true">Description goes here.</p>
+      </article>
+
+      <article class="artPiece" data-id="3">
+        <img src="images/art3.jpg" alt="Artwork 3" />
+        <h2 contenteditable="true">Artwork Three</h2>
+        <p contenteditable="true">Description goes here.</p>
+      </article>
+
+      <article class="artPiece" data-id="4">
+        <img src="images/art4.jpg" alt="Artwork 4" />
+        <h2 contenteditable="true">Artwork Four</h2>
+        <p contenteditable="true">Description goes here.</p>
+      </article>
+
+      <article class="artPiece" data-id="5">
+        <img src="images/art5.jpg" alt="Artwork 5" />
+        <h2 contenteditable="true">Artwork Five</h2>
+        <p contenteditable="true">Description goes here.</p>
+      </article>
+    </section>
+  </main>
+
+  <section id="detailPage" aria-hidden="true">
+    <button id="backButton" type="button">← Back</button>
+
+    <div id="detailLayout">
+      <div id="detailLeft">
+        <img id="detailImage" src="" alt="Selected artwork" />
+        <h1 id="detailTitle"></h1>
+        <p id="detailDescription"></p>
+      </div>
+
+      <div id="detailRight">
+        <div class="artboard">
+          <h2 contenteditable="true">Artboard Title</h2>
+          <p contenteditable="true">Information goes here.</p>
+        </div>
+
+        <div class="artboard">
+          <h2 contenteditable="true">Artboard Title</h2>
+          <p contenteditable="true">Information goes here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
 </body>
-
-
 </html>
