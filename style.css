@@ -251,4 +251,10 @@ textarea {
     width: 30vw;
     min-width: 220px;
   }
+}#gallery {
+  cursor: grab;
+}
+
+#gallery.dragging {
+  cursor: grabbing;
 }
