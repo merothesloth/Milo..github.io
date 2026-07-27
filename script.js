@@ -36,7 +36,119 @@ document.querySelector("#detailText");
 const backButton =
 document.querySelector("#backButton");
 
+const backButton =
+document.querySelector("#backButton");
 
+
+
+/* ======================================================
+   FIRST VISIT TYPEWRITER
+====================================================== */
+
+
+const heroTitle =
+document.querySelector("#heroTitle");
+
+
+const heroSubtitle =
+document.querySelector("#heroSubtitle");
+
+
+
+function typeWriter(element, speed){
+
+    if(!element) return;
+
+
+    const text =
+    element.textContent;
+
+
+    element.textContent="";
+
+
+    element.classList.add(
+        "typewriter"
+    );
+
+
+    let index=0;
+
+
+    const typing =
+    setInterval(()=>{
+
+
+        element.textContent +=
+        text[index];
+
+
+        index++;
+
+
+        if(index >= text.length){
+
+
+            clearInterval(typing);
+
+
+            setTimeout(()=>{
+
+
+                element.classList.remove(
+                    "typewriter"
+                );
+
+
+            },1000);
+
+
+        }
+
+
+    },speed);
+
+
+}
+
+
+
+const visited =
+localStorage.getItem(
+"portfolioVisited"
+);
+
+
+
+if(!visited){
+
+
+    typeWriter(
+        heroTitle,
+        90
+    );
+
+
+    setTimeout(()=>{
+
+
+        typeWriter(
+            heroSubtitle,
+            50
+        );
+
+
+    },2000);
+
+
+
+    localStorage.setItem(
+        "portfolioVisited",
+        "true"
+    );
+
+
+}
 
 let opened=false;
 
