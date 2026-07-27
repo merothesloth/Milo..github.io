@@ -502,3 +502,44 @@ body{
 
 
 }
+/* ======================================================
+   TYPEWRITER EFFECT
+====================================================== */
+
+
+.typewriter{
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    border-right:2px solid white;
+
+    animation:
+    blinkCursor .7s infinite;
+
+}
+
+
+
+@keyframes blinkCursor{
+
+    0%{
+
+        border-color:white;
+
+    }
+
+    50%{
+
+        border-color:transparent;
+
+    }
+
+    100%{
+
+        border-color:white;
+
+    }
+
+}
