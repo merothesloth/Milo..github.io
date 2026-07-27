@@ -251,10 +251,19 @@ textarea {
     width: 30vw;
     min-width: 220px;
   }
-}#gallery {
+#gallery {
   cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
 }
 
 #gallery.dragging {
   cursor: grabbing;
+}
+
+#gallery img {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: auto;
 }
