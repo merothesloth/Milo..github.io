@@ -39,10 +39,8 @@ document.querySelector("#backButton");
 const backButton =
 document.querySelector("#backButton");
 
-
-
 /* ======================================================
-   FIRST VISIT TYPEWRITER
+   TYPEWRITER ON NEW PAGE LOAD
 ====================================================== */
 
 
@@ -75,7 +73,7 @@ function typeWriter(element, speed){
     let index=0;
 
 
-    const typing =
+    const timer =
     setInterval(()=>{
 
 
@@ -89,7 +87,7 @@ function typeWriter(element, speed){
         if(index >= text.length){
 
 
-            clearInterval(typing);
+            clearInterval(timer);
 
 
             setTimeout(()=>{
@@ -100,7 +98,7 @@ function typeWriter(element, speed){
                 );
 
 
-            },1000);
+            },800);
 
 
         }
@@ -108,19 +106,32 @@ function typeWriter(element, speed){
 
     },speed);
 
-
 }
 
 
 
-const visited =
-localStorage.getItem(
-"portfolioVisited"
-);
+
+/*
+   Check if this is browser back navigation
+*/
+
+const navigation =
+performance.getEntriesByType(
+"navigation"
+)[0];
 
 
 
-if(!visited){
+const cameFromBack =
+performance
+.getEntriesByType("navigation")
+[0]
+?.type === "back_forward";
+
+
+
+
+if(!cameFromBack){
 
 
     typeWriter(
@@ -138,14 +149,7 @@ if(!visited){
         );
 
 
-    },2000);
-
-
-
-    localStorage.setItem(
-        "portfolioVisited",
-        "true"
-    );
+    },1800);
 
 
 }
