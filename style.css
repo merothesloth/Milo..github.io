@@ -1,366 +1,242 @@
-/* =====================================
-   PORTFOLIO EDITOR FOUNDATION
-   STYLE SYSTEM
-===================================== */
-
-
-
-* {
-
-    box-sizing:border-box;
-
+:root {
+  --bg: #000;
+  --text: #fff;
+  --muted: rgba(255, 255, 255, 0.65);
+  --edge: 45px;
+  --gap: 80px;
+  --piece: 320px;
+  --hover-scale: 1.05;
+  --dim-scale: 0.85;
+  --transition: 1s ease;
+  --font: sans-serif;
 }
 
-
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
-
-    margin:0;
-
-    padding:0;
-
-    width:100%;
-
-    height:100%;
-
-    overflow:hidden;
-
-    background:black;
-
-    color:white;
-
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  overflow: hidden;
 }
-
-
-
-
-
-/* =====================================
-   TOOLBAR
-===================================== */
-
-
-#toolbar {
-
-    position:fixed;
-
-    top:20px;
-
-    left:20px;
-
-    z-index:1000;
-
-    display:flex;
-
-    gap:12px;
-
-    align-items:center;
-
-    opacity:0;
-
-    pointer-events:none;
-
-    transition:opacity .3s ease;
-
-}
-
-
-
-.editing #toolbar {
-
-    opacity:1;
-
-    pointer-events:auto;
-
-}
-
-
 
 button,
-select,
-input {
-
-    background:none;
-
-    border:1px solid rgba(255,255,255,.4);
-
-    color:white;
-
-    padding:8px 12px;
-
-    font-family:inherit;
-
+input,
+textarea {
+  font: inherit;
 }
 
-
-
-button {
-
-    cursor:pointer;
-
+[contenteditable="true"] {
+  outline: none;
 }
 
-
-
-button:hover {
-
-    border-color:white;
-
+#galleryPage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
-
-
-
-
-/* =====================================
-   MAIN CANVAS
-===================================== */
-
-
-#canvas {
-
-    position:relative;
-
-    width:100vw;
-
-    height:100vh;
-
-    overflow:hidden;
-
+#intro {
+  position: absolute;
+  top: 90px;
+  left: 80px;
+  z-index: 2;
 }
 
-
-
-
-
-/* =====================================
-   OBJECT SYSTEM
-===================================== */
-
-
-.object {
-
-    position:absolute;
-
-    user-select:none;
-
+#introTitle {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
-
-
-.object img {
-
-    display:block;
-
+#introDescription {
+  margin: 14px 0 0;
+  font-size: 20px;
+  color: var(--muted);
+  max-width: 380px;
+  line-height: 1.5;
 }
 
-
-
-
-
-/* =====================================
-   TEXT OBJECTS
-===================================== */
-
-
-.textObject {
-
-
-    cursor:default;
-
-
+#gallery {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: max-content;
+  min-height: 55vh;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  padding: 0 var(--edge) 45px;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-
-
-.textObject h1 {
-
-
-    margin:0;
-
-    font-size:64px;
-
-    font-weight:400;
-
-
+.artPiece {
+  width: var(--piece);
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition:
+    transform var(--transition),
+    filter var(--transition),
+    opacity var(--transition);
 }
 
-
-
-.textObject p {
-
-
-    margin:0;
-
-    font-size:22px;
-
-
+.artPiece img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  transition:
+    transform var(--transition),
+    filter var(--transition);
 }
 
-
-
-
-
-/* =====================================
-   IMAGE OBJECTS
-===================================== */
-
-
-.imageObject {
-
-
-    width:300px;
-
-    height:300px;
-
-
+.artPiece h2 {
+  margin: 18px 0 0;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
 }
 
-
-
-.imageObject img {
-
-
-    width:100%;
-
-    height:100%;
-
-
-    object-fit:cover;
-
-
+.artPiece p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--muted);
 }
 
-
-
-
-
-
-/* =====================================
-   STARTING POSITIONS
-===================================== */
-
-
-.textObject:nth-child(1){
-
-    top:80px;
-
-    left:80px;
-
+.artPiece.hovered {
+  transform: scale(var(--hover-scale));
+  z-index: 5;
 }
 
-
-
-.textObject:nth-child(2){
-
-    top:170px;
-
-    left:80px;
-
+.artPiece.dimmed {
+  transform: scale(var(--dim-scale));
+  opacity: 0.85;
+  filter: blur(1.5px) brightness(0.85);
 }
 
-
-
-
-
-.imageObject:nth-child(3){
-
-    left:80px;
-
-    bottom:80px;
-
+.artPiece.dimmed img {
+  filter: blur(1.5px) brightness(0.85);
 }
 
-
-
-.imageObject:nth-child(4){
-
-    left:430px;
-
-    bottom:80px;
-
+#detailPage {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: #000;
+  z-index: 20;
 }
 
-
-
-.imageObject:nth-child(5){
-
-    left:780px;
-
-    bottom:80px;
-
+#backButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  padding-left: 45px;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 2;
 }
 
-
-
-
-
-
-
-/* =====================================
-   EDIT MODE
-===================================== */
-
-
-
-.editing .object {
-
-
-    cursor:move;
-
-
+#detailLayout {
+  position: absolute;
+  inset: 90px 0 0 0;
+  display: flex;
+  padding: 0 45px 45px;
 }
 
-
-
-
-
-.selected {
-
-
-    outline:2px solid white;
-
-
+#detailLeft {
+  width: 25vw;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
 }
 
-
-
-
-
-.editing [contenteditable="true"] {
-
-
-    outline:1px dashed rgba(255,255,255,.5);
-
-
-    cursor:text;
-
-
+#detailImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
 }
 
-
-
-
-
-/* =====================================
-   MOBILE / SMALL WINDOWS
-===================================== */
-
-
-@media(max-width:900px){
-
-
-#canvas {
-
-
-    overflow-x:auto;
-
-    overflow-y:hidden;
-
-
+#detailTitle {
+  margin: 20px 0 0;
+  font-size: 28px;
+  font-weight: 400;
 }
 
+#detailDescription {
+  margin: 15px 0 0;
+  line-height: 1.6;
+  color: var(--muted);
+}
 
+#detailRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  padding-left: 80px;
+  margin-top: 20px;
+}
 
+.artboard {
+  cursor: pointer;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.artboard:hover {
+  transform: scale(1.03);
+}
+
+.artboard h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.artboard p {
+  margin: 10px 0 0;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --piece: 260px;
+    --gap: 60px;
+  }
+
+  #detailLeft {
+    width: 30vw;
+    min-width: 220px;
+  }
 }
