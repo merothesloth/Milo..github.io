@@ -9,6 +9,11 @@ document.addEventListener(
 ()=>{
 
 
+/* ======================================================
+   ELEMENTS
+====================================================== */
+
+
 const gallery =
 document.querySelector("#gallery");
 
@@ -36,13 +41,6 @@ document.querySelector("#detailText");
 const backButton =
 document.querySelector("#backButton");
 
-const backButton =
-document.querySelector("#backButton");
-
-/* ======================================================
-   TYPEWRITER ON NEW PAGE LOAD
-====================================================== */
-
 
 const heroTitle =
 document.querySelector("#heroTitle");
@@ -53,7 +51,19 @@ document.querySelector("#heroSubtitle");
 
 
 
+let opened = false;
+
+
+
+
+
+/* ======================================================
+   TYPEWRITER INTRO
+====================================================== */
+
+
 function typeWriter(element, speed){
+
 
     if(!element) return;
 
@@ -70,7 +80,8 @@ function typeWriter(element, speed){
     );
 
 
-    let index=0;
+    let index = 0;
+
 
 
     const timer =
@@ -98,7 +109,7 @@ function typeWriter(element, speed){
                 );
 
 
-            },800);
+            },700);
 
 
         }
@@ -106,55 +117,31 @@ function typeWriter(element, speed){
 
     },speed);
 
+
 }
 
 
 
 
-/*
-   Check if this is browser back navigation
-*/
-
-const navigation =
-performance.getEntriesByType(
-"navigation"
-)[0];
+typeWriter(
+    heroTitle,
+    90
+);
 
 
 
-const cameFromBack =
-performance
-.getEntriesByType("navigation")
-[0]
-?.type === "back_forward";
-
-
-
-
-if(!cameFromBack){
+setTimeout(()=>{
 
 
     typeWriter(
-        heroTitle,
-        90
+        heroSubtitle,
+        50
     );
 
 
-    setTimeout(()=>{
+},1800);
 
 
-        typeWriter(
-            heroSubtitle,
-            50
-        );
-
-
-    },1800);
-
-
-}
-
-let opened=false;
 
 
 
@@ -168,43 +155,52 @@ let opened=false;
 function openArtwork(piece){
 
 
-opened=true;
-
-
-const img =
-piece.querySelector("img");
-
-
-const title =
-piece.querySelector("h2");
-
-
-const text =
-piece.querySelector("p");
+    opened = true;
 
 
 
-detailImage.src =
-img.src;
+    const img =
+    piece.querySelector("img");
 
 
-detailTitle.textContent =
-title.textContent;
+    const title =
+    piece.querySelector("h2");
 
 
-detailText.textContent =
-text.textContent;
+    const description =
+    piece.querySelector("p");
 
 
 
-detailPage.style.display="block";
+    detailImage.src =
+    img.src;
 
 
-setTimeout(()=>{
 
-detailPage.classList.add("active");
+    detailTitle.textContent =
+    title.textContent;
 
-},10);
+
+
+    detailText.textContent =
+    description.textContent;
+
+
+
+    detailPage.style.display =
+    "block";
+
+
+
+    setTimeout(()=>{
+
+
+        detailPage.classList.add(
+            "active"
+        );
+
+
+    },20);
 
 
 }
@@ -212,28 +208,31 @@ detailPage.classList.add("active");
 
 
 
-/* CLOSE */
+
+/* ======================================================
+   CLOSE ARTWORK
+====================================================== */
 
 
 function closeArtwork(){
 
 
-opened=false;
+    opened=false;
 
 
-detailPage.classList.remove(
-"active"
-);
+    detailPage.classList.remove(
+        "active"
+    );
 
 
-setTimeout(()=>{
+    setTimeout(()=>{
 
 
-detailPage.style.display="none";
+        detailPage.style.display =
+        "none";
 
 
-},400);
-
+    },400);
 
 
 }
@@ -241,103 +240,31 @@ detailPage.style.display="none";
 
 
 
-/* CLICK ARTWORK */
+
+
+/* ======================================================
+   ARTWORK CLICK EVENTS
+====================================================== */
 
 
 artworks.forEach(
 (piece)=>{
 
 
-piece.addEventListener(
-"click",
-()=>{
+    piece.addEventListener(
+        "click",
+        ()=>{
 
 
-openArtwork(piece);
+            openArtwork(piece);
 
 
-});
-
-
-});
-
-
-
-
-
-
-/* BACK */
-
-
-backButton.addEventListener(
-"click",
-()=>{
-
-
-closeArtwork();
+        }
+    );
 
 
 });
 
-
-
-
-
-
-/* ESCAPE */
-
-
-document.addEventListener(
-"keydown",
-(e)=>{
-
-
-if(
-e.key==="Escape" &&
-opened
-){
-
-closeArtwork();
-
-return;
-
-}
-
-
-
-if(opened)return;
-
-
-
-if(e.key==="ArrowRight"){
-
-gallery.scrollBy({
-
-left:400,
-
-behavior:"smooth"
-
-});
-
-}
-
-
-
-if(e.key==="ArrowLeft"){
-
-gallery.scrollBy({
-
-left:-400,
-
-behavior:"smooth"
-
-});
-
-}
-
-
-
-});
 
 
 
@@ -345,43 +272,151 @@ behavior:"smooth"
 
 
 /* ======================================================
-   TRACKPAD + WHEEL
+   BACK BUTTON
+====================================================== */
+
+
+if(backButton){
+
+
+    backButton.addEventListener(
+        "click",
+        ()=>{
+
+
+            closeArtwork();
+
+
+        }
+    );
+
+
+}
+
+
+
+
+
+
+
+/* ======================================================
+   KEYBOARD CONTROLS
+====================================================== */
+
+
+document.addEventListener(
+"keydown",
+(event)=>{
+
+
+    if(
+        event.key === "Escape" &&
+        opened
+    ){
+
+        closeArtwork();
+
+        return;
+
+    }
+
+
+
+    if(opened) return;
+
+
+
+    if(
+        event.key === "ArrowRight"
+    ){
+
+
+        gallery.scrollBy({
+
+            left:400,
+
+            behavior:"smooth"
+
+        });
+
+
+    }
+
+
+
+
+    if(
+        event.key === "ArrowLeft"
+    ){
+
+
+        gallery.scrollBy({
+
+            left:-400,
+
+            behavior:"smooth"
+
+        });
+
+
+    }
+
+
+});
+
+
+
+
+
+
+
+/* ======================================================
+   TRACKPAD / WHEEL SCROLL
 ====================================================== */
 
 
 gallery.addEventListener(
 "wheel",
-(e)=>{
+(event)=>{
 
 
-if(opened)return;
-
-
-
-if(
-Math.abs(e.deltaX) >
-Math.abs(e.deltaY)
-){
-
-return;
-
-}
+    if(opened) return;
 
 
 
-e.preventDefault();
+    /*
+       Allow real horizontal
+       trackpad gestures
+    */
 
 
-gallery.scrollLeft += e.deltaY;
+    if(
+        Math.abs(event.deltaX) >
+        Math.abs(event.deltaY)
+    ){
+
+        return;
+
+    }
+
+
+
+    event.preventDefault();
+
+
+
+    gallery.scrollLeft +=
+    event.deltaY;
 
 
 
 },
 {
-passive:false
+    passive:false
 }
 
 );
+
 
 
 
@@ -389,56 +424,62 @@ passive:false
 
 
 /* ======================================================
-   DRAG SCROLL
+   MOUSE DRAG SCROLL
 ====================================================== */
 
 
-let down=false;
+let dragging=false;
 
-let start=0;
+let startX=0;
 
-let scroll=0;
+let startScroll=0;
 
 
 
 gallery.addEventListener(
 "mousedown",
-(e)=>{
+(event)=>{
 
 
-down=true;
+    dragging=true;
 
 
-start=e.pageX;
+    startX =
+    event.pageX;
 
 
-scroll=gallery.scrollLeft;
+    startScroll =
+    gallery.scrollLeft;
 
 
-gallery.classList.add(
-"dragging"
-);
+    gallery.classList.add(
+        "dragging"
+    );
 
 
 });
+
 
 
 
 
 window.addEventListener(
 "mousemove",
-(e)=>{
+(event)=>{
 
 
-if(!down)return;
+    if(!dragging) return;
 
 
-gallery.scrollLeft =
-scroll -
-(e.pageX-start);
+
+    gallery.scrollLeft =
+    startScroll -
+    (event.pageX-startX);
+
 
 
 });
+
 
 
 
@@ -448,15 +489,16 @@ window.addEventListener(
 ()=>{
 
 
-down=false;
+    dragging=false;
 
 
-gallery.classList.remove(
-"dragging"
-);
+    gallery.classList.remove(
+        "dragging"
+    );
 
 
 });
+
 
 
 
@@ -465,7 +507,7 @@ gallery.classList.remove(
 
 
 /* ======================================================
-   HOVER
+   HOVER EFFECT
 ====================================================== */
 
 
@@ -473,69 +515,81 @@ artworks.forEach(
 (piece)=>{
 
 
-piece.addEventListener(
-"mouseenter",
-()=>{
+    piece.addEventListener(
+        "mouseenter",
+        ()=>{
 
 
-artworks.forEach(
-(other)=>{
+            artworks.forEach(
+            (other)=>{
 
 
-if(other!==piece)
+                if(other !== piece){
 
-other.classList.add(
-"dimmed"
-);
+
+                    other.classList.add(
+                        "dimmed"
+                    );
+
+
+                }
+
+
+            });
+
+
+            piece.classList.add(
+                "hovered"
+            );
+
+
+        }
+    );
+
+
+
+
+
+    piece.addEventListener(
+        "mouseleave",
+        ()=>{
+
+
+            artworks.forEach(
+            (other)=>{
+
+
+                other.classList.remove(
+                    "dimmed"
+                );
+
+
+            });
+
+
+
+            piece.classList.remove(
+                "hovered"
+            );
+
+
+        }
+    );
+
 
 
 });
 
 
-piece.classList.add(
-"hovered"
-);
-
-
-});
-
-
-
-
-piece.addEventListener(
-"mouseleave",
-()=>{
-
-
-artworks.forEach(
-(other)=>{
-
-
-other.classList.remove(
-"dimmed"
-);
-
-
-});
-
-
-piece.classList.remove(
-"hovered"
-);
-
-
-});
-
-
-});
 
 
 
 
 
 console.log(
-"Portfolio ready"
+"Portfolio loaded successfully"
 );
+
 
 
 });
