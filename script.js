@@ -11,6 +11,17 @@ const detailDescription = document.getElementById("detailDescription");
 let hoveredPiece = null;
 let detailOpen = false;
 
+let isDragging = false;
+let dragStartX = 0;
+let dragStartScrollLeft = 0;
+let didDrag = false;
+let activePointerId = null;
+
+artPieces.forEach((imgPiece) => {
+  const img = imgPiece.querySelector("img");
+  if (img) img.draggable = false;
+});
+
 function clearHover() {
   if (detailOpen) return;
   hoveredPiece = null;
@@ -20,7 +31,7 @@ function clearHover() {
 }
 
 function setHover(piece) {
-  if (detailOpen) return;
+  if (detailOpen || isDragging) return;
   hoveredPiece = piece;
 
   artPieces.forEach((other) => {
@@ -60,7 +71,11 @@ artPieces.forEach((piece) => {
   piece.addEventListener("mouseleave", () => {
     if (hoveredPiece === piece) clearHover();
   });
-  piece.addEventListener("click", () => openDetail(piece));
+
+  piece.addEventListener("click", () => {
+    if (didDrag) return;
+    openDetail(piece);
+  });
 });
 
 gallery.addEventListener("mouseleave", clearHover);
@@ -72,7 +87,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* Horizontal scrolling */
+/* Horizontal mouse-wheel scrolling */
 gallery.addEventListener(
   "wheel",
   (e) => {
@@ -86,33 +101,47 @@ gallery.addEventListener(
   { passive: false }
 );
 
-/* Click-and-drag scrolling */
-let isDragging = false;
-let startX = 0;
-let scrollLeft = 0;
-
-gallery.addEventListener("mousedown", (e) => {
+/* Drag to scroll horizontally */
+gallery.addEventListener("pointerdown", (e) => {
   if (detailOpen) return;
+
   isDragging = true;
+  didDrag = false;
+  activePointerId = e.pointerId;
+  dragStartX = e.clientX;
+  dragStartScrollLeft = gallery.scrollLeft;
   gallery.classList.add("dragging");
-  startX = e.pageX - gallery.offsetLeft;
-  scrollLeft = gallery.scrollLeft;
+
+  try {
+    gallery.setPointerCapture(activePointerId);
+  } catch (err) {}
 });
 
-gallery.addEventListener("mouseleave", () => {
-  isDragging = false;
-  gallery.classList.remove("dragging");
-});
-
-gallery.addEventListener("mouseup", () => {
-  isDragging = false;
-  gallery.classList.remove("dragging");
-});
-
-gallery.addEventListener("mousemove", (e) => {
+gallery.addEventListener("pointermove", (e) => {
   if (!isDragging) return;
+
+  const dx = e.clientX - dragStartX;
+
+  if (Math.abs(dx) > 5) {
+    didDrag = true;
+  }
+
+  gallery.scrollLeft = dragStartScrollLeft - dx;
   e.preventDefault();
-  const x = e.pageX - gallery.offsetLeft;
-  const walk = x - startX;
-  gallery.scrollLeft = scrollLeft - walk;
 });
+
+function endDrag() {
+  if (!isDragging) return;
+
+  isDragging = false;
+  activePointerId = null;
+  gallery.classList.remove("dragging");
+
+  setTimeout(() => {
+    didDrag = false;
+  }, 0);
+}
+
+gallery.addEventListener("pointerup", endDrag);
+gallery.addEventListener("pointercancel", endDrag);
+gallery.addEventListener("lostpointercapture", endDrag);
