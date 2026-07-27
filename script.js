@@ -9,11 +9,6 @@ document.addEventListener(
 ()=>{
 
 
-/* ======================================================
-   ELEMENTS
-====================================================== */
-
-
 const gallery =
 document.querySelector("#gallery");
 
@@ -51,81 +46,155 @@ document.querySelector("#heroSubtitle");
 
 
 
-let opened = false;
+let opened=false;
 
 
 
 
 
 /* ======================================================
-   TYPEWRITER INTRO
+   TYPEWRITER
 ====================================================== */
 
 
-function typeWriter(element, speed){
+function typeWriter(element,speed){
 
 
-    if(!element) return;
+if(!element)return;
 
 
-    const text =
-    element.textContent;
+const text =
+element.textContent;
 
 
-    element.textContent="";
+element.textContent="";
 
 
-    element.classList.add(
-        "typewriter"
-    );
-
-
-    let index = 0;
+element.classList.add(
+"typewriter"
+);
 
 
 
-    const timer =
-    setInterval(()=>{
+const colors=[
+
+"#ff1744",
+"#ff6d00",
+"#ffd600",
+"#00e676",
+"#00b0ff",
+"#651fff",
+"#d500f9",
+"#ff4081"
+
+];
 
 
-        element.textContent +=
-        text[index];
+
+let color =
+colors[
+Math.floor(
+Math.random()*colors.length
+)
+];
 
 
-        index++;
+
+element.style.setProperty(
+"--cursor-color",
+color
+);
 
 
-        if(index >= text.length){
+
+let index=0;
 
 
-            clearInterval(timer);
+
+const timer=setInterval(()=>{
 
 
-            setTimeout(()=>{
+element.textContent +=
+text[index];
 
 
-                element.classList.remove(
-                    "typewriter"
-                );
+index++;
 
 
-            },700);
+
+if(index>=text.length){
 
 
-        }
+clearInterval(timer);
 
 
-    },speed);
+
+setTimeout(()=>{
+
+
+let changeCount=0;
+
+
+
+const colorTimer=setInterval(()=>{
+
+
+color =
+colors[
+Math.floor(
+Math.random()*colors.length
+)
+];
+
+
+
+element.style.setProperty(
+"--cursor-color",
+color
+);
+
+
+
+changeCount++;
+
+
+
+if(changeCount>=6){
+
+
+clearInterval(colorTimer);
+
+
+element.classList.add(
+"finished"
+);
 
 
 }
 
 
 
+},700);
+
+
+
+},4000);
+
+
+
+}
+
+
+},speed);
+
+
+}
+
+
 
 typeWriter(
-    heroTitle,
-    90
+heroTitle,
+90
 );
 
 
@@ -133,10 +202,10 @@ typeWriter(
 setTimeout(()=>{
 
 
-    typeWriter(
-        heroSubtitle,
-        50
-    );
+typeWriter(
+heroSubtitle,
+50
+);
 
 
 },1800);
@@ -155,84 +224,71 @@ setTimeout(()=>{
 function openArtwork(piece){
 
 
-    opened = true;
+opened=true;
+
+
+const img =
+piece.querySelector("img");
+
+
+const title =
+piece.querySelector("h2");
+
+
+const text =
+piece.querySelector("p");
 
 
 
-    const img =
-    piece.querySelector("img");
+detailImage.src =
+img.src;
 
 
-    const title =
-    piece.querySelector("h2");
+detailTitle.textContent =
+title.textContent;
 
 
-    const description =
-    piece.querySelector("p");
-
-
-
-    detailImage.src =
-    img.src;
+detailText.textContent =
+text.textContent;
 
 
 
-    detailTitle.textContent =
-    title.textContent;
+detailPage.style.display="block";
 
 
+setTimeout(()=>{
 
-    detailText.textContent =
-    description.textContent;
+detailPage.classList.add(
+"active"
+);
 
-
-
-    detailPage.style.display =
-    "block";
-
-
-
-    setTimeout(()=>{
-
-
-        detailPage.classList.add(
-            "active"
-        );
-
-
-    },20);
+},20);
 
 
 }
 
 
 
-
-
-/* ======================================================
-   CLOSE ARTWORK
-====================================================== */
 
 
 function closeArtwork(){
 
 
-    opened=false;
+opened=false;
 
 
-    detailPage.classList.remove(
-        "active"
-    );
+detailPage.classList.remove(
+"active"
+);
 
 
-    setTimeout(()=>{
+setTimeout(()=>{
 
 
-        detailPage.style.display =
-        "none";
+detailPage.style.display="none";
 
 
-    },400);
+},400);
 
 
 }
@@ -242,25 +298,22 @@ function closeArtwork(){
 
 
 
-/* ======================================================
-   ARTWORK CLICK EVENTS
-====================================================== */
 
+/* CLICK */
 
 artworks.forEach(
 (piece)=>{
 
 
-    piece.addEventListener(
-        "click",
-        ()=>{
+piece.addEventListener(
+"click",
+()=>{
 
 
-            openArtwork(piece);
+openArtwork(piece);
 
 
-        }
-    );
+});
 
 
 });
@@ -270,96 +323,72 @@ artworks.forEach(
 
 
 
+/* BACK */
 
-/* ======================================================
-   BACK BUTTON
-====================================================== */
-
-
-if(backButton){
-
-
-    backButton.addEventListener(
-        "click",
-        ()=>{
+backButton.addEventListener(
+"click",
+closeArtwork
+);
 
 
-            closeArtwork();
 
 
-        }
-    );
+
+
+/* ESCAPE + ARROWS */
+
+
+document.addEventListener(
+"keydown",
+(e)=>{
+
+
+if(
+e.key==="Escape" &&
+opened
+){
+
+closeArtwork();
+
+return;
+
+}
+
+
+
+if(opened)return;
+
+
+
+if(e.key==="ArrowRight"){
+
+
+gallery.scrollBy({
+
+left:400,
+
+behavior:"smooth"
+
+});
 
 
 }
 
 
 
+if(e.key==="ArrowLeft"){
 
 
+gallery.scrollBy({
+
+left:-400,
+
+behavior:"smooth"
+
+});
 
 
-/* ======================================================
-   KEYBOARD CONTROLS
-====================================================== */
-
-
-document.addEventListener(
-"keydown",
-(event)=>{
-
-
-    if(
-        event.key === "Escape" &&
-        opened
-    ){
-
-        closeArtwork();
-
-        return;
-
-    }
-
-
-
-    if(opened) return;
-
-
-
-    if(
-        event.key === "ArrowRight"
-    ){
-
-
-        gallery.scrollBy({
-
-            left:400,
-
-            behavior:"smooth"
-
-        });
-
-
-    }
-
-
-
-
-    if(
-        event.key === "ArrowLeft"
-    ){
-
-
-        gallery.scrollBy({
-
-            left:-400,
-
-            behavior:"smooth"
-
-        });
-
-
-    }
+}
 
 
 });
@@ -370,49 +399,37 @@ document.addEventListener(
 
 
 
-/* ======================================================
-   TRACKPAD / WHEEL SCROLL
-====================================================== */
-
+/* TRACKPAD */
 
 gallery.addEventListener(
 "wheel",
-(event)=>{
+(e)=>{
 
 
-    if(opened) return;
-
-
-
-    /*
-       Allow real horizontal
-       trackpad gestures
-    */
-
-
-    if(
-        Math.abs(event.deltaX) >
-        Math.abs(event.deltaY)
-    ){
-
-        return;
-
-    }
+if(opened)return;
 
 
 
-    event.preventDefault();
+if(
+Math.abs(e.deltaX) >
+Math.abs(e.deltaY)
+){
+
+return;
+
+}
 
 
 
-    gallery.scrollLeft +=
-    event.deltaY;
+e.preventDefault();
 
+
+gallery.scrollLeft += e.deltaY;
 
 
 },
 {
-    passive:false
+passive:false
 }
 
 );
@@ -423,64 +440,51 @@ gallery.addEventListener(
 
 
 
-/* ======================================================
-   MOUSE DRAG SCROLL
-====================================================== */
+/* DRAG */
 
+let down=false;
 
-let dragging=false;
+let start=0;
 
-let startX=0;
-
-let startScroll=0;
+let scroll=0;
 
 
 
 gallery.addEventListener(
 "mousedown",
-(event)=>{
+(e)=>{
 
 
-    dragging=true;
+down=true;
+
+start=e.pageX;
+
+scroll=gallery.scrollLeft;
 
 
-    startX =
-    event.pageX;
-
-
-    startScroll =
-    gallery.scrollLeft;
-
-
-    gallery.classList.add(
-        "dragging"
-    );
+gallery.classList.add(
+"dragging"
+);
 
 
 });
-
-
 
 
 
 window.addEventListener(
 "mousemove",
-(event)=>{
+(e)=>{
 
 
-    if(!dragging) return;
+if(!down)return;
 
 
-
-    gallery.scrollLeft =
-    startScroll -
-    (event.pageX-startX);
-
+gallery.scrollLeft =
+scroll -
+(e.pageX-start);
 
 
 });
-
-
 
 
 
@@ -489,12 +493,12 @@ window.addEventListener(
 ()=>{
 
 
-    dragging=false;
+down=false;
 
 
-    gallery.classList.remove(
-        "dragging"
-    );
+gallery.classList.remove(
+"dragging"
+);
 
 
 });
@@ -505,77 +509,64 @@ window.addEventListener(
 
 
 
-
-/* ======================================================
-   HOVER EFFECT
-====================================================== */
+/* HOVER */
 
 
 artworks.forEach(
 (piece)=>{
 
 
-    piece.addEventListener(
-        "mouseenter",
-        ()=>{
+piece.addEventListener(
+"mouseenter",
+()=>{
 
 
-            artworks.forEach(
-            (other)=>{
+artworks.forEach(
+(other)=>{
 
 
-                if(other !== piece){
+if(other!==piece)
+
+other.classList.add(
+"dimmed"
+);
 
 
-                    other.classList.add(
-                        "dimmed"
-                    );
+});
 
 
-                }
+piece.classList.add(
+"hovered"
+);
 
 
-            });
-
-
-            piece.classList.add(
-                "hovered"
-            );
-
-
-        }
-    );
+});
 
 
 
+piece.addEventListener(
+"mouseleave",
+()=>{
 
 
-    piece.addEventListener(
-        "mouseleave",
-        ()=>{
+artworks.forEach(
+(other)=>{
 
 
-            artworks.forEach(
-            (other)=>{
+other.classList.remove(
+"dimmed"
+);
 
 
-                other.classList.remove(
-                    "dimmed"
-                );
+});
 
 
-            });
+piece.classList.remove(
+"hovered"
+);
 
 
-
-            piece.classList.remove(
-                "hovered"
-            );
-
-
-        }
-    );
-
+});
 
 
 });
@@ -584,12 +575,9 @@ artworks.forEach(
 
 
 
-
-
 console.log(
-"Portfolio loaded successfully"
+"Portfolio loaded"
 );
-
 
 
 });
