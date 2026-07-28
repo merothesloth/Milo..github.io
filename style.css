@@ -110,18 +110,12 @@ body{
 
 
 
-/* animated logo */
-
-#introGif{
-
-    width:500px;
-
-    max-width:80vw;
-
-    height:auto;
-
-    display:block;
-
+.intro-gif {
+    width: 400px;
+    height: auto;
+    display: block;
+    margin-left: 0;
+    margin-right: auto;
 }
 
 
@@ -166,13 +160,6 @@ body{
 
 }
 
-.intro-gif {
-    width: 400px;
-    height: auto;
-    display: block;
-    margin-left: 0;
-    margin-right: auto;
-}
 
 /* ======================================================
    GALLERY
