@@ -1,727 +1,407 @@
 /* ======================================================
-   PORTFOLIO V3
-   COMPLETE SCRIPT.JS
+   PORTFOLIO V4
+   SCRIPT.JS
+   PART 1 OF 3
 ====================================================== */
 
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
+document.addEventListener("DOMContentLoaded", () => {
 
 /* ======================================================
    ELEMENTS
 ====================================================== */
 
+const gallery = document.querySelector("#gallery");
 
-const gallery =
-document.querySelector("#gallery");
+const artworks = document.querySelectorAll(".artPiece");
 
+const detailPage = document.querySelector("#detailPage");
 
-const artworks =
-document.querySelectorAll(".artPiece");
+const detailImage = document.querySelector("#detailImage");
 
+const detailTitle = document.querySelector("#detailTitle");
 
-const detailPage =
-document.querySelector("#detailPage");
+const detailText = document.querySelector("#detailText");
 
+const backButton = document.querySelector("#backButton");
 
-const detailImage =
-document.querySelector("#detailImage");
-
-
-const detailTitle =
-document.querySelector("#detailTitle");
-
-
-const detailText =
-document.querySelector("#detailText");
-
-
-const backButton =
-document.querySelector("#backButton");
-
-
-const heroTitle =
-document.querySelector("#heroTitle");
-
-
-const heroSubtitle =
-document.querySelector("#heroSubtitle");
-
-
-
-let opened = false;
-
-
-
-
-
-
-
-/* ======================================================
-   TYPEWRITER SYSTEM
-====================================================== */
-
-
-const cursorColors = [
-
-    "#ff1744",
-    "#ff6d00",
-    "#ffd600",
-    "#00e676",
-    "#00b0ff",
-    "#651fff",
-    "#d500f9",
-    "#ff4081"
-
-];
-
-
-
-function randomCursorColor(){
-
-    return cursorColors[
-        Math.floor(
-            Math.random() *
-            cursorColors.length
-        )
-    ];
-
-}
-
-
-
-
-
-function typeWriter(element, speed, keepCursor){
-
-
-    if(!element) return;
-
-
-
-    const text =
-    element.textContent;
-
-
-
-    element.textContent="";
-
-
-
-    element.classList.add(
-        "typewriter"
-    );
-
-
-
-    element.style.setProperty(
-        "--cursor-color",
-        randomCursorColor()
-    );
-
-
-
-    let index = 0;
-
-
-
-    const timer =
-    setInterval(()=>{
-
-
-        element.textContent +=
-        text[index];
-
-
-
-        index++;
-
-
-
-
-        if(index >= text.length){
-
-
-
-            clearInterval(timer);
-
-
-
-            if(!keepCursor){
-
-
-                element.classList.remove(
-                    "typewriter"
-                );
-
-
-                return;
-
-
-            }
-
-
-
-
-            /*
-              Subtitle cursor:
-              stays 4 seconds,
-              changes every blink
-            */
-
-
-
-            let changes = 0;
-
-
-
-            const colorTimer =
-            setInterval(()=>{
-
-
-
-                element.style.setProperty(
-
-                    "--cursor-color",
-
-                    randomCursorColor()
-
-                );
-
-
-
-                changes++;
-
-
-
-                if(changes >= 6){
-
-
-
-                    clearInterval(
-                        colorTimer
-                    );
-
-
-
-                    element.classList.add(
-                        "finished"
-                    );
-
-
-
-                }
-
-
-
-            },700);
-
-
-
-        }
-
-
-
-    },speed);
-
-
-}
-
-
-
-
-
-
-
-/* ======================================================
-   START INTRO
-====================================================== */
-
-
-typeWriter(
-    heroTitle,
-    90,
-    false
-);
-
-
-
-setTimeout(()=>{
-
-
-    typeWriter(
-        heroSubtitle,
-        50,
-        true
-    );
-
-
-},1800);
-
-
-
-
-
-
-
+let artworkOpen = false;
 
 /* ======================================================
    OPEN ARTWORK
 ====================================================== */
 
-
 function openArtwork(piece){
 
+    artworkOpen = true;
 
-    opened = true;
+    const img = piece.querySelector("img");
+    const title = piece.querySelector("h2");
+    const text = piece.querySelector("p");
 
+    detailImage.src = img.src;
+    detailImage.alt = img.alt;
 
+    detailTitle.textContent = title.textContent;
+    detailText.textContent = text.textContent;
 
-    const img =
-    piece.querySelector("img");
+    detailPage.style.display = "block";
 
+    requestAnimationFrame(() => {
 
+        detailPage.classList.add("active");
 
-    const title =
-    piece.querySelector("h2");
-
-
-
-    const description =
-    piece.querySelector("p");
-
-
-
-    detailImage.src =
-    img.src;
-
-
-
-    detailTitle.textContent =
-    title.textContent;
-
-
-
-    detailText.textContent =
-    description.textContent;
-
-
-
-    detailPage.style.display =
-    "block";
-
-
-
-    setTimeout(()=>{
-
-
-        detailPage.classList.add(
-            "active"
-        );
-
-
-    },20);
-
+    });
 
 }
-
-
-
-
-
-
 
 /* ======================================================
    CLOSE ARTWORK
 ====================================================== */
 
-
 function closeArtwork(){
 
+    artworkOpen = false;
 
-    opened=false;
+    detailPage.classList.remove("active");
 
+    setTimeout(() => {
 
+        detailPage.style.display = "none";
 
-    detailPage.classList.remove(
-        "active"
-    );
-
-
-
-    setTimeout(()=>{
-
-
-        detailPage.style.display =
-        "none";
-
-
-
-    },400);
-
+    },450);
 
 }
 
-
-
-
-
-
-
 /* ======================================================
-   ARTWORK CLICK
+   CLICK TO OPEN
 ====================================================== */
 
+artworks.forEach(piece => {
 
-artworks.forEach(
-(piece)=>{
+    piece.addEventListener("click", () => {
 
+        openArtwork(piece);
 
-    piece.addEventListener(
-        "click",
-        ()=>{
+    });
 
-
-            openArtwork(piece);
-
-
-        }
-    );
-
-
-});
-
-
-
-
-
-
-
-/* ======================================================
-   BACK BUTTON
+});/* ======================================================
+   KEYBOARD CONTROLS
 ====================================================== */
 
+backButton.addEventListener("click", closeArtwork);
 
-backButton.addEventListener(
-"click",
-()=>{
+document.addEventListener("keydown", (event) => {
 
-
-    closeArtwork();
-
-
-});
-
-
-
-
-
-
-
-/* ======================================================
-   KEYBOARD
-====================================================== */
-
-
-document.addEventListener(
-"keydown",
-(event)=>{
-
-
-    if(
-        event.key === "Escape" &&
-        opened
-    ){
-
+    if (event.key === "Escape" && artworkOpen) {
 
         closeArtwork();
-
-
         return;
 
-
     }
 
+    if (artworkOpen) return;
 
-
-    if(opened)
-    return;
-
-
-
-
-    if(event.key === "ArrowRight"){
-
+    if (event.key === "ArrowRight") {
 
         gallery.scrollBy({
 
-            left:400,
+            left: 420,
 
-            behavior:"smooth"
+            behavior: "smooth"
 
         });
 
-
     }
 
-
-
-
-    if(event.key === "ArrowLeft"){
-
+    if (event.key === "ArrowLeft") {
 
         gallery.scrollBy({
 
-            left:-400,
+            left: -420,
 
-            behavior:"smooth"
+            behavior: "smooth"
 
         });
 
-
     }
-
-
 
 });
 
 
-
-
-
-
-
-
 /* ======================================================
-   TRACKPAD + MOUSE WHEEL
+   TRACKPAD & MOUSE WHEEL
 ====================================================== */
 
+gallery.addEventListener("wheel", (event) => {
 
-gallery.addEventListener(
-"wheel",
-(event)=>{
+    if (artworkOpen) return;
 
+    /*
+       Allow natural horizontal trackpad scrolling.
+       Only convert a normal mouse wheel's vertical
+       movement into horizontal scrolling.
+    */
 
-    if(opened)
-    return;
-
-
-
-    if(
-        Math.abs(event.deltaX) >
-        Math.abs(event.deltaY)
-    ){
+    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
 
         return;
 
     }
-
-
 
     event.preventDefault();
 
+    gallery.scrollLeft += event.deltaY;
 
+}, {
 
-    gallery.scrollLeft +=
-    event.deltaY;
+    passive: false
 
-
-
-},
-{
-    passive:false
-}
-
-);
-
-
-
-
-
-
+});
 
 
 /* ======================================================
    DRAG SCROLL
 ====================================================== */
 
+let dragging = false;
 
-let dragging=false;
+let startX = 0;
 
-let startX=0;
+let startScroll = 0;
 
-let startScroll=0;
-
-
-
-
-gallery.addEventListener(
-"mousedown",
-(event)=>{
+let moved = false;
 
 
-    dragging=true;
+gallery.addEventListener("mousedown", (event) => {
 
+    if (artworkOpen) return;
 
+    dragging = true;
 
-    startX =
-    event.pageX;
+    moved = false;
 
+    startX = event.pageX;
 
+    startScroll = gallery.scrollLeft;
 
-    startScroll =
-    gallery.scrollLeft;
-
-
-
-    gallery.classList.add(
-        "dragging"
-    );
-
+    gallery.classList.add("dragging");
 
 });
 
 
+window.addEventListener("mousemove", (event) => {
 
+    if (!dragging) return;
 
+    const distance = event.pageX - startX;
 
+    if (Math.abs(distance) > 5) {
 
+        moved = true;
 
-window.addEventListener(
-"mousemove",
-(event)=>{
+    }
 
-
-    if(!dragging)
-    return;
-
-
-
-    gallery.scrollLeft =
-
-    startScroll -
-
-    (event.pageX - startX);
-
-
+    gallery.scrollLeft = startScroll - distance;
 
 });
 
 
+window.addEventListener("mouseup", () => {
 
+    dragging = false;
 
-
-
-
-window.addEventListener(
-"mouseup",
-()=>{
-
-
-    dragging=false;
-
-
-
-    gallery.classList.remove(
-        "dragging"
-    );
-
+    gallery.classList.remove("dragging");
 
 });
 
 
+/* ======================================================
+   PREVENT CLICK AFTER DRAG
+====================================================== */
+
+artworks.forEach(piece => {
+
+    piece.addEventListener("click", (event) => {
+
+        if (moved) {
+
+            event.preventDefault();
+
+            event.stopImmediatePropagation();
+
+            moved = false;
+
+        }
+
+    }, true);
+
+});/* ======================================================
+   HOVER EFFECTS
+====================================================== */
+
+artworks.forEach(piece => {
+
+    piece.addEventListener("mouseenter", () => {
+
+        if (artworkOpen) return;
+
+        artworks.forEach(other => {
+
+            if (other !== piece) {
+
+                other.classList.add("dimmed");
+
+            }
+
+        });
+
+        piece.classList.add("hovered");
+
+    });
 
 
 
+    piece.addEventListener("mouseleave", () => {
+
+        artworks.forEach(other => {
+
+            other.classList.remove("dimmed");
+
+            other.classList.remove("hovered");
+
+        });
+
+    });
+
+});
+
+
+/* ======================================================
+   KEEP DETAIL PAGE SCROLL AT TOP
+====================================================== */
+
+function resetDetailScroll(){
+
+    const rightColumn =
+    document.querySelector("#rightColumn");
+
+    if(rightColumn){
+
+        rightColumn.scrollTop = 0;
+
+    }
+
+}
 
 
 
 /* ======================================================
-   HOVER EFFECT
+   UPDATE OPEN / CLOSE
 ====================================================== */
 
+const originalOpenArtwork =
+openArtwork;
 
-artworks.forEach(
-(piece)=>{
+openArtwork = function(piece){
 
+    resetDetailScroll();
 
-    piece.addEventListener(
-    "mouseenter",
-    ()=>{
+    originalOpenArtwork(piece);
 
-
-        artworks.forEach(
-        (other)=>{
-
-
-            if(other !== piece){
-
-
-                other.classList.add(
-                    "dimmed"
-                );
-
-
-            }
-
-
-        });
+};
 
 
 
-        piece.classList.add(
-            "hovered"
-        );
+/* ======================================================
+   WINDOW RESIZE
+====================================================== */
 
+window.addEventListener("resize",()=>{
 
-    });
-
-
-
-
-
-
-    piece.addEventListener(
-    "mouseleave",
-    ()=>{
-
-
-        artworks.forEach(
-        (other)=>{
-
-
-            other.classList.remove(
-                "dimmed"
-            );
-
-
-        });
-
-
-
-        piece.classList.remove(
-            "hovered"
-        );
-
-
-    });
-
-
+    gallery.classList.remove("dragging");
 
 });
 
 
 
+/* ======================================================
+   PRELOAD ARTWORKS
+====================================================== */
+
+artworks.forEach(piece=>{
+
+    const img =
+    piece.querySelector("img");
+
+    if(img){
+
+        const preload =
+        new Image();
+
+        preload.src =
+        img.src;
+
+    }
+
+});
 
 
 
+/* ======================================================
+   INTRO FADE (OPTIONAL)
+====================================================== */
+
+const intro =
+document.querySelector("#intro");
+
+if(intro){
+
+    intro.animate(
+
+        [
+
+            {
+
+                opacity:0,
+
+                transform:"translate(-50%, -12px)"
+
+            },
+
+            {
+
+                opacity:1,
+
+                transform:"translate(-50%, 0)"
+
+            }
+
+        ],
+
+        {
+
+            duration:700,
+
+            easing:"ease-out",
+
+            fill:"forwards"
+
+        }
+
+    );
+
+}
+
+
+
+/* ======================================================
+   READY
+====================================================== */
 
 console.log(
-"Portfolio loaded successfully"
+
+"Portfolio V4 Loaded"
+
 );
-
-
 
 });
