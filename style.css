@@ -895,4 +895,10 @@ html{
 
     scroll-behavior:smooth;
 
+}.intro-gif {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 80px;
 }
