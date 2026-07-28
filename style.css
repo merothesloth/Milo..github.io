@@ -110,12 +110,17 @@ body{
 
 
 
-.intro-gif {
-    width: 400px;
-    height: auto;
-    display: block;
-    margin-left: 0;
-    margin-right: auto;
+#introGif{
+
+    width:300px;
+
+    height:auto;
+
+    max-width:300px;
+
+    display:block;
+
+}
 }
 
 
