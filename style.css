@@ -283,8 +283,6 @@ scroll-padding-left:clamp(25px,3vw,60px);
 
     object-fit:cover;
 
-    background:#111;
-
     transition:
 
     transform var(--transition),
