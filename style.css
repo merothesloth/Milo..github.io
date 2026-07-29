@@ -1160,14 +1160,14 @@ button{
 /* ART 1 */
 
 .art1 img{
-    transform:scale(.80);
+    transform:scale(1.2);
 }
 
 
 /* ART 2 */
 
 .art2 img{
-    transform:scale(.75);
+    transform:scale(1.2);
 }
 
 
