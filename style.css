@@ -172,7 +172,7 @@ padding-right: var(--page-padding);
     touch-action:pan-x;
 
     scroll-snap-type:x proximity;
-
+scroll-padding-left:clamp(25px,3vw,60px);
     overscroll-behavior-x:contain;
 
 }
