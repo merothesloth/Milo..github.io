@@ -22,8 +22,6 @@ const detailTitle = document.querySelector("#detailTitle");
 
 const detailText = document.querySelector("#detailText");
 
-const backButton = document.querySelector("#backButton");
-
 let artworkOpen = false;
 
 /* ======================================================
@@ -73,6 +71,18 @@ function closeArtwork(){
 }
 
 /* ======================================================
+   GIF BACK BUTTON
+====================================================== */
+
+const introGif = document.querySelector("#introGif");
+
+if(introGif){
+
+    introGif.addEventListener("click", closeArtwork);
+
+}
+   
+/* ======================================================
    CLICK TO OPEN
 ====================================================== */
 
@@ -88,7 +98,6 @@ artworks.forEach(piece => {
    KEYBOARD CONTROLS
 ====================================================== */
 
-backButton.addEventListener("click", closeArtwork);
 
 document.addEventListener("keydown", (event) => {
 
