@@ -22,8 +22,8 @@
 
     /* artwork */
 
-    --art-size:clamp(220px,24vw,420px);
-
+    --art-size:clamp(180px,20vw,350px);
+   
     /* logo */
 
     --logo-width:clamp(170px,18vw,320px);
