@@ -154,8 +154,9 @@ body{
 
     gap:var(--gallery-gap);
 
-    padding-inline:var(--page-padding);
-
+padding-left: clamp(25px, 3vw, 60px);
+padding-right: var(--page-padding);
+   
     overflow-x:auto;
 
     overflow-y:hidden;
