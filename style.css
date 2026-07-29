@@ -1148,8 +1148,66 @@ button{
 
 }
 
+/* ======================================================
+   INDIVIDUAL IMAGE SIZES
+====================================================== */
+
 .artPiece img{
+    object-fit:contain;
+}
 
-    padding:clamp(15px,3vw,50px);
 
+/* ART 1 */
+
+.art1 img{
+    transform:scale(.80);
+}
+
+
+/* ART 2 */
+
+.art2 img{
+    transform:scale(.75);
+}
+
+
+/* ART 3 */
+
+.art3 img{
+    transform:scale(1);
+}
+
+
+/* ART 4 */
+
+.art4 img{
+    transform:scale(1);
+}
+
+
+/* ART 5 */
+
+.art5 img{
+    transform:scale(1);
+}
+
+
+/* ART 6 */
+
+.art6 img{
+    transform:scale(1);
+}
+
+
+/* ART 7 */
+
+.art7 img{
+    transform:scale(1);
+}
+
+
+/* ART 8 */
+
+.art8 img{
+    transform:scale(1);
 }
