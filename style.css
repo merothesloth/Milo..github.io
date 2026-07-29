@@ -281,7 +281,9 @@ scroll-padding-left:clamp(25px,3vw,60px);
 
     aspect-ratio:1/1;
 
-    object-fit:cover;
+    object-fit:contain;
+
+    background:#000;
 
     transition:
 
@@ -1143,5 +1145,11 @@ button{
     background:#ffffff;
 
     color:#000000;
+
+}
+
+.artPiece img{
+
+    padding:clamp(15px,3vw,50px);
 
 }
