@@ -350,48 +350,23 @@ artworks.forEach(piece=>{
 /* ======================================================
    INTRO FADE (OPTIONAL)
 ====================================================== */
+const intro = document.querySelector("#intro");
 
-const intro =
-document.querySelector("#intro");
-
-if(intro){
+if (intro) {
 
     intro.animate(
-
         [
-
-            {
-
-                opacity:0,
-
-                transform:"translate(-50%, -12px)"
-
-            },
-
-            {
-
-                opacity:1,
-
-                transform:"translate(-50%, 0)"
-
-            }
-
+            { opacity: 0 },
+            { opacity: 1 }
         ],
-
         {
-
-            duration:700,
-
-            easing:"ease-out",
-
-            fill:"forwards"
-
+            duration: 700,
+            easing: "ease-out",
+            fill: "forwards"
         }
-
     );
 
 }
-
 
 
 /* ======================================================
