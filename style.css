@@ -118,6 +118,36 @@ body{
 
 }
 
+/* ======================================================
+   TOP RIGHT GIF
+====================================================== */
+
+#cornerGif{
+
+    position:fixed;
+
+    top:clamp(10px,2vw,35px);
+
+    right:clamp(15px,3vw,45px);
+
+    width:clamp(120px,14vw,260px);
+
+    z-index:5000;
+
+    pointer-events:none;
+
+}
+
+#cornerGif img{
+
+    width:100%;
+
+    height:auto;
+
+    display:block;
+
+}
+
 
 
 /* ======================================================
