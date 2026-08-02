@@ -566,7 +566,8 @@ scroll-padding-left:clamp(25px,3vw,60px);
     object-fit:contain;
 
     display:block;
-
+  
+    margin-left:-100px;
 }
 
 
