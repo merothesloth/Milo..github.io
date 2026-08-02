@@ -545,7 +545,7 @@ scroll-padding-left:clamp(25px,3vw,60px);
 
 #leftColumn{
 
-    flex:0 0 clamp(240px,28vw,420px);
+    flex:0 0 clamp(300px,35vw,520px);
 
     display:flex;
 
