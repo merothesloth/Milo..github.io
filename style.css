@@ -563,7 +563,7 @@ scroll-padding-left:clamp(25px,3vw,60px);
 
     aspect-ratio:1/1;
 
-    object-fit:cover;
+    object-fit:contain;
 
     display:block;
 
