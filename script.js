@@ -66,7 +66,7 @@ if (!introPlayed) {
 const artworkData = [
 
     {
-  {
+  
     image: "images/art1.jpg",
     title: "Artwork One",
     description: "Description for artwork one.",
