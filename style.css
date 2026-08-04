@@ -126,11 +126,11 @@ body{
 
     position:fixed;
 
-    top:clamp(10px,2vw,35px);
+    top:clamp(3px,2vw,3px);
 
-    right:clamp(15px,3vw,45px);
+    right:clamp(3px,3vw,3px);
 
-    width:clamp(120px,14vw,260px);
+    width:clamp(50px,14vw,50px);
 
     z-index:5000;
 
