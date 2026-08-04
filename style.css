@@ -1244,3 +1244,22 @@ button{
 .art8 img{
     transform:scale(1);
 }
+.art1detail1 img{
+    width:100%;
+}
+
+.art1detail2 img{
+    width:80%;
+}
+
+.art1detail3 img{
+    width:120%;
+}
+
+.art1detail4 img{
+    width:65%;
+}
+
+.art1detail5 img{
+    width:95%;
+}
