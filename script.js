@@ -21,12 +21,10 @@ const detailImage = document.querySelector("#detailImage");
 const detailTitle = document.querySelector("#detailTitle");
 
 const detailText = document.querySelector("#detailText");
-
+   
+const rightColumn = document.querySelector("#rightColumn");
+   
 let artworkOpen = false;
-
-/* ======================================================
-   OPEN ARTWORK
-====================================================== */
 
 function openArtwork(piece){
 
@@ -41,6 +39,84 @@ function openArtwork(piece){
 
     detailTitle.textContent = title.textContent;
     detailText.textContent = text.textContent;
+
+
+    /* ==================================================
+       LOAD DETAIL IMAGES
+    ================================================== */
+
+    if (rightColumn) {
+
+        rightColumn.innerHTML = "";
+
+        /*
+           Get the artwork number from the class.
+
+           art1  →  1
+           art2  →  2
+           art3  →  3
+           etc.
+        */
+
+        const artworkClass = Array.from(piece.classList)
+            .find(className => /^art\d+$/.test(className));
+
+        if (artworkClass) {
+
+            const artworkNumber =
+                artworkClass.replace("art", "");
+
+            /*
+               Look for detail images:
+               art1-detail1.jpg
+               art1-detail2.jpg
+               art1-detail3.jpg
+               etc.
+            */
+
+            for (let i = 1; i <= 50; i++) {
+
+                const detailImagePath =
+                    `images/art${artworkNumber}-detail${i}.jpg`;
+
+                const artboard =
+                    document.createElement("div");
+
+                artboard.className = "artboard";
+
+                const detailImg =
+                    document.createElement("img");
+
+                detailImg.src = detailImagePath;
+
+                detailImg.alt =
+                    `Artwork ${artworkNumber} detail ${i}`;
+
+                /*
+                   If the JPG doesn't exist,
+                   remove the empty artboard.
+                */
+
+                detailImg.onerror = () => {
+
+                    artboard.remove();
+
+                };
+
+                artboard.appendChild(detailImg);
+
+                rightColumn.appendChild(artboard);
+
+            }
+
+        }
+
+    }
+
+
+    /* ==================================================
+       OPEN DETAIL PAGE
+    ================================================== */
 
     detailPage.style.display = "block";
 
