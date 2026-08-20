@@ -103,16 +103,23 @@ function openArtwork(piece){
 
                 };
 
-                artboard.appendChild(detailImg);
+           artboard.appendChild(detailImg);
 
-                rightColumn.appendChild(artboard);
+rightColumn.appendChild(artboard);
 
-            }
 
-        }
+/* ==================================================
+   CLICK DETAIL IMAGE TO ENLARGE
+================================================== */
 
-    }
+detailImg.addEventListener("click", (event) => {
 
+    event.stopPropagation();
+
+    detailImg.classList.toggle("enlarged");
+
+});
+       
 
     /* ==================================================
        OPEN DETAIL PAGE
