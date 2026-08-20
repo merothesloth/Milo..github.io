@@ -52,9 +52,9 @@ function openArtwork(piece){
         /*
            Get the artwork number from the class.
 
-           art1  →  1
-           art2  →  2
-           art3  →  3
+           art1 → 1
+           art2 → 2
+           art3 → 3
            etc.
         */
 
@@ -103,23 +103,28 @@ function openArtwork(piece){
 
                 };
 
-           artboard.appendChild(detailImg);
+                /*
+                   CLICK DETAIL IMAGE TO ENLARGE
+                */
 
-rightColumn.appendChild(artboard);
+                detailImg.addEventListener("click", (event) => {
 
+                    event.stopPropagation();
 
-/* ==================================================
-   CLICK DETAIL IMAGE TO ENLARGE
-================================================== */
+                    detailImg.classList.toggle("enlarged");
 
-detailImg.addEventListener("click", (event) => {
+                });
 
-    event.stopPropagation();
+                artboard.appendChild(detailImg);
 
-    detailImg.classList.toggle("enlarged");
+                rightColumn.appendChild(artboard);
 
-});
-       
+            }
+
+        }
+
+    }
+
 
     /* ==================================================
        OPEN DETAIL PAGE
@@ -134,7 +139,6 @@ detailImg.addEventListener("click", (event) => {
     });
 
 }
-
 /* ======================================================
    CLOSE ARTWORK
 ====================================================== */
