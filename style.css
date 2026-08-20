@@ -1232,32 +1232,4 @@ button{
 .art1detail5 img{
     width:95%;
 }
-/* ======================================================
-   DETAIL IMAGE SIZE + CLICK TO ENLARGE
-====================================================== */
 
-.artboard img{
-    width:65%;
-    max-width:65%;
-    height:auto;
-    cursor:zoom-in;
-}
-
-.artboard img.enlarged{
-    position:fixed;
-
-    top:50%;
-    left:50%;
-
-    width:auto;
-    max-width:90vw;
-    max-height:90vh;
-
-    transform:translate(-50%,-50%);
-
-    z-index:9999;
-
-    cursor:zoom-out;
-
-    background:#000;
-}
