@@ -1233,3 +1233,13 @@ button{
     width:95%;
 }
 
+/* ======================================================
+PF EXPO BOLD — TITLES
+====================================================== */
+
+.artPiece h2,
+#detailTitle,
+.artboard h2{
+    font-family:"PF Expo", sans-serif;
+    font-weight:700;
+}
