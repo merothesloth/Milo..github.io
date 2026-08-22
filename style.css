@@ -1242,3 +1242,15 @@ button{
     font-weight: 700;
     font-style: normal;
 }
+
+/* ======================================================
+ARGENT PIXEL CF — DESCRIPTIONS
+====================================================== */
+
+.artPiece p,
+#detailText,
+.artboard p {
+    font-family: "argent-pixel-cf", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
