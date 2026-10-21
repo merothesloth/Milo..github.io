@@ -175,6 +175,19 @@ if(introGif){
 
 artworks.forEach(piece => {
 
+/* ======================================================
+   CLOSE WHEN CLICKING OUTSIDE THE ARTWORK
+====================================================== */
+
+detailPage.addEventListener("click", (event) => {
+    if (event.target !== detailImage) {
+        closeArtwork();
+    }
+});
+
+detailImage.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
     piece.addEventListener("click", () => {
 
         openArtwork(piece);
