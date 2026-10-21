@@ -1511,3 +1511,109 @@ ARGENT PIXEL CF — DESCRIPTIONS
         font-size: 14px !important;
     }
 }
+/* ======================================================
+   DETAIL IMAGE GALLERY
+   ONLY AFFECTS THE DETAIL PAGE
+====================================================== */
+
+/* Right side detail-image gallery */
+#detailPage #rightColumn {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 30px;
+
+    padding: 30px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    align-content: start;
+}
+
+/* Individual gallery items */
+#detailPage .artboard {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+/* Detail images keep their real proportions */
+#detailPage .artboard img {
+    width: 100%;
+    height: auto;
+
+    max-width: 100%;
+    max-height: none;
+
+    object-fit: contain;
+
+    display: block;
+
+    transition: transform 0.25s ease;
+}
+
+/* Slight hover indication */
+#detailPage .artboard img:hover {
+    transform: scale(1.02);
+}
+
+
+/* ======================================================
+   ENLARGED DETAIL IMAGE
+====================================================== */
+
+#detailPage .artboard img.enlarged {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: auto;
+    height: auto;
+
+    max-width: 90vw;
+    max-height: 90vh;
+
+    object-fit: contain;
+
+    z-index: 2000;
+
+    cursor: zoom-out;
+}
+
+
+/* Dark background ONLY when an individual
+   detail image is enlarged */
+
+#detailPage:has(.artboard img.enlarged) {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+
+/* ======================================================
+   MOBILE DETAIL GALLERY
+====================================================== */
+
+@media (max-width: 700px) {
+
+    #detailPage #rightColumn {
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+
+        padding: 20px;
+    }
+
+    #detailPage .artboard img.enlarged {
+        max-width: 94vw;
+        max-height: 90vh;
+    }
+}
