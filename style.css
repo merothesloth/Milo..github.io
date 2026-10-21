@@ -1255,3 +1255,241 @@ ARGENT PIXEL CF — DESCRIPTIONS
     font-style: normal;
 }
 
+/* =========================================================
+   DETAIL SECTION ONLY
+   DO NOT MODIFY HOMEPAGE
+========================================================= */
+
+/* The detail view sits over the existing homepage */
+#detailPage {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+
+    background: rgba(0, 0, 0, 0.62) !important;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    overflow: hidden !important;
+    z-index: 1000 !important;
+
+    cursor: pointer;
+}
+
+/* Detail view layout */
+#detailPage #detailLayout {
+    position: relative !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+
+    align-items: center !important;
+
+    padding: 7vh 6vw !important;
+    box-sizing: border-box !important;
+
+    gap: 4vw !important;
+}
+
+/* =========================================================
+   LEFT SIDE — DESCRIPTION
+========================================================= */
+
+#detailPage #leftColumn {
+    position: relative !important;
+
+    width: 25% !important;
+    min-width: 220px !important;
+    height: auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    justify-content: center !important;
+
+    flex-shrink: 0 !important;
+
+    z-index: 1002 !important;
+}
+
+/* No title in detail view */
+#detailPage #detailTitle {
+    display: none !important;
+}
+
+/* Single description */
+#detailPage #detailText {
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: white !important;
+
+    font-family: "argent-pixel-cf", sans-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+
+    font-size: clamp(15px, 1.15vw, 21px) !important;
+    line-height: 1.5 !important;
+
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+
+    cursor: text !important;
+}
+
+/* =========================================================
+   RIGHT SIDE — MAIN SELECTED IMAGE
+========================================================= */
+
+#detailPage #detailImage {
+    position: relative !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 68vw !important;
+    max-height: 82vh !important;
+
+    object-fit: contain !important;
+
+    display: block !important;
+
+    margin: 0 auto !important;
+
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+
+    z-index: 1001 !important;
+
+    cursor: default !important;
+}
+
+/* =========================================================
+   DETAIL IMAGES
+========================================================= */
+
+/*
+   These are your:
+
+   art1-detail1.jpg
+   art1-detail2.jpg
+   art1-detail3.jpg
+   etc.
+
+   The homepage images are NOT affected.
+*/
+
+#detailPage #rightColumn {
+    position: absolute !important;
+
+    right: 4vw !important;
+    top: 5vh !important;
+
+    width: 62vw !important;
+    height: 90vh !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+
+    gap: 5vh !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    padding: 2vh 2vw 10vh 2vw !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 1001 !important;
+
+    /*
+       Hidden initially because the main selected image
+       is displayed separately.
+    */
+    visibility: hidden !important;
+}
+
+/* Detail image containers */
+#detailPage .artboard {
+    width: 100% !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    flex-shrink: 0 !important;
+
+    background: transparent !important;
+}
+
+/* Actual detail images */
+#detailPage .artboard img {
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+    max-height: 80vh !important;
+
+    object-fit: contain !important;
+
+    display: block !important;
+
+    cursor: pointer !important;
+}
+
+/* =========================================================
+   CLOSE AREA
+========================================================= */
+
+#detailPage #topBar {
+    display: none !important;
+}
+
+/* =========================================================
+   MOBILE DETAIL VIEW
+========================================================= */
+
+@media (max-width: 700px) {
+
+    #detailPage #detailLayout {
+        flex-direction: column !important;
+
+        justify-content: center !important;
+
+        padding: 5vh 5vw !important;
+
+        gap: 3vh !important;
+    }
+
+    #detailPage #leftColumn {
+        width: 90% !important;
+        min-width: 0 !important;
+
+        order: 2 !important;
+
+        justify-content: flex-start !important;
+    }
+
+    #detailPage #detailText {
+        font-size: 14px !important;
+        line-height: 1.45 !important;
+
+        max-height: 20vh !important;
+    }
+
+    #detailPage #detailImage {
+        order: 1 !important;
+
+        max-width: 90vw !important;
+        max-height: 65vh !important;
+    }
+}
