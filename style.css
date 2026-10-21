@@ -1512,11 +1512,25 @@ ARGENT PIXEL CF — DESCRIPTIONS
     }
 }
 /* ======================================================
-   DETAIL IMAGE GALLERY
-   ONLY AFFECTS THE DETAIL PAGE
+   DETAIL PAGE
+   HOMEPAGE IS NOT AFFECTED
 ====================================================== */
 
-/* Right side detail-image gallery */
+/* Detail page is completely opaque black */
+#detailPage {
+    background: #000 !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    overflow: hidden !important;
+}
+
+
+/* ======================================================
+   DETAIL IMAGE GALLERY
+====================================================== */
+
 #detailPage #rightColumn {
     display: grid;
 
@@ -1532,18 +1546,22 @@ ARGENT PIXEL CF — DESCRIPTIONS
     align-content: start;
 }
 
-/* Individual gallery items */
+
+/* Individual gallery item */
+
 #detailPage .artboard {
     width: 100%;
 
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 
     cursor: pointer;
 }
 
-/* Detail images keep their real proportions */
+
+/* Detail images */
+
 #detailPage .artboard img {
     width: 100%;
     height: auto;
@@ -1558,17 +1576,13 @@ ARGENT PIXEL CF — DESCRIPTIONS
     transition: transform 0.25s ease;
 }
 
-/* Slight hover indication */
-#detailPage .artboard img:hover {
-    transform: scale(1.02);
-}
-
 
 /* ======================================================
-   ENLARGED DETAIL IMAGE
+   INSPECTED DETAIL IMAGE
 ====================================================== */
 
 #detailPage .artboard img.enlarged {
+
     position: fixed;
 
     left: 50%;
@@ -1579,8 +1593,8 @@ ARGENT PIXEL CF — DESCRIPTIONS
     width: auto;
     height: auto;
 
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: 88vw;
+    max-height: 88vh;
 
     object-fit: contain;
 
@@ -1590,16 +1604,51 @@ ARGENT PIXEL CF — DESCRIPTIONS
 }
 
 
-/* Dark background ONLY when an individual
-   detail image is enlarged */
+/* ======================================================
+   BLUR ONLY WHILE INSPECTING
+====================================================== */
+
+/*
+   When a detail image is enlarged, blur everything
+   inside the detail page except the enlarged image.
+*/
+
+#detailPage:has(.artboard img.enlarged) #detailLayout {
+    filter: blur(10px);
+}
+
+
+/*
+   Put the enlarged image ABOVE the blurred layer.
+*/
+
+#detailPage:has(.artboard img.enlarged) .artboard:has(img.enlarged) {
+    filter: none;
+
+    position: relative;
+
+    z-index: 2001;
+}
+
+
+/*
+   The enlarged image itself must never be blurred.
+*/
+
+#detailPage:has(.artboard img.enlarged) img.enlarged {
+    filter: none !important;
+}
+
+
+/* Black background behind inspected image */
 
 #detailPage:has(.artboard img.enlarged) {
-    background: rgba(0, 0, 0, 0.75);
+    background: #000 !important;
 }
 
 
 /* ======================================================
-   MOBILE DETAIL GALLERY
+   MOBILE
 ====================================================== */
 
 @media (max-width: 700px) {
@@ -1613,7 +1662,10 @@ ARGENT PIXEL CF — DESCRIPTIONS
     }
 
     #detailPage .artboard img.enlarged {
+
         max-width: 94vw;
         max-height: 90vh;
+
     }
+
 }
