@@ -1445,3 +1445,111 @@ ARGENT PIXEL CF — DESCRIPTIONS
         margin-bottom: 8px !important;
     }
 }
+
+/* ==================================================
+   FINAL FIX — DETAIL IMAGE GALLERY
+   Overrides conflicting rules above this block.
+================================================== */
+
+#detailPage #detailLayout {
+    display: flex !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    align-items: stretch !important;
+    gap: 24px !important;
+    box-sizing: border-box !important;
+}
+
+#detailPage #leftColumn {
+    position: relative !important;
+    flex: 0 0 30% !important;
+    width: 30% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+}
+
+#detailPage #rightColumn {
+    position: relative !important;
+    inset: auto !important;
+    flex: 1 1 0% !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+
+    display: block !important;
+    column-count: 3 !important;
+    column-gap: 14px !important;
+    column-fill: auto !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+#detailPage #rightColumn .artboard {
+    position: relative !important;
+    display: inline-block !important;
+    vertical-align: top !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+    break-inside: avoid !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+}
+
+#detailPage #rightColumn .artboard img {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    transform: none !important;
+    cursor: zoom-in !important;
+}
+
+#detailPage {
+    overflow: hidden !important;
+    background: #000 !important;
+}
+
+@media (max-width: 1000px) {
+    #detailPage #rightColumn {
+        column-count: 2 !important;
+    }
+}
+
+@media (max-width: 650px) {
+    #detailPage #detailLayout {
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    #detailPage #leftColumn {
+        flex-basis: 35% !important;
+        width: 35% !important;
+    }
+
+    #detailPage #rightColumn {
+        column-count: 2 !important;
+        padding: 6px !important;
+        column-gap: 6px !important;
+    }
+
+    #detailPage #rightColumn .artboard {
+        margin-bottom: 6px !important;
+    }
+}
