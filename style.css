@@ -1668,4 +1668,92 @@ ARGENT PIXEL CF — DESCRIPTIONS
 
     }
 
+} 
+
+/* =========================================
+   DETAIL PAGE FIXES ONLY
+========================================= */
+
+/* Restore the original left-side sizing.
+   Remove overrides that changed the original
+   detail layout and let the original CSS apply. */
+
+#detailPage #leftColumn {
+    width: 35vw !important;
+    min-width: 0 !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+}
+
+#detailPage #detailImage {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+#detailPage #detailTitle {
+    display: block !important;
+}
+
+#detailPage #detailText {
+    position: static !important;
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+}
+
+/* Keep the detail page solid black normally. */
+#detailPage {
+    background: #000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Inspection mode: blur the detail page contents. */
+#detailPage.inspecting #detailLayout {
+    filter: blur(10px);
+}
+
+/* The inspected image stays sharp and above the blur. */
+#detailPage .artboard img.enlarged {
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 88vw !important;
+    max-height: 88vh !important;
+    object-fit: contain !important;
+    transform: translate(-50%, -50%) !important;
+    filter: none !important;
+    z-index: 3000 !important;
+    cursor: zoom-out !important;
+}
+
+/* Prevent the selected image's gallery container
+   from being blurred with the background. */
+#detailPage.inspecting .artboard:has(img.enlarged) {
+    filter: none !important;
+    z-index: 3000 !important;
+}
+
+/* Mobile: keep the original layout rules unless
+   your existing responsive CSS changes them. */
+@media (max-width: 700px) {
+    #detailPage #leftColumn {
+        width: 100% !important;
+    }
+
+    #detailPage #detailImage {
+        max-width: 100% !important;
+    }
 }
