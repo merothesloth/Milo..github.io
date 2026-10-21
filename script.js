@@ -1,387 +1,581 @@
 /* ======================================================
    PORTFOLIO V4
-   DETAIL VIEW ONLY
-
-   HOMEPAGE BEHAVIOR IS PRESERVED.
+   SCRIPT.JS
+   DETAIL GALLERY VERSION
 ====================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
+
+/* ======================================================
+   ELEMENTS
+====================================================== */
+
+const gallery = document.querySelector("#gallery");
+
+const artworks = document.querySelectorAll(".artPiece");
+
+const detailPage = document.querySelector("#detailPage");
+
+const detailImage = document.querySelector("#detailImage");
+
+const detailTitle = document.querySelector("#detailTitle");
+
+const detailText = document.querySelector("#detailText");
+
+const rightColumn = document.querySelector("#rightColumn");
+
+let artworkOpen = false;
+
+
+/* ======================================================
+   OPEN ARTWORK
+====================================================== */
+
+function openArtwork(piece){
+
+    artworkOpen = true;
+
+    const img = piece.querySelector("img");
+    const title = piece.querySelector("h2");
+    const text = piece.querySelector("p");
+
+
+    /* ----------------------------------------------
+       ORIGINAL LEFT SIDE
+    ---------------------------------------------- */
+
+    detailImage.src = img.src;
+    detailImage.alt = img.alt;
+
+    detailTitle.textContent = title.textContent;
+
+    detailText.textContent = text.textContent;
+
+
     /* ==================================================
-       HOMEPAGE ELEMENTS
-       These are intentionally left alone.
+       LOAD DETAIL IMAGE GALLERY
     ================================================== */
 
-    const gallery = document.querySelector("#gallery");
-    const artworks = document.querySelectorAll(".artPiece");
+    if (rightColumn) {
 
-    const introGif = document.querySelector("#introGif");
-
-    /* ==================================================
-       DETAIL ELEMENTS
-    ================================================== */
-
-    const detailPage = document.querySelector("#detailPage");
-    const detailImage = document.querySelector("#detailImage");
-    const detailTitle = document.querySelector("#detailTitle");
-    const detailText = document.querySelector("#detailText");
-    const rightColumn = document.querySelector("#rightColumn");
-
-    let artworkOpen = false;
+        rightColumn.innerHTML = "";
 
 
-    /* ==================================================
-       OPEN DETAIL VIEW
-    ================================================== */
-
-    function openArtwork(piece) {
-
-        artworkOpen = true;
-
-        const img = piece.querySelector("img");
-        const title = piece.querySelector("h2");
-        const text = piece.querySelector("p");
-
-        /* ----------------------------------------------
-           Main selected image
-        ---------------------------------------------- */
-
-        if (detailImage && img) {
-
-            detailImage.src = img.src;
-            detailImage.alt = img.alt;
-
-        }
+        const artworkClass =
+            Array.from(piece.classList)
+                .find(className => /^art\d+$/.test(className));
 
 
-        /* ----------------------------------------------
-           Description
-        ---------------------------------------------- */
+        if (artworkClass) {
 
-        if (detailText && text) {
-
-            detailText.textContent = text.textContent;
-
-        }
+            const artworkNumber =
+                artworkClass.replace("art", "");
 
 
-        /* ----------------------------------------------
-           Title is no longer displayed
-        ---------------------------------------------- */
+            /*
+               Load:
 
-        if (detailTitle) {
+               art1-detail1.jpg
+               art1-detail2.jpg
+               art1-detail3.jpg
+               etc.
+            */
 
-            detailTitle.textContent =
-                title ? title.textContent : "";
+            for (let i = 1; i <= 50; i++) {
 
-        }
-
-
-        /* ==================================================
-           LOAD DETAIL IMAGES
-        ================================================== */
-
-        if (rightColumn) {
-
-            rightColumn.innerHTML = "";
-
-            const artworkClass =
-                Array.from(piece.classList)
-                    .find(className => /^art\d+$/.test(className));
+                const detailImagePath =
+                    `images/art${artworkNumber}-detail${i}.jpg`;
 
 
-            if (artworkClass) {
+                const artboard =
+                    document.createElement("div");
 
-                const artworkNumber =
-                    artworkClass.replace("art", "");
-
-
-                /*
-                   Find:
-
-                   art1-detail1.jpg
-                   art1-detail2.jpg
-                   art1-detail3.jpg
-                   etc.
-                */
-
-                for (let i = 1; i <= 50; i++) {
-
-                    const detailImagePath =
-                        `images/art${artworkNumber}-detail${i}.jpg`;
+                artboard.className = "artboard";
 
 
-                    const artboard =
-                        document.createElement("div");
+                const detailImg =
+                    document.createElement("img");
 
-                    artboard.className = "artboard";
+                detailImg.src =
+                    detailImagePath;
 
-
-                    const detailImg =
-                        document.createElement("img");
-
-                    detailImg.src =
-                        detailImagePath;
-
-                    detailImg.alt =
-                        `Artwork ${artworkNumber} detail ${i}`;
+                detailImg.alt =
+                    `Artwork ${artworkNumber} detail ${i}`;
 
 
-                    /*
-                       Remove nonexistent detail images.
-                    */
+                /* --------------------------------------
+                   Remove image if it doesn't exist
+                -------------------------------------- */
 
-                    detailImg.onerror = () => {
+                detailImg.onerror = () => {
 
-                        artboard.remove();
+                    artboard.remove();
 
-                    };
-
-
-                    /*
-                       Prevent clicking a detail image
-                       from closing the overlay.
-                    */
-
-                    detailImg.addEventListener("click", (event) => {
-
-                        event.stopPropagation();
-
-                    });
+                };
 
 
-                    artboard.appendChild(detailImg);
+                /* --------------------------------------
+                   CLICK DETAIL IMAGE
+                -------------------------------------- */
 
-                    rightColumn.appendChild(artboard);
+                detailImg.addEventListener("click", (event) => {
 
-                }
+                    event.stopPropagation();
+
+                    detailImg.classList.toggle("enlarged");
+
+                });
+
+
+                artboard.appendChild(detailImg);
+
+                rightColumn.appendChild(artboard);
 
             }
 
         }
 
-
-        /* ==================================================
-           OPEN OVERLAY
-        ================================================== */
-
-        detailPage.style.display = "block";
-
-        requestAnimationFrame(() => {
-
-            detailPage.classList.add("active");
-
-        });
-
     }
 
 
     /* ==================================================
-       CLOSE DETAIL VIEW
+       OPEN DETAIL PAGE
     ================================================== */
 
-    function closeArtwork() {
-
-        if (!artworkOpen) return;
-
-        artworkOpen = false;
-
-        detailPage.classList.remove("active");
-
-        setTimeout(() => {
-
-            if (!artworkOpen) {
-
-                detailPage.style.display = "none";
-
-            }
-
-        }, 450);
-
-    }
+    detailPage.style.display = "block";
 
 
-    /* ==================================================
-       CLICK MAIN HOMEPAGE ARTWORK
-    ================================================== */
+    requestAnimationFrame(() => {
 
-    artworks.forEach(piece => {
-
-        piece.addEventListener("click", () => {
-
-            openArtwork(piece);
-
-        });
+        detailPage.classList.add("active");
 
     });
 
+}
 
-    /* ==================================================
-       CLICK OUTSIDE DETAIL IMAGE = CLOSE
-    ================================================== */
 
-    detailPage.addEventListener("click", (event) => {
+/* ======================================================
+   CLOSE ARTWORK
+====================================================== */
 
-        /*
-           If the user clicked the actual selected image,
-           don't close.
-        */
+function closeArtwork(){
 
-        if (
-            event.target === detailImage ||
-            event.target.closest("#detailImage")
-        ) {
+    artworkOpen = false;
 
-            return;
+
+    detailPage.classList.remove("active");
+
+
+    setTimeout(() => {
+
+        detailPage.style.display = "none";
+
+    }, 450);
+
+}
+
+
+/* ======================================================
+   GIF BACK BUTTON
+====================================================== */
+
+const introGif = document.querySelector("#introGif");
+
+if(introGif){
+
+    introGif.addEventListener("click", closeArtwork);
+
+}
+
+
+/* ======================================================
+   CLICK HOMEPAGE ARTWORK
+====================================================== */
+
+artworks.forEach(piece => {
+
+    piece.addEventListener("click", () => {
+
+        openArtwork(piece);
+
+    });
+
+});
+
+
+/* ======================================================
+   CLICK OUTSIDE DETAIL CONTENT
+====================================================== */
+
+detailPage.addEventListener("click", (event) => {
+
+    /*
+       If a detail image is enlarged,
+       clicking anywhere outside it closes
+       the enlarged image.
+    */
+
+    const enlarged =
+        detailPage.querySelector(".artboard img.enlarged");
+
+
+    if (enlarged) {
+
+        if (event.target !== enlarged) {
+
+            enlarged.classList.remove("enlarged");
 
         }
 
+        return;
 
-        /*
-           Clicking the description also does not close.
-        */
+    }
 
-        if (
-            event.target === detailText ||
-            event.target.closest("#detailText")
-        ) {
+});
 
-            return;
 
-        }
+/* ======================================================
+   KEYBOARD CONTROLS
+====================================================== */
 
+document.addEventListener("keydown", (event) => {
+
+
+    /* ----------------------------------------------
+       Escape enlarged detail image first
+    ---------------------------------------------- */
+
+    const enlarged =
+        detailPage.querySelector(".artboard img.enlarged");
+
+
+    if (
+        event.key === "Escape" &&
+        enlarged
+    ){
+
+        enlarged.classList.remove("enlarged");
+
+        return;
+
+    }
+
+
+    /* ----------------------------------------------
+       Escape detail page
+    ---------------------------------------------- */
+
+    if (
+        event.key === "Escape" &&
+        artworkOpen
+    ){
 
         closeArtwork();
 
-    });
+        return;
+
+    }
 
 
-    /* ==================================================
-       ESCAPE = CLOSE
-    ================================================== */
+    /* ----------------------------------------------
+       Original homepage arrow controls
+    ---------------------------------------------- */
 
-    document.addEventListener("keydown", (event) => {
-
-        if (
-            event.key === "Escape" &&
-            artworkOpen
-        ) {
-
-            closeArtwork();
-
-        }
-
-    });
+    if (artworkOpen) return;
 
 
-    /* ==================================================
-       GIF
-       
-       Keep existing behavior.
-    ================================================== */
+    if (event.key === "ArrowRight") {
 
-    if (introGif) {
+        gallery.scrollBy({
 
-        introGif.addEventListener("click", () => {
+            left: 420,
 
-            if (artworkOpen) {
-
-                closeArtwork();
-
-            }
+            behavior: "smooth"
 
         });
 
     }
 
 
-    /* ==================================================
-       RESET DETAIL SCROLL
-    ================================================== */
+    if (event.key === "ArrowLeft") {
 
-    function resetDetailScroll() {
+        gallery.scrollBy({
 
-        if (rightColumn) {
+            left: -420,
 
-            rightColumn.scrollTop = 0;
+            behavior: "smooth"
 
-        }
+        });
+
+    }
+
+});
+
+
+/* ======================================================
+   TRACKPAD & MOUSE WHEEL
+====================================================== */
+
+gallery.addEventListener("wheel", (event) => {
+
+    if (artworkOpen) return;
+
+
+    if (
+        Math.abs(event.deltaX) >
+        Math.abs(event.deltaY)
+    ) {
+
+        return;
 
     }
 
 
-    /* ==================================================
-       RESET WHEN OPENING
-    ================================================== */
-
-    const originalOpenArtwork =
-        openArtwork;
-
-    openArtwork = function(piece) {
-
-        resetDetailScroll();
-
-        originalOpenArtwork(piece);
-
-    };
+    event.preventDefault();
 
 
-    /* ==================================================
-       PRELOAD HOMEPAGE ARTWORKS
-       
-       Existing behavior preserved.
-    ================================================== */
+    gallery.scrollLeft += event.deltaY;
 
-    artworks.forEach(piece => {
+}, {
 
-        const img =
-            piece.querySelector("img");
+    passive: false
 
-        if (img) {
+});
 
-            const preload =
-                new Image();
 
-            preload.src =
-                img.src;
+/* ======================================================
+   DRAG SCROLL
+====================================================== */
+
+let dragging = false;
+
+let startX = 0;
+
+let startScroll = 0;
+
+let moved = false;
+
+
+gallery.addEventListener("mousedown", (event) => {
+
+    if (artworkOpen) return;
+
+
+    dragging = true;
+
+    moved = false;
+
+    startX = event.pageX;
+
+    startScroll = gallery.scrollLeft;
+
+    gallery.classList.add("dragging");
+
+});
+
+
+window.addEventListener("mousemove", (event) => {
+
+    if (!dragging) return;
+
+
+    const distance =
+        event.pageX - startX;
+
+
+    if (Math.abs(distance) > 5) {
+
+        moved = true;
+
+    }
+
+
+    gallery.scrollLeft =
+        startScroll - distance;
+
+});
+
+
+window.addEventListener("mouseup", () => {
+
+    dragging = false;
+
+    gallery.classList.remove("dragging");
+
+});
+
+
+/* ======================================================
+   PREVENT CLICK AFTER DRAG
+====================================================== */
+
+artworks.forEach(piece => {
+
+    piece.addEventListener("click", (event) => {
+
+        if (moved) {
+
+            event.preventDefault();
+
+            event.stopImmediatePropagation();
+
+            moved = false;
 
         }
+
+    }, true);
+
+});
+
+
+/* ======================================================
+   ORIGINAL HOVER EFFECTS
+====================================================== */
+
+artworks.forEach(piece => {
+
+    piece.addEventListener("mouseenter", () => {
+
+        if (artworkOpen) return;
+
+
+        artworks.forEach(other => {
+
+            if (other !== piece) {
+
+                other.classList.add("dimmed");
+
+            }
+
+        });
+
+
+        piece.classList.add("hovered");
 
     });
 
 
-    /* ==================================================
-       INTRO FADE
-       
-       Existing behavior preserved.
-    ================================================== */
+    piece.addEventListener("mouseleave", () => {
 
-    const intro =
-        document.querySelector("#intro");
+        artworks.forEach(other => {
 
-    if (intro) {
+            other.classList.remove("dimmed");
 
-        intro.animate(
-            [
-                { opacity: 0 },
-                { opacity: 1 }
-            ],
-            {
-                duration: 700,
-                easing: "ease-out",
-                fill: "forwards"
-            }
-        );
+            other.classList.remove("hovered");
+
+        });
+
+    });
+
+});
+
+
+/* ======================================================
+   RESET DETAIL SCROLL
+====================================================== */
+
+function resetDetailScroll(){
+
+    if(rightColumn){
+
+        rightColumn.scrollTop = 0;
 
     }
 
+}
 
-    /* ==================================================
-       READY
-    ================================================== */
 
-    console.log(
-        "Portfolio V4 Detail View Loaded"
+/* ======================================================
+   OPEN WRAPPER
+====================================================== */
+
+const originalOpenArtwork =
+    openArtwork;
+
+
+openArtwork = function(piece){
+
+    resetDetailScroll();
+
+    originalOpenArtwork(piece);
+
+};
+
+
+/* ======================================================
+   WINDOW RESIZE
+====================================================== */
+
+window.addEventListener("resize", () => {
+
+    gallery.classList.remove("dragging");
+
+});
+
+
+/* ======================================================
+   PRELOAD HOMEPAGE ARTWORKS
+====================================================== */
+
+artworks.forEach(piece => {
+
+    const img =
+        piece.querySelector("img");
+
+
+    if(img){
+
+        const preload =
+            new Image();
+
+
+        preload.src =
+            img.src;
+
+    }
+
+});
+
+
+/* ======================================================
+   INTRO FADE
+====================================================== */
+
+const intro =
+    document.querySelector("#intro");
+
+
+if(intro){
+
+    intro.animate(
+
+        [
+            { opacity: 0 },
+            { opacity: 1 }
+        ],
+
+        {
+
+            duration: 700,
+
+            easing: "ease-out",
+
+            fill: "forwards"
+
+        }
+
     );
+
+}
+
+
+/* ======================================================
+   READY
+====================================================== */
+
+console.log(
+    "Portfolio V4 Detail Gallery Loaded"
+);
 
 });
