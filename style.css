@@ -1254,3 +1254,112 @@ ARGENT PIXEL CF — DESCRIPTIONS
     font-weight: 400;
     font-style: normal;
 }
+
+/* ======================================================
+   DETAIL VIEW PATCH
+   Only affects the opened artwork view.
+   Homepage styles remain unchanged.
+====================================================== */
+
+/* Dark, blurred background behind the artwork */
+#detailPage {
+    background: rgba(0, 0, 0, 0.58) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* Keep the detail view above the homepage */
+#detailPage.active {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Make the detail layout fill the screen */
+#detailPage #detailLayout {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block !important;
+    overflow: hidden;
+}
+
+/* Remove the old column layout */
+#detailPage #leftColumn {
+    display: contents !important;
+}
+
+/* Hide the title: the opened view has description only */
+#detailPage #detailTitle {
+    display: none !important;
+}
+
+/* Description on the left */
+#detailPage #detailText {
+    position: fixed;
+    left: 5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 23vw;
+    max-height: 75vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-size: clamp(14px, 1.2vw, 20px);
+    line-height: 1.5;
+    z-index: 1002;
+    cursor: text;
+}
+
+/* Selected artwork: large on the right, never stretched */
+#detailPage #detailImage {
+    position: fixed;
+    left: 32vw;
+    top: 8vh;
+    width: 63vw;
+    height: 84vh;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: default;
+    z-index: 1001;
+}
+
+/* Hide the old secondary-image column in this layout */
+#detailPage #rightColumn {
+    display: none !important;
+}
+
+/* Remove the old empty top bar */
+#detailPage #topBar {
+    display: none !important;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+    #detailPage #detailText {
+        left: 5vw;
+        top: auto;
+        bottom: 5vh;
+        transform: none;
+        width: 90vw;
+        max-height: 25vh;
+        font-size: 14px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.65);
+    }
+
+    #detailPage #detailImage {
+        left: 5vw;
+        top: 5vh;
+        width: 90vw;
+        height: 65vh;
+    }
+}
