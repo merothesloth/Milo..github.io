@@ -1,7 +1,7 @@
 /* ======================================================
-   PART 1 OF 3 — START OF SCRIPT.JS
-   Copy this first, then paste Parts 2 and 3 directly
-   after it in the SAME file.
+   PORTFOLIO — COMPLETE SCRIPT.JS
+   Preserves homepage gallery behavior and improves the
+   detail-image loader to try common image extensions.
 ====================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,10 +19,43 @@ document.addEventListener("DOMContentLoaded", () => {
     let inspectionOverlay = null;
     let closeArtworkTimer = null;
 
-    const DETAIL_EXTENSIONS = [
-        "jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"
-    ];
+    const DETAIL_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"];
     const MAX_DETAIL_IMAGES = 50;
+
+    /* --------------------------------------------------
+       MASONRY LAYOUT
+       The detail page itself scrolls. The board has no
+       independent scrolling area or visible scrollbar.
+    -------------------------------------------------- */
+    function updateMasonryRows() {
+        if (!rightColumn) return;
+
+        const styles = window.getComputedStyle(rightColumn);
+        const rowHeight = parseFloat(styles.gridAutoRows) || 8;
+        const rowGap = parseFloat(styles.rowGap) || 16;
+        const rowUnit = rowHeight + rowGap;
+
+        rightColumn.querySelectorAll('.artboard').forEach(artboard => {
+            const image = artboard.querySelector('img');
+            if (!image || !image.complete || !image.naturalWidth || !image.naturalHeight) {
+                artboard.style.gridRowEnd = '';
+                return;
+            }
+
+            const renderedHeight = image.getBoundingClientRect().height;
+            const span = Math.max(1, Math.ceil((renderedHeight + rowGap) / rowUnit));
+            artboard.style.gridRowEnd = `span ${span}`;
+        });
+    }
+
+    let masonryResizeFrame = null;
+    function scheduleMasonryUpdate() {
+        if (masonryResizeFrame !== null) cancelAnimationFrame(masonryResizeFrame);
+        masonryResizeFrame = requestAnimationFrame(() => {
+            masonryResizeFrame = null;
+            updateMasonryRows();
+        });
+    }
 
     /* --------------------------------------------------
        IMAGE INSPECTION OVERLAY
@@ -75,22 +108,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         inspectionOverlay.appendChild(enlargedImage);
-
         inspectionOverlay.addEventListener("click", event => {
             event.preventDefault();
             event.stopPropagation();
             closeInspection();
         });
-
         document.body.appendChild(inspectionOverlay);
     }
 
     /* --------------------------------------------------
        DETAIL IMAGE LOADING
-       Example filenames:
+       Expected filename examples:
        images/art1-detail1.jpg
        images/art1-detail2.png
        images/art2-detail1.webp
+
+       Each numbered image tries the common extensions.
+       If no matching file exists, only that image slot
+       is removed; the rest of the gallery keeps loading.
     -------------------------------------------------- */
     function addDetailImage(artworkNumber, imageNumber) {
         const artboard = document.createElement("div");
@@ -104,13 +139,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const candidates = DETAIL_EXTENSIONS.map(extension =>
             `images/art${artworkNumber}-detail${imageNumber}.${extension}`
         );
-
         let candidateIndex = 0;
         let finished = false;
 
         image.addEventListener("error", () => {
             if (finished) return;
-
             candidateIndex += 1;
 
             if (candidateIndex < candidates.length) {
@@ -118,7 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 finished = true;
                 artboard.remove();
-
                 console.info(
                     `No file found for artwork ${artworkNumber}, detail ${imageNumber}. Tried: ${candidates.join(", ")}`
                 );
@@ -128,6 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
         image.addEventListener("load", () => {
             finished = true;
             artboard.dataset.loaded = "true";
+            scheduleMasonryUpdate();
         });
 
         image.addEventListener("click", event => {
@@ -139,120 +172,92 @@ document.addEventListener("DOMContentLoaded", () => {
         artboard.appendChild(image);
         rightColumn.appendChild(artboard);
         image.src = candidates[candidateIndex];
-    }    /* --------------------------------------------------
-       OPEN AN ARTWORK
+        scheduleMasonryUpdate();
+    }
+
+    /* --------------------------------------------------
+       OPEN ARTWORK DETAIL PAGE
     -------------------------------------------------- */
     function openArtwork(piece) {
-        if (!piece || !detailPage || !detailImage ||
-            !detailTitle || !detailText || !rightColumn) {
-            console.error("A required detail-page element is missing.");
+        if (!piece || !detailPage || !detailImage || !detailTitle || !detailText || !rightColumn) {
+            console.error("Portfolio detail page is missing one or more required HTML elements.");
             return;
         }
 
-        const classList = Array.from(piece.classList);
-        const artworkClass = classList.find(className =>
-            /^art\d+$/.test(className)
-        );
-
-        if (!artworkClass) {
-            console.error("Could not identify this artwork:", piece);
-            return;
-        }
-
-        const artworkNumber = artworkClass.replace("art", "");
-        const image = piece.querySelector("img");
-        const title = piece.querySelector("h2");
-        const description = piece.querySelector("p");
-
+        closeInspection();
         if (closeArtworkTimer) {
             clearTimeout(closeArtworkTimer);
             closeArtworkTimer = null;
         }
 
-        closeInspection();
+        const mainImage = piece.querySelector("img");
+        const title = piece.querySelector("h2");
+        const description = piece.querySelector("p");
+        if (!mainImage || !title || !description) {
+            console.error("This artwork needs an image, heading, and description:", piece);
+            return;
+        }
+
+        const artworkClass = Array.from(piece.classList).find(className => /^art\d+$/.test(className));
+        const artworkNumber = artworkClass ? artworkClass.replace("art", "") : null;
 
         artworkOpen = true;
-        document.body.classList.add("detail-open");
+        detailImage.src = mainImage.currentSrc || mainImage.src;
+        detailImage.alt = mainImage.alt || title.textContent;
+        detailTitle.textContent = title.textContent;
+        detailText.textContent = description.textContent;
+        rightColumn.innerHTML = "";
 
-        detailTitle.textContent = title ? title.textContent : "";
-        detailText.textContent = description ? description.textContent : "";
-
-        if (image) {
-            detailImage.src = image.currentSrc || image.src;
-            detailImage.alt = image.alt || title?.textContent || "Artwork";
+        if (artworkNumber) {
+            for (let i = 1; i <= MAX_DETAIL_IMAGES; i += 1) {
+                addDetailImage(artworkNumber, i);
+            }
+        } else {
+            console.warn("Couldn't find an artwork class such as 'art1' on:", piece);
         }
 
-        detailPage.classList.add("active");
-        detailPage.setAttribute("aria-hidden", "false");
+        detailPage.scrollTop = 0;
+        detailPage.style.display = "block";
 
-        /* Clear previous detail images. */
-        rightColumn.replaceChildren();
-
-        /* Reset scrolling to the top. */
-        rightColumn.scrollTop = 0;
-        rightColumn.scrollLeft = 0;
-
-        /* Load detail images until the available filenames end. */
-        for (let i = 1; i <= MAX_DETAIL_IMAGES; i++) {
-            addDetailImage(artworkNumber, i);
-        }
-
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
+        requestAnimationFrame(() => {
+            detailPage.classList.add("active");
+            scheduleMasonryUpdate();
         });
     }
 
     /* --------------------------------------------------
-       CLOSE AN ARTWORK
+       CLOSE ARTWORK DETAIL PAGE
     -------------------------------------------------- */
     function closeArtwork() {
+        closeInspection();
+        artworkOpen = false;
         if (!detailPage) return;
 
-        artworkOpen = false;
-        closeInspection();
-
         detailPage.classList.remove("active");
-        detailPage.setAttribute("aria-hidden", "true");
-        document.body.classList.remove("detail-open");
-
-        if (rightColumn) {
-            rightColumn.replaceChildren();
-            rightColumn.scrollTop = 0;
-        }
-
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
+        if (closeArtworkTimer) clearTimeout(closeArtworkTimer);
+        closeArtworkTimer = setTimeout(() => {
+            if (!artworkOpen) detailPage.style.display = "none";
+            closeArtworkTimer = null;
+        }, 450);
     }
 
     /* --------------------------------------------------
-       HOMEPAGE ARTWORK CLICK HANDLERS
-    -------------------------------------------------- */
-    artworks.forEach(piece => {
-        piece.addEventListener("click", event => {
-            if (dragMoved) {
-                event.preventDefault();
-                event.stopPropagation();
-                return;
-            }
-
-            openArtwork(piece);
-        });
-    });
-
-    /* --------------------------------------------------
-       BACK BUTTON — INTRO GIF
+       GIF BACK BUTTON
     -------------------------------------------------- */
     if (introGif) {
-        introGif.style.cursor = "pointer";
-
-        introGif.addEventListener("click", event => {
-            event.preventDefault();
-            closeArtwork();
+        introGif.addEventListener("click", () => {
+            if (artworkOpen) closeArtwork();
         });
     }
+
+    /* --------------------------------------------------
+       CLICK HOMEPAGE ARTWORKS TO OPEN
+    -------------------------------------------------- */
+    artworks.forEach(piece => {
+        piece.addEventListener("click", () => {
+            if (!dragMoved) openArtwork(piece);
+        });
+    });
 
     /* --------------------------------------------------
        KEYBOARD CONTROLS
@@ -261,150 +266,127 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.key === "Escape") {
             if (inspectionOverlay) {
                 closeInspection();
-            } else if (artworkOpen) {
+                return;
+            }
+            if (artworkOpen) {
                 closeArtwork();
+                return;
             }
         }
 
-        if (artworkOpen) return;
+        if (artworkOpen || !gallery) return;
+        if (event.key === "ArrowRight") gallery.scrollBy({ left: 420, behavior: "smooth" });
+        if (event.key === "ArrowLeft") gallery.scrollBy({ left: -420, behavior: "smooth" });
+    });
 
-        if (gallery && event.key === "ArrowRight") {
-            gallery.scrollBy({
-                left: 250,
-                behavior: "smooth"
-            });
-        }
+    /* --------------------------------------------------
+       MOUSE WHEEL / TRACKPAD HOMEPAGE SCROLL
+    -------------------------------------------------- */
+    if (gallery) {
+        gallery.addEventListener("wheel", event => {
+            if (artworkOpen) return;
+            if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+            event.preventDefault();
+            gallery.scrollLeft += event.deltaY;
+        }, { passive: false });
+    }
 
-        if (gallery && event.key === "ArrowLeft") {
-            gallery.scrollBy({
-                left: -250,
-                behavior: "smooth"
-            });
-        }
-    });    /* --------------------------------------------------
+    /* --------------------------------------------------
+       CLICK-AND-DRAG HOMEPAGE SCROLL
+    -------------------------------------------------- */
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let dragMoved = false;
+    let dragMovedTimer = null;
+
+    if (gallery) {
+        gallery.addEventListener("mousedown", event => {
+            if (artworkOpen || event.button !== 0) return;
+            if (event.target.closest("a, button")) return;
+
+            dragging = true;
+            dragMoved = false;
+            startX = event.pageX;
+            startScroll = gallery.scrollLeft;
+            gallery.classList.add("dragging");
+        });
+
+        window.addEventListener("mousemove", event => {
+            if (!dragging) return;
+            const distance = event.pageX - startX;
+            if (Math.abs(distance) > 5) dragMoved = true;
+            gallery.scrollLeft = startScroll - distance;
+        });
+
+        window.addEventListener("mouseup", () => {
+            if (!dragging) return;
+            dragging = false;
+            gallery.classList.remove("dragging");
+
+            if (dragMovedTimer) clearTimeout(dragMovedTimer);
+            dragMovedTimer = setTimeout(() => {
+                dragMoved = false;
+                dragMovedTimer = null;
+            }, 0);
+        });
+
+        gallery.addEventListener("click", event => {
+            if (!dragMoved) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            dragMoved = false;
+        }, true);
+    }
+
+    /* --------------------------------------------------
        HOMEPAGE HOVER EFFECTS
     -------------------------------------------------- */
     artworks.forEach(piece => {
         piece.addEventListener("mouseenter", () => {
             if (artworkOpen) return;
-
-            artworks.forEach(otherPiece => {
-                if (otherPiece !== piece) {
-                    otherPiece.classList.add("dimmed");
-                }
+            artworks.forEach(other => {
+                if (other !== piece) other.classList.add("dimmed");
             });
-
-            piece.classList.add("focused");
+            piece.classList.add("hovered");
         });
 
         piece.addEventListener("mouseleave", () => {
-            artworks.forEach(otherPiece => {
-                otherPiece.classList.remove("dimmed");
-                otherPiece.classList.remove("focused");
+            artworks.forEach(other => {
+                other.classList.remove("dimmed", "hovered");
             });
         });
     });
 
     /* --------------------------------------------------
-       HORIZONTAL GALLERY SCROLLING
+       WINDOW RESIZE
     -------------------------------------------------- */
-    if (gallery) {
-        gallery.addEventListener("wheel", event => {
-            if (artworkOpen) return;
-
-            if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-                gallery.scrollLeft += event.deltaY;
-                event.preventDefault();
-            }
-        }, { passive: false });
-    }
+    window.addEventListener("resize", () => {
+        if (gallery) gallery.classList.remove("dragging");
+        dragging = false;
+        scheduleMasonryUpdate();
+    });
 
     /* --------------------------------------------------
-       CLICK-AND-DRAG GALLERY SCROLLING
+       PRELOAD HOMEPAGE IMAGES
     -------------------------------------------------- */
-    let isDragging = false;
-    let dragStartX = 0;
-    let startingScrollLeft = 0;
-    let dragMoved = false;
-
-    if (gallery) {
-        gallery.addEventListener("pointerdown", event => {
-            if (artworkOpen || event.button !== 0) return;
-
-            isDragging = true;
-            dragMoved = false;
-            dragStartX = event.clientX;
-            startingScrollLeft = gallery.scrollLeft;
-        });
-
-        gallery.addEventListener("pointermove", event => {
-            if (!isDragging || artworkOpen) return;
-
-            const distance = event.clientX - dragStartX;
-
-            if (Math.abs(distance) > 5) {
-                dragMoved = true;
-            }
-
-            if (dragMoved) {
-                gallery.scrollLeft = startingScrollLeft - distance;
-            }
-        });
-
-        const stopDragging = () => {
-            if (!isDragging) return;
-
-            isDragging = false;
-
-            /*
-             * Keep dragMoved true until the click generated by
-             * the drag has been handled.
-             */
-            if (dragMoved) {
-                requestAnimationFrame(() => {
-                    dragMoved = false;
-                });
-            }
-        };
-
-        gallery.addEventListener("pointerup", stopDragging);
-        gallery.addEventListener("pointercancel", stopDragging);
-        window.addEventListener("pointerup", stopDragging);
-
-        gallery.addEventListener("click", event => {
-            if (dragMoved) {
-                event.preventDefault();
-                event.stopImmediatePropagation();
-            }
-        }, true);
-
-        gallery.addEventListener("dragstart", event => {
-            event.preventDefault();
-        });
-    }
-
-    /* --------------------------------------------------
-       INTRO GIF FADE-IN
-    -------------------------------------------------- */
-    if (introGif) {
-        introGif.addEventListener("load", () => {
-            introGif.classList.add("loaded");
-        });
-
-        if (introGif.complete && introGif.naturalWidth > 0) {
-            introGif.classList.add("loaded");
+    artworks.forEach(piece => {
+        const image = piece.querySelector("img");
+        if (image) {
+            const preload = new Image();
+            preload.src = image.src;
         }
-    }
+    });
 
     /* --------------------------------------------------
-       INITIAL PAGE STATE
+       INTRO FADE
     -------------------------------------------------- */
-    if (detailPage) {
-        detailPage.classList.remove("active");
-        detailPage.setAttribute("aria-hidden", "true");
+    if (intro) {
+        intro.animate(
+            [{ opacity: 0 }, { opacity: 1 }],
+            { duration: 700, easing: "ease-out", fill: "forwards" }
+        );
     }
 
-    document.body.classList.remove("detail-open");
-
-    console.log("Portfolio script initialized successfully.");
+    console.log("Portfolio script loaded.");
 });
