@@ -1,7 +1,7 @@
 /* ======================================================
    PORTFOLIO V5
    STYLE.CSS
-   PART 1 OF 3
+   PART 1
 ====================================================== */
 
 
@@ -15,20 +15,12 @@
     --text:#fff;
     --secondary:rgba(255,255,255,.65);
 
-    /* spacing */
-
     --page-padding:clamp(18px,4vw,80px);
     --gallery-gap:clamp(28px,5vw,110px);
 
-    /* artwork */
-
     --art-size:clamp(180px,20vw,350px);
-   
-    /* logo */
 
     --logo-width:clamp(170px,18vw,320px);
-
-    /* animation */
 
     --transition:.55s cubic-bezier(.22,.61,.36,1);
 
@@ -66,7 +58,6 @@ body{
     color:var(--text);
 
     font-family:
-
     Arial,
     Helvetica,
     sans-serif;
@@ -79,10 +70,6 @@ body{
 }
 
 
-
-/* ======================================================
-   INTRO
-====================================================== */
 
 /* ======================================================
    INTRO
@@ -117,6 +104,7 @@ body{
     height:auto;
 
 }
+
 
 
 /* ======================================================
@@ -157,9 +145,10 @@ body{
 
     gap:var(--gallery-gap);
 
-padding-left: clamp(25px, 3vw, 60px);
-padding-right: var(--page-padding);
-   
+    padding-left:clamp(25px,3vw,60px);
+
+    padding-right:var(--page-padding);
+
     overflow-x:auto;
 
     overflow-y:hidden;
@@ -175,7 +164,9 @@ padding-right: var(--page-padding);
     touch-action:pan-x;
 
     scroll-snap-type:x proximity;
-scroll-padding-left:clamp(25px,3vw,60px);
+
+    scroll-padding-left:clamp(25px,3vw,60px);
+
     overscroll-behavior-x:contain;
 
 }
@@ -549,7 +540,7 @@ scroll-padding-left:clamp(25px,3vw,60px);
     display:flex;
 
     flex-direction:column;
-    
+
     margin-top:40px;
 
 }
@@ -565,8 +556,9 @@ scroll-padding-left:clamp(25px,3vw,60px);
     object-fit:contain;
 
     display:block;
-  
+
     margin-left:-100px;
+
 }
 
 
@@ -1150,406 +1142,813 @@ button{
 
 }
 
+
+
 /* ======================================================
    INDIVIDUAL IMAGE SIZES
 ====================================================== */
 
 .artPiece img{
+
     object-fit:contain;
+
 }
 
 
 /* ART 1 */
 
 .art1 img{
+
     transform:scale(1.2);
+
 }
 
 
 /* ART 2 */
 
 .art2 img{
+
     transform:scale(1.2);
+
 }
 
 
 /* ART 3 */
 
 .art3 img{
+
     transform:scale(1.1);
+
 }
 
 
 /* ART 4 */
 
 .art4 img{
+
     transform:scale(1);
+
 }
 
 
 /* ART 5 */
 
 .art5 img{
+
     transform:scale(1);
+
 }
 
 
 /* ART 6 */
 
 .art6 img{
+
     transform:scale(1);
+
 }
 
 
 /* ART 7 */
 
 .art7 img{
+
     transform:scale(1);
+
 }
 
 
 /* ART 8 */
 
 .art8 img{
+
     transform:scale(1);
+
 }
+
 .art1detail1 img{
+
     width:100%;
+
 }
 
 .art1detail2 img{
+
     width:80%;
+
 }
 
 .art1detail3 img{
+
     width:120%;
+
 }
 
 .art1detail4 img{
+
     width:65%;
+
 }
 
 .art1detail5 img{
+
     width:95%;
+
 }
+
 
 /* PF EXPO BOLD — TITLES */
 
 .artPiece h2,
 #detailTitle,
-.artboard h2 {
-    font-family: "pf-expo", sans-serif;
-    font-weight: 700;
-    font-style: normal;
+.artboard h2{
+
+    font-family:"pf-expo", sans-serif;
+
+    font-weight:700;
+
+    font-style:normal;
+
 }
 
+
 /* ======================================================
-ARGENT PIXEL CF — DESCRIPTIONS
+   ARGENT PIXEL CF — DESCRIPTIONS
 ====================================================== */
 
 .artPiece p,
 #detailText,
-.artboard p {
-    font-family: "argent-pixel-cf", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+.artboard p{
+
+    font-family:"argent-pixel-cf", sans-serif;
+
+    font-weight:400;
+
+    font-style:normal;
+
+}
+
+
+/* =========================================================
+   DETAIL SECTION ONLY
+   HOMEPAGE IS NOT CHANGED
+========================================================= */
+
+#detailPage{
+
+    position:fixed !important;
+
+    inset:0 !important;
+
+    width:100vw !important;
+
+    height:100vh !important;
+
+    background:rgba(0,0,0,0.62) !important;
+
+    backdrop-filter:blur(8px);
+
+    -webkit-backdrop-filter:blur(8px);
+
+    overflow:hidden !important;
+
+    z-index:1000 !important;
+
+    cursor:pointer;
+
+}
+
+#detailPage.active{
+
+    display:block !important;
+
+    opacity:1 !important;
+
+}
+
+
+
+/* =========================================================
+   DETAIL LAYOUT
+========================================================= */
+
+#detailPage #detailLayout{
+
+    position:relative !important;
+
+    width:100% !important;
+
+    height:100% !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    padding:6vh 5vw !important;
+
+    box-sizing:border-box !important;
+
+    gap:5vw !important;
+
+}
+
+
+
+/* =========================================================
+   LEFT SIDE — DESCRIPTION
+========================================================= */
+
+#detailPage #leftColumn{
+
+    width:25% !important;
+
+    min-width:220px !important;
+
+    height:auto !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    justify-content:center !important;
+
+    flex-shrink:0 !important;
+
+    z-index:1002 !important;
+
+}
+
+
+/* Hide title ONLY in detail view */
+
+#detailPage #detailTitle{
+
+    display:none !important;
+
+}
+
+
+/* Description */
+
+#detailPage #detailText{
+
+    width:100% !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    color:white !important;
+
+    font-family:"argent-pixel-cf", sans-serif !important;
+
+    font-weight:400 !important;
+
+    font-size:clamp(15px,1.15vw,21px) !important;
+
+    line-height:1.5 !important;
+
+    max-height:70vh !important;
+
+    overflow-y:auto !important;
+
+    cursor:text !important;
+
+}
+
+
+
+/* =========================================================
+   MAIN SELECTED IMAGE
+========================================================= */
+
+#detailPage #detailImage{
+
+    position:relative !important;
+
+    width:auto !important;
+
+    height:auto !important;
+
+    max-width:55vw !important;
+
+    max-height:78vh !important;
+
+    object-fit:contain !important;
+
+    display:block !important;
+
+    margin:0 auto !important;
+
+    flex:0 1 auto !important;
+
+    z-index:1001 !important;
+
+    cursor:default !important;
+
+}
+
+
+
+/* =========================================================
+   DETAIL IMAGES
+========================================================= */
+
+#detailPage #rightColumn{
+
+    position:absolute !important;
+
+    right:3vw !important;
+
+    top:5vh !important;
+
+    width:58vw !important;
+
+    height:90vh !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    align-items:center !important;
+
+    gap:5vh !important;
+
+    overflow-y:auto !important;
+
+    overflow-x:hidden !important;
+
+    padding:2vh 2vw 10vh 2vw !important;
+
+    box-sizing:border-box !important;
+
+    z-index:1001 !important;
+
+    visibility:visible !important;
+
+}
+
+
+
+/* Individual detail-image containers */
+
+#detailPage .artboard{
+
+    width:100% !important;
+
+    display:flex !important;
+
+    justify-content:center !important;
+
+    align-items:center !important;
+
+    flex-shrink:0 !important;
+
+    background:transparent !important;
+
+}
+
+
+
+/* Actual detail images */
+
+#detailPage .artboard img{
+
+    width:auto !important;
+
+    height:auto !important;
+
+    max-width:100% !important;
+
+    max-height:75vh !important;
+
+    object-fit:contain !important;
+
+    display:block !important;
+
+    cursor:pointer !important;
+
+}
+
+
+
+/* =========================================================
+   REMOVE OLD TOP BAR
+========================================================= */
+
+#detailPage #topBar{
+
+    display:none !important;
+
+}
+
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:700px){
+
+    #detailPage #detailLayout{
+
+        flex-direction:column !important;
+
+        justify-content:center !important;
+
+        padding:5vh 5vw !important;
+
+        gap:3vh !important;
+
+    }
+
+    #detailPage #leftColumn{
+
+        width:90% !important;
+
+        min-width:0 !important;
+
+        order:2 !important;
+
+    }
+
+    #detailPage #detailImage{
+
+        max-width:90vw !important;
+
+        max-height:60vh !important;
+
+    }
+
+    #detailPage #rightColumn{
+
+        position:relative !important;
+
+        right:auto !important;
+
+        top:auto !important;
+
+        width:90vw !important;
+
+        height:50vh !important;
+
+        order:1 !important;
+
+    }
+
+    #detailPage #detailText{
+
+        font-size:14px !important;
+
+    }
+
+}
+
+
+/* ======================================================
+   DETAIL PAGE
+   HOMEPAGE IS NOT AFFECTED
+====================================================== */
+
+
+/* Detail page is completely opaque black */
+
+#detailPage{
+
+    background:#000 !important;
+
+    backdrop-filter:none !important;
+
+    -webkit-backdrop-filter:none !important;
+
+    overflow:hidden !important;
+
 }
 
 
 
 /* ======================================================
-   CLEAN DETAIL PAGE
-   Homepage CSS above this section stays untouched.
+   DETAIL IMAGE GALLERY
 ====================================================== */
 
-#detailPage {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    display: none;
-    opacity: 0;
-    overflow: hidden !important;
-    background: #000 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    z-index: 1000;
-    transition: opacity .45s ease;
+#detailPage #rightColumn{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:30px;
+
+    padding:30px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    align-content:start;
+
 }
 
-#detailPage.active {
-    display: block !important;
-    opacity: 1 !important;
+
+
+/* Individual gallery item */
+
+#detailPage .artboard{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
 }
 
-/* Hide the unused top bar */
-#detailPage #topBar {
-    display: none !important;
+
+
+/* Detail images */
+
+#detailPage .artboard img{
+
+    width:100%;
+
+    height:auto;
+
+    max-width:100%;
+
+    max-height:none;
+
+    object-fit:contain;
+
+    display:block;
+
+    transition:transform 0.25s ease;
+
 }
 
-/* Main two-column layout */
-#detailPage #detailLayout {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    gap: 4vw !important;
-    padding: 5vh 3vw !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
+
+
+/* ======================================================
+   INSPECTED DETAIL IMAGE
+====================================================== */
+
+#detailPage .artboard img.enlarged{
+
+    position:fixed;
+
+    left:50%;
+
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:auto;
+
+    height:auto;
+
+    max-width:88vw;
+
+    max-height:88vh;
+
+    object-fit:contain;
+
+    z-index:2000;
+
+    cursor:zoom-out;
+
 }
 
-/* Left side: selected artwork and description */
-#detailPage #leftColumn {
-    position: relative !important;
-    flex: 0 0 32vw !important;
-    width: 32vw !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    box-sizing: border-box !important;
+
+
+/* ======================================================
+   BLUR ONLY WHILE INSPECTING
+====================================================== */
+
+/*
+   When a detail image is enlarged, blur everything
+   inside the detail page except the enlarged image.
+*/
+
+#detailPage:has(.artboard img.enlarged) #detailLayout{
+
+    filter:blur(10px);
+
 }
 
-#detailPage #detailImage {
-    position: static !important;
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: 55vh !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-    transform: none !important;
+
+/*
+   Put the enlarged image ABOVE the blurred layer.
+*/
+
+#detailPage:has(.artboard img.enlarged) .artboard:has(img.enlarged){
+
+    filter:none;
+
+    position:relative;
+
+    z-index:2001;
+
 }
 
-#detailPage #detailTitle {
-    display: block !important;
-    margin-top: 18px !important;
-    font-size: clamp(24px, 2.5vw, 42px) !important;
+
+/*
+   The enlarged image itself must never be blurred.
+*/
+
+#detailPage:has(.artboard img.enlarged) img.enlarged{
+
+    filter:none !important;
+
 }
 
-#detailPage #detailText {
-    display: block !important;
-    width: 100% !important;
-    max-width: 38ch !important;
-    max-height: none !important;
-    margin-top: 12px !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    font-size: clamp(15px, 1.05vw, 18px) !important;
-    line-height: 1.8 !important;
-    color: rgba(255, 255, 255, .65) !important;
+
+/* Black background behind inspected image */
+
+#detailPage:has(.artboard img.enlarged){
+
+    background:#000 !important;
+
 }
 
-/* Right side: scrollable Pinterest-style board */
-#detailPage #rightColumn {
-    position: relative !important;
-    inset: auto !important;
-    flex: 1 1 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    display: block !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    padding: 0 12px 30px 0 !important;
-    box-sizing: border-box !important;
-    column-count: 3;
-    column-gap: 14px;
-    scrollbar-width: thin;
-    scrollbar-color: #444 transparent;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
-}
 
-#detailPage #rightColumn::-webkit-scrollbar {
-    width: 8px;
-}
 
-#detailPage #rightColumn::-webkit-scrollbar-thumb {
-    background: #444;
-    border-radius: 999px;
-}
+/* ======================================================
+   MOBILE
+====================================================== */
 
-/* Masonry image containers */
-#detailPage #rightColumn .artboard {
-    display: inline-block !important;
-    vertical-align: top !important;
-    width: 100% !important;
-    margin: 0 0 14px !important;
-    padding: 0 !important;
-    break-inside: avoid !important;
-    background: transparent !important;
-    box-sizing: border-box !important;
-}
+@media (max-width:700px){
 
-/* Detail images: natural proportions, smaller board layout */
-#detailPage #rightColumn .artboard img {
-    position: static !important;
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: none !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-    transform: none !important;
-    filter: none !important;
-    cursor: zoom-in !important;
-    transition: opacity .2s ease;
-}
+    #detailPage #rightColumn{
 
-#detailPage #rightColumn .artboard img:hover {
-    opacity: .8;
-}
+        grid-template-columns:1fr;
 
-/* Responsive masonry columns */
-@media (max-width: 1100px) {
-    #detailPage #rightColumn {
-        column-count: 2;
-    }
-}
+        gap:20px;
 
-@media (max-width: 650px) {
-    #detailPage #detailLayout {
-        gap: 12px !important;
-        padding: 3vh 3vw !important;
+        padding:20px;
+
     }
 
-    #detailPage #leftColumn {
-        flex-basis: 38% !important;
-        width: 38% !important;
+    #detailPage .artboard img.enlarged{
+
+        max-width:94vw;
+
+        max-height:90vh;
+
     }
 
-    #detailPage #detailImage {
-        max-height: 40vh !important;
-    }
-
-    #detailPage #rightColumn {
-        column-count: 2;
-        column-gap: 8px;
-        padding-right: 4px !important;
-    }
-
-    #detailPage #rightColumn .artboard {
-        margin-bottom: 8px !important;
-    }
 }
 
-/* ==================================================
-   FINAL FIX — DETAIL IMAGE GALLERY
-   Overrides conflicting rules above this block.
-================================================== */
 
-#detailPage #detailLayout {
-    display: flex !important;
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    align-items: stretch !important;
-    gap: 24px !important;
-    box-sizing: border-box !important;
+/* =========================================
+   DETAIL PAGE FIXES ONLY
+========================================= */
+
+/* Restore the original left-side sizing.
+   Remove overrides that changed the original
+   detail layout and let the original CSS apply. */
+
+#detailPage #leftColumn{
+
+    width:35vw !important;
+
+    min-width:0 !important;
+
+    flex-shrink:0 !important;
+
+    display:block !important;
+
 }
 
-#detailPage #leftColumn {
-    position: relative !important;
-    flex: 0 0 30% !important;
-    width: 30% !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    overflow-y: auto !important;
-    box-sizing: border-box !important;
+#detailPage #detailImage{
+
+    position:static !important;
+
+    width:100% !important;
+
+    height:auto !important;
+
+    max-width:100% !important;
+
+    max-height:none !important;
+
+    object-fit:contain !important;
+
+    display:block !important;
+
+    margin:0 !important;
+
+    transform:none !important;
+
 }
 
-#detailPage #rightColumn {
-    position: relative !important;
-    inset: auto !important;
-    flex: 1 1 0% !important;
-    width: auto !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 16px !important;
-    box-sizing: border-box !important;
+#detailPage #detailTitle{
 
-    display: block !important;
-    column-count: 3 !important;
-    column-gap: 14px !important;
-    column-fill: auto !important;
+    display:block !important;
 
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    overscroll-behavior: contain !important;
-    -webkit-overflow-scrolling: touch !important;
 }
 
-#detailPage #rightColumn .artboard {
-    position: relative !important;
-    display: inline-block !important;
-    vertical-align: top !important;
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 0 14px !important;
-    padding: 0 !important;
-    break-inside: avoid !important;
-    background: transparent !important;
-    box-sizing: border-box !important;
+#detailPage #detailText{
+
+    position:static !important;
+
+    width:100% !important;
+
+    max-height:none !important;
+
+    overflow:visible !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    transform:none !important;
+
 }
 
-#detailPage #rightColumn .artboard img {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: none !important;
-    object-fit: contain !important;
-    transform: none !important;
-    cursor: zoom-in !important;
+
+/* Keep the detail page solid black normally. */
+
+#detailPage{
+
+    background:#000 !important;
+
+    backdrop-filter:none !important;
+
+    -webkit-backdrop-filter:none !important;
+
 }
 
-#detailPage {
-    overflow: hidden !important;
-    background: #000 !important;
+
+/* Inspection mode: blur the detail page contents. */
+
+#detailPage.inspecting #detailLayout{
+
+    filter:blur(10px);
+
 }
 
-@media (max-width: 1000px) {
-    #detailPage #rightColumn {
-        column-count: 2 !important;
+
+/* The inspected image stays sharp and above the blur. */
+
+#detailPage .artboard img.enlarged{
+
+    position:fixed !important;
+
+    left:50% !important;
+
+    top:50% !important;
+
+    width:auto !important;
+
+    height:auto !important;
+
+    max-width:88vw !important;
+
+    max-height:88vh !important;
+
+    object-fit:contain !important;
+
+    transform:translate(-50%,-50%) !important;
+
+    filter:none !important;
+
+    z-index:3000 !important;
+
+    cursor:zoom-out !important;
+
+}
+
+
+/* Prevent the selected image's gallery container
+   from being blurred with the background. */
+
+#detailPage.inspecting .artboard:has(img.enlarged){
+
+    filter:none !important;
+
+    z-index:3000 !important;
+
+}
+
+
+/* Mobile: keep the original layout rules unless
+   your existing responsive CSS changes them. */
+
+@media (max-width:700px){
+
+    #detailPage #leftColumn{
+
+        width:100% !important;
+
     }
-}
 
-@media (max-width: 650px) {
-    #detailPage #detailLayout {
-        gap: 10px !important;
-        padding: 12px !important;
+    #detailPage #detailImage{
+
+        max-width:100% !important;
+
     }
 
-    #detailPage #leftColumn {
-        flex-basis: 35% !important;
-        width: 35% !important;
-    }
-
-    #detailPage #rightColumn {
-        column-count: 2 !important;
-        padding: 6px !important;
-        column-gap: 6px !important;
-    }
-
-    #detailPage #rightColumn .artboard {
-        margin-bottom: 6px !important;
-    }
 }
