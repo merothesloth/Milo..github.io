@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
        Leave a value as "" if that detail has no description.
     */
     const DETAIL_DESCRIPTIONS = {
-        "1-1": "food eating food",
+        "1-1": "",
         "1-2": "",
         "1-3": "",
         "1-4": "",
@@ -273,19 +273,14 @@ document.addEventListener("DOMContentLoaded", () => {
         image.dataset.detailKey = `${artworkNumber}-${imageNumber}`;
         image.tabIndex = 0;
         image.setAttribute("role", "button");
-        image.setAttribute("aria-label", `Show description for artwork ${artworkNumber}, detail ${imageNumber}. Double-click to enlarge.`);
+        image.setAttribute("aria-label", `Show description and enlarge artwork ${artworkNumber}, detail ${imageNumber}.`);
 
-        // Single-click types this detail's description on the left.
+        // One click does both things: type the description on the left
+        // and immediately open the enlarged image with a blurred backdrop.
         image.addEventListener("click", event => {
             event.preventDefault();
             event.stopPropagation();
             typeDetailDescription(DETAIL_DESCRIPTIONS[image.dataset.detailKey] || "");
-        });
-
-        // Double-click preserves the enlarged-image feature.
-        image.addEventListener("dblclick", event => {
-            event.preventDefault();
-            event.stopPropagation();
             openInspection(image);
         });
 
