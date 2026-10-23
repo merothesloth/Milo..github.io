@@ -18,9 +18,116 @@ document.addEventListener("DOMContentLoaded", () => {
     let artworkOpen = false;
     let inspectionOverlay = null;
     let closeArtworkTimer = null;
+    let typingTimer = null;
+    let detailWorkDescription = null;
+
+    /* Add a separate description area beneath the main artwork text. */
+    const leftColumn = document.querySelector("#leftColumn");
+    if (leftColumn && detailText) {
+        detailWorkDescription = document.createElement("p");
+        detailWorkDescription.id = "detailWorkDescription";
+        detailWorkDescription.setAttribute("aria-live", "polite");
+        detailWorkDescription.setAttribute("aria-atomic", "true");
+        detailWorkDescription.hidden = true;
+        leftColumn.appendChild(detailWorkDescription);
+    }
+
+    function typeDetailDescription(text) {
+        if (!detailWorkDescription) return;
+
+        if (typingTimer !== null) {
+            clearTimeout(typingTimer);
+            typingTimer = null;
+        }
+
+        detailWorkDescription.textContent = "";
+        detailWorkDescription.hidden = false;
+        detailWorkDescription.classList.add("typing");
+        detailWorkDescription.classList.remove("has-description");
+
+        if (!text) {
+            detailWorkDescription.hidden = true;
+            detailWorkDescription.classList.remove("typing");
+            return;
+        }
+
+        let characterIndex = 0;
+        const typingSpeed = 24;
+
+        function typeNextCharacter() {
+            detailWorkDescription.textContent = text.slice(0, characterIndex);
+            characterIndex += 1;
+
+            if (characterIndex <= text.length) {
+                typingTimer = window.setTimeout(typeNextCharacter, typingSpeed);
+            } else {
+                typingTimer = null;
+                detailWorkDescription.classList.remove("typing");
+                detailWorkDescription.classList.add("has-description");
+            }
+        }
+
+        typeNextCharacter();
+    }
 
     const DETAIL_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"];
     const MAX_DETAIL_IMAGES = 50;
+
+    /*
+       WRITE YOUR DETAIL-WORK DESCRIPTIONS HERE.
+
+       The key is "ARTWORK NUMBER-DETAIL IMAGE NUMBER".
+       Example: "1-2" describes images/art1-detail2.jpg
+       The file extension does not matter.
+
+       Example:
+       "1-1": "A close-up of the screen-printed texture.",
+       "1-2": "An alternate composition exploring the same theme.",
+
+       Leave a value as "" if that detail has no description.
+    */
+    const DETAIL_DESCRIPTIONS = {
+        "1-1": "",
+        "1-2": "",
+        "1-3": "",
+        "1-4": "",
+        "1-5": "",
+        "2-1": "",
+        "2-2": "",
+        "2-3": "",
+        "2-4": "",
+        "2-5": "",
+        "3-1": "",
+        "3-2": "",
+        "3-3": "",
+        "3-4": "",
+        "3-5": "",
+        "4-1": "",
+        "4-2": "",
+        "4-3": "",
+        "4-4": "",
+        "4-5": "",
+        "5-1": "",
+        "5-2": "",
+        "5-3": "",
+        "5-4": "",
+        "5-5": "",
+        "6-1": "",
+        "6-2": "",
+        "6-3": "",
+        "6-4": "",
+        "6-5": "",
+        "7-1": "",
+        "7-2": "",
+        "7-3": "",
+        "7-4": "",
+        "7-5": "",
+        "8-1": "",
+        "8-2": "",
+        "8-3": "",
+        "8-4": "",
+        "8-5": ""
+    };
 
     /* --------------------------------------------------
        MASONRY LAYOUT
@@ -163,10 +270,30 @@ document.addEventListener("DOMContentLoaded", () => {
             scheduleMasonryUpdate();
         });
 
+        image.dataset.detailKey = `${artworkNumber}-${imageNumber}`;
+        image.tabIndex = 0;
+        image.setAttribute("role", "button");
+        image.setAttribute("aria-label", `Show description for artwork ${artworkNumber}, detail ${imageNumber}. Double-click to enlarge.`);
+
+        // Single-click types this detail's description on the left.
         image.addEventListener("click", event => {
             event.preventDefault();
             event.stopPropagation();
+            typeDetailDescription(DETAIL_DESCRIPTIONS[image.dataset.detailKey] || "");
+        });
+
+        // Double-click preserves the enlarged-image feature.
+        image.addEventListener("dblclick", event => {
+            event.preventDefault();
+            event.stopPropagation();
             openInspection(image);
+        });
+
+        image.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                typeDetailDescription(DETAIL_DESCRIPTIONS[image.dataset.detailKey] || "");
+            }
         });
 
         artboard.appendChild(image);
@@ -206,6 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
         detailImage.alt = mainImage.alt || title.textContent;
         detailTitle.textContent = title.textContent;
         detailText.textContent = description.textContent;
+        typeDetailDescription("");
         rightColumn.innerHTML = "";
 
         if (artworkNumber) {
