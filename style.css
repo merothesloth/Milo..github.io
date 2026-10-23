@@ -2079,7 +2079,7 @@ ARGENT PIXEL CF â€” DESCRIPTIONS
 /* ======================================================
    DETAIL PAGE â€” FROZEN LEFT / SCROLLING RIGHT
    The main artwork and text stay fixed on the left.
-   Only the detail-work gallery on the right scrolls.
+   Only the detail-work gallery on the right scrolls.vwavawvaw
 ====================================================== */
 
 @media (min-width: 701px) {
@@ -2150,3 +2150,4 @@ ARGENT PIXEL CF â€” DESCRIPTIONS
         overflow: visible !important;
     }
 }
+
