@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
        Leave a value as "" if that detail has no description.
     */
     const DETAIL_DESCRIPTIONS = {
-        "1-1": "",
+        "1-1": "food eating food",
         "1-2": "",
         "1-3": "",
         "1-4": "",
