@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Couldn't find an artwork class such as 'art1' on:", piece);
         }
 
-        detailPage.scrollTop = 0;
+        if (rightColumn) rightColumn.scrollTop = 0;
         detailPage.style.display = "block";
 
         requestAnimationFrame(() => {
